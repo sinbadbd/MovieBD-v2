@@ -1,0 +1,86 @@
+//
+//  UpcommingMovieVC.swift
+//  MovieDB-v2
+//
+//  Created by Imran on 19/6/20.
+//  Copyright © 2020 portonics. All rights reserved.
+//
+
+import UIKit
+
+class UpcommingMovieView: UIView {
+    
+   private let CELL_ID =  "CELL"
+    
+    private let collectionView : UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        return collection
+    }()
+    
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+//        backgroundColor = .blue
+        
+        setupCollectionView()
+        
+        
+        
+//        print("hello up view")
+    }
+    
+    func setupCollectionView(){
+        self.collectionView.dataSource = self
+        self.collectionView.delegate = self
+        self.collectionView.register(UpcommingCollectionViewCell.self, forCellWithReuseIdentifier: CELL_ID)
+        addSubview(collectionView)
+        self.collectionView.anchor(top: topAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 10, left: 10, bottom: 10, right: 10))
+        
+        collectionView.backgroundColor = .white
+        self.collectionView.isPagingEnabled = true
+        self.collectionView.showsHorizontalScrollIndicator = false
+    }
+    
+    override func layoutIfNeeded() {
+        backgroundColor = .red
+        
+        
+        print("hello up view")
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+
+extension UpcommingMovieView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 10
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CELL_ID, for: indexPath) as! UpcommingCollectionViewCell
+        cell.backgroundColor = .red
+        cell.layer.cornerRadius = 4
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(indexPath)
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width-40, height: collectionView.frame.height)
+    }
+    
+    
+    
+    
+    
+    
+}
