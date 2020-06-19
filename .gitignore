@@ -1,0 +1,11 @@
+.DS_Store
+.xcuserdata
+xcuserdata
+MyTelenor.xcodeproj/xcuserdata/*
+MyTelenor.xcworkspace
+xcschememanagement.plist
+Pods
+Podfile.lock
+/.idea
+/MyTelenor.xcodeproj/xcuserdata/imran.xcuserdatad
+/MyTelenor.xcodeproj/project.xcworkspace/xcuserdata/imran.xcuserdatad

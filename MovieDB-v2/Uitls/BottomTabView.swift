@@ -176,26 +176,26 @@ class BottomTabView: UIView{
     
     @objc func  handleHomeTap(){
         print("1")
-        let vc = DashBoard()
-        (superview?.next as? UIViewController)?.navigationController?.pushViewController(vc, animated: true)
+//        let vc = DashBoard()
+//        (superview?.next as? UIViewController)?.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func handlePofile(){
            print("1")
-        let vc = ProfileVC()
-        (superview?.next as? UIViewController)?.navigationController?.pushViewController(vc, animated: true)
+//        let vc = ProfileVC()
+//        (superview?.next as? UIViewController)?.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func handleSetting(){
            print("1")
-        let vc = SettingsVC()
-        (superview?.next as? UIViewController)?.navigationController?.pushViewController(vc, animated: true)
+//        let vc = SettingsVC()
+//        (superview?.next as? UIViewController)?.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func handleOther(){
            print("1")
-        let vc = OtherVC()
-        (superview?.next as? UIViewController)?.navigationController?.pushViewController(vc, animated: true)
+//        let vc = OtherVC()
+//        (superview?.next as? UIViewController)?.navigationController?.pushViewController(vc, animated: true)
     }
     
     func rotateImageView()

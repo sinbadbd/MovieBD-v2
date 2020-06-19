@@ -8,10 +8,17 @@
 
 import UIKit
 
+
+
+
 class UpcommingMovieView: UIView {
     
-   private let CELL_ID =  "CELL"
+    private let CELL_ID =  "CELL"
     
+    
+    
+    var movie = [Movie]()
+//    var
     private let collectionView : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -20,16 +27,36 @@ class UpcommingMovieView: UIView {
     }()
     
     
+    var didSelectCallback: (() -> Void)?
+      private var result = [Result]()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-//        backgroundColor = .blue
+        //        backgroundColor = .blue
         
         setupCollectionView()
         
         
         
-//        print("hello up view")
+        APIClient.getPopularMovieList { (response, error) in
+           // print(response)
+            
+            if let response = response {
+                print(response)
+                self.movie = response
+                self.result = response[0].results ?? []
+                
+            }
+            
+            
+            DispatchQueue.main.async {
+
+                self.collectionView.reloadData()
+            }
+        }
+        
+        //        print("hello up view")
     }
     
     func setupCollectionView(){
@@ -59,17 +86,26 @@ class UpcommingMovieView: UIView {
 
 extension UpcommingMovieView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return result.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CELL_ID, for: indexPath) as! UpcommingCollectionViewCell
         cell.backgroundColor = .red
         cell.layer.cornerRadius = 4
+        
+        let data = result[indexPath.item]
+        
+        cell.movieTitle.text = data.originalTitle
+        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        if let callBack = didSelectCallback {
+            callBack()
+        }
         print(indexPath)
     }
     
