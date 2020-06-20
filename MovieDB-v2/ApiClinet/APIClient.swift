@@ -183,7 +183,7 @@ class APIClient {
     
     //@GET POPULAR MOVIE
     class func getPopularMovieList(completion: @escaping([Movie]?, Error?)-> Void) {
-        //print(EndPoints.getPopularMovies.url)
+    print(EndPoints.getPopularMovies.url)
         taskForGETRequest(url: EndPoints.getPopularMovies.url, response: Movie.self) { (response, error) in
             if let response = response {
                 //  print(response)

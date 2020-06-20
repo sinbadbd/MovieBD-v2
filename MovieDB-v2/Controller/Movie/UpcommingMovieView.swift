@@ -108,8 +108,11 @@ extension UpcommingMovieView: UICollectionViewDelegate, UICollectionViewDataSour
     }
   
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
- 
-        callback?(indexPath.item)
+         let data = result[indexPath.item]
+        
+        let callBackId =  data.id
+        
+        callback?(callBackId)
  
     }
     

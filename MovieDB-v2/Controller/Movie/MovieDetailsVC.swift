@@ -7,7 +7,7 @@
 //
 
 import UIKit
-class MovieDetailsVC: BaseScrollView {
+class MovieDetailsVC: BaseVC {
     
     // var detailsId : Int = 0
     
@@ -16,59 +16,14 @@ class MovieDetailsVC: BaseScrollView {
     var movie = [Movie]()
     var result = [Result]()
     var movieDetails : MovieDetails?
+    var genres = [Genre]()
+    
+    
+    
+    
     let label = UILabel()
     
     
-    //    fileprivate var detailsId : Int
-    
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .white
-        
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            // your code here
-            self.getDetailsDtaa()
-        }
-        
-        self.setupUI()
-        self.ratingView()
-        print("detailsId \(String(describing: detailsId))")
-    }
-    
-    // Dependency injection constructor
-    //    init(appId : Int) {
-    //
-    //        super.init()
-    //          self.detailsId = appId
-    //      }
-    var detailsId : Int? {
-        didSet {
-            //  print("id", id)
-        }
-    }
-    func getDetailsDtaa(){
-        
-        
-        APIClient.getMovieId(id: detailsId ?? 0) { (response, error) in
-            print(APIClient.EndPoints.getMovieDetailsId(self.detailsId ?? 0).url)
-            if let response = response {
-                print(response)
-                self.movieDetails = response
-                
-                
-                DispatchQueue.main.async {
-                    
-                    //                    self.setupUI()
-                    
-                }
-            }
-            
-        }
-        
-    }
     
     let topSliderImage: UIImageView = UIImageView()
     let movieTitleLabel :UILabel = UILabel()
@@ -87,11 +42,62 @@ class MovieDetailsVC: BaseScrollView {
     let textlayer = CATextLayer()
     let basickAnimation = CABasicAnimation(keyPath: "strokeEnd")
     
+    // var favButton = MyButton()
     
-    func setupUI(){
+    
+    let movieTypeScrollView = UIScrollView()
+    
+    var favButton = UIButton(type: .system)
+    
+    var isSelectedButton : Bool = false
+   var coinV:UIScrollView!
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        isTopbar = false
+        resetBase()
+        view.backgroundColor = .white
+        
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            // your code here
+            self.getDetailsDtaa()
+        }
+        
+        print("detailsId \(String(describing: detailsId))")
+    }
+    
+    
+    var detailsId : Int? {
+        didSet {
+            //  print("id", id)
+        }
+    }
+    func getDetailsDtaa(){
+        
+        
+        APIClient.getMovieId(id: detailsId ?? 0) { (response, error) in
+            print(APIClient.EndPoints.getMovieDetailsId(self.detailsId ?? 0).url)
+            if let response = response {
+                print(response)
+                self.movieDetails = response
+                self.genres = response.genres ?? []
+                
+                DispatchQueue.main.async {
+                    
+
+                    self.setupDetailsUI()
+                    self.ratingView()
+                    
+                }
+            }
+            
+        }
+    }
+    
+    func setupDetailsUI(){
         
         contentView.addSubview(topSliderImage)
-        topSliderImage.backgroundColor = .red
+        topSliderImage.backgroundColor = .gray
         topSliderImage.isUserInteractionEnabled = true
         topSliderImage.contentMode = .scaleAspectFill
         topSliderImage.anchor(top: view.safeAreaLayoutGuide.topAnchor,
@@ -105,7 +111,7 @@ class MovieDetailsVC: BaseScrollView {
         
         topSliderImage.addSubview(movieTitleLabel)
         movieTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        movieTitleLabel.text = "THE AVENGERS | THE END GAME | "
+        movieTitleLabel.text = "\(String(describing: self.movieDetails?.title ?? ""))"
         movieTitleLabel.textColor = .white
         movieTitleLabel.font = UIFont.boldSystemFont(ofSize: 30)
         movieTitleLabel.numberOfLines = 5
@@ -141,8 +147,8 @@ class MovieDetailsVC: BaseScrollView {
         
         contentView.addSubview(movieOverViewContainer)
         //   movieOverViewContainer.translatesAutoresizingMaskIntoConstraints = false
-        movieOverViewContainer.backgroundColor = .blue
-        movieOverViewContainer.anchor(top: topSliderImage.bottomAnchor, leading: posterThumImage.trailingAnchor, bottom: nil, trailing: contentView.trailingAnchor, padding: .init(top: 10, left: 10, bottom: 0, right: 10), size: CGSize(width: movieOverViewContainer.frame.width, height: 100))
+       // movieOverViewContainer.backgroundColor = .blue
+        movieOverViewContainer.anchor(top: topSliderImage.bottomAnchor, leading: posterThumImage.trailingAnchor, bottom: nil, trailing: contentView.trailingAnchor, padding: .init(top: 10, left: 10, bottom: 0, right: 10), size: CGSize(width: movieOverViewContainer.frame.width, height: 120))
         
         
         movieOverViewContainer.addSubview(ratingMainView)
@@ -150,16 +156,179 @@ class MovieDetailsVC: BaseScrollView {
         // ratingMainView.backgroundColor = .blue
         ratingMainView.anchor(top: movieOverViewContainer.topAnchor, leading: nil, bottom: nil, trailing: nil, padding: .init(top: 0, left: 10, bottom: 0, right: 5), size: CGSize(width: 70, height: 70))
         
+//
+//        movieOverViewContainer.addSubview(userScoreLabel)
+//        userScoreLabel.translatesAutoresizingMaskIntoConstraints = false
+//        userScoreLabel.text = "User Score"
+//        userScoreLabel.font = UIFont.systemFont(ofSize: 12)
+//        userScoreLabel.textColor = .black
+//        userScoreLabel.textAlignment = .center
+//        userScoreLabel.anchor(top: ratingMainView.bottomAnchor, leading: nil, bottom: nil, trailing: nil, padding: .init(top: 0, left: 0, bottom: 0, right: 0), size: CGSize(width: 70, height: userScoreLabel.frame.height))
         
-        movieOverViewContainer.addSubview(userScoreLabel)
-        userScoreLabel.translatesAutoresizingMaskIntoConstraints = false
-        userScoreLabel.text = "User Score"
-        userScoreLabel.font = UIFont.systemFont(ofSize: 12)
-        userScoreLabel.textColor = .black
-        userScoreLabel.textAlignment = .center
-        userScoreLabel.anchor(top: ratingMainView.bottomAnchor, leading: nil, bottom: nil, trailing: nil, padding: .init(top: 0, left: 0, bottom: 0, right: 0), size: CGSize(width: 70, height: userScoreLabel.frame.height))
+        //        var xOffest:CGFloat = 80
+        //        self.favButton = UIButton(frame: CGRect(x: xOffest, y: 10, width: 50, height: 50))
+        //        xOffest += 55
+        //        favButton.tag = 1
+        //        favButton.setImage(UIImage(named: "heart"), for: .normal)
+        //        favButton.layer.cornerRadius = favButton.frame.width / 2
+        //        favButton.layer.borderWidth = 3
+        //        favButton.layer.borderColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
+        //        self.movieOverViewContainer.addSubview(favButton)
+        //        favButton.contentEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        //        favButton.addTarget(self, action: #selector(handleFavButton), for: .touchUpInside)
         
         
+        var xOffest:CGFloat = 80
+        let colorValus = ["heart","favorite","bookmark"]
+        for color in 0..<colorValus.count {
+            let button = UIButton(frame: CGRect(x: xOffest, y: 10, width: 50, height: 50))
+            xOffest += 55
+            button.tag = color
+            button.setImage(UIImage(named: "\(colorValus[color])"), for: .normal)
+            button.layer.cornerRadius = button.frame.width / 2
+            button.layer.borderWidth = 3
+            button.layer.borderColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
+            button.contentEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+            button.addTarget(self, action: #selector(handleFavButton), for: .touchUpInside)
+            self.movieOverViewContainer.addSubview(button)
+        }
+        
+        
+        movieTypeScrollView.frame = CGRect(x: 30, y: 50, width: movieTypeScrollView.frame.width, height: 40)
+        movieTypeScrollView.backgroundColor = .red
+        movieTypeScrollView.contentSize.height = 30
+//         contentSize = CGSize(width: paddi?ng * buttonWidth, height:  60)
+        movieOverViewContainer.addSubview(movieTypeScrollView)
+//        movieTypeScrollView.anchor(top: ratingMainView.bottomAnchor,
+//                                   leading: nil,
+//                                   bottom: movieTypeScrollView.bottomAnchor,
+//                                   trailing: nil,
+//                                   padding: .init(top: 0, left:5 , bottom: 0, right: 5),
+//                                   size: CGSize(width: movieTypeScrollView.frame.width, height: 10)
+//        )
+//        movieTypeScrollView.backgroundColor = .red
+//        movieTypeScrollView.contentSize = CGSize(width: movieTypeScrollView.frame.width, height: movieTypeScrollView.frame.height)
+//        movieTypeScrollView.updateConstraints()
+//        view.layoutIfNeeded()
+//         let contentWidth = balanceView.frame.size.width - leftSpace*2
+        
+        coinV = getCoinView(rect: CGRect(x: 10, y: 70, width: self.view.frame.width-20, height: 36.dynamic()))
+               movieOverViewContainer.addSubview(coinV)
+        
+        
+        
+        contentView.addSubview(overviewTextLabel)
+      //  overviewTextLabel.translatesAutoresizingMaskIntoConstraints = false
+        overviewTextLabel.text = "\(movieDetails?.overview ?? "")"
+      //   overviewTextLabel.backgroundColor = .red
+        overviewTextLabel.numberOfLines = 0
+        overviewTextLabel.font = UIFont.systemFont(ofSize: 16)
+        overviewTextLabel.anchor(top: ratingMainView.bottomAnchor, leading: contentView.leadingAnchor, bottom: nil, trailing: contentView.trailingAnchor, padding: .init(top: 60, left: 10, bottom: 40, right: 15), size: CGSize(width: overviewTextLabel.frame.width, height: overviewTextLabel.frame.height))
+        
+        
+        
+        
+    }
+    
+    func getCoinView(rect:CGRect) -> UIScrollView {
+        let coinView = UIScrollView(frame: rect)
+        coinView.showsHorizontalScrollIndicator = false
+        
+        print(genres)
+        
+       // let arr = ["Animation","Animation","avenger","Animation","game","lalal .","Animation","data"]
+        
+        
+        for i in 0..<genres.count {
+            let aDict = genres[i]
+          //  let coinAmount = aDict["amount"] as! Int
+            let coinBtn = UIButton(type: .custom)
+            coinBtn.tag = i
+            coinBtn.addTarget(self, action: #selector(coinPressed), for: .touchUpInside)
+            coinBtn.frame = CGRect(x: 60.dynamic() * CGFloat(i) + 3.dynamic() * CGFloat(i), y: 0, width: 60.dynamic(), height: 30)
+            coinBtn.layer.cornerRadius = coinBtn.frame.size.height*0.43;
+            coinBtn.setTitle("\(aDict.name ?? "")", for: UIControl.State.normal)
+            coinBtn.setTitleColor(.black, for: UIControl.State.normal)
+            coinBtn.backgroundColor = .green
+            coinBtn.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+            coinView.addSubview(coinBtn)
+            coinView.contentSize = CGSize(width: coinBtn.frame.origin.x+coinBtn.frame.size.width, height: coinView.frame.size.height)
+            
+        }
+        return coinView
+    }
+    @objc func coinPressed(sender:UIButton) {
+                 UIView.animate(withDuration: TimeInterval(0.1), delay: 0.0, options: [], animations: {
+                     sender.alpha = 0.5
+                 }) { finished in
+                     sender.alpha = 1.0
+                  for aView in self.coinV.subviews {
+                      if  aView is UIButton {
+                          let coinBtn = aView as! UIButton
+                          coinBtn.setTitleColor(.black, for: UIControl.State.normal)
+                          coinBtn.backgroundColor = .green
+                      }
+                  }
+                  
+                  sender.setTitleColor(.white, for: UIControl.State.normal)
+                  sender.backgroundColor = btnColorBlue
+//                  let aDict = self.comissionArray[sender.tag]
+//                  self.selectedAmnt = aDict["amount"] as? Double ?? 0.0
+//                  let discountAmount = aDict["discount"] as? Double ?? 0.0
+//                  let total = self.selectedAmnt-discountAmount
+//                  self.amountTxF.text = "\(self.selectedAmnt.commaRepresentation)"
+//                  self.amntLbl.text = getFormatedAmount(Int(self.selectedAmnt))
+//                  self.earningLbl.text = getFormatedAmount(Int(discountAmount))
+//                  self.totalLbl.text = getFormatedAmount(Int(total))
+                  
+                 }
+             }
+      
+    
+    @objc func handleFavButton(sender: UIButton){
+        print(sender.tag)
+        let selectedItem = sender.tag
+        
+        if selectedItem == 0 {
+            
+            
+            if isSelectedButton ==  false {
+                sender.setImage(UIImage(named: "heart-selected"), for: .normal)
+                self.isSelectedButton = true
+                print(isSelectedButton)
+            }else {
+                sender.setImage(UIImage(named: "heart"), for: .normal)
+                self.isSelectedButton = false
+                print(self.isSelectedButton)
+            }
+            //             self.isSelectedButton = false
+            
+        } else if selectedItem == 1 {
+            print("watch list: \(selectedItem)")
+            if isSelectedButton ==  false {
+                sender.setImage(UIImage(named: "fav-selected"), for: .normal)
+                self.isSelectedButton = true
+                print(isSelectedButton)
+            }else {
+                sender.setImage(UIImage(named: "favorite"), for: .normal)
+                self.isSelectedButton = false
+                print(self.isSelectedButton)
+            } 
+            
+        } else {
+            print("share: \(selectedItem)")
+            
+            if isSelectedButton ==  false {
+                sender.setImage(UIImage(named: "bookmark-selected"), for: .normal)
+                self.isSelectedButton = true
+                print(isSelectedButton)
+            }else {
+                sender.setImage(UIImage(named: "bookmark"), for: .normal)
+                self.isSelectedButton = false
+                print(self.isSelectedButton)
+            }
+            
+        }
     }
     func ratingView(){
         ratingMainView.layer.addSublayer(trackLayer)
