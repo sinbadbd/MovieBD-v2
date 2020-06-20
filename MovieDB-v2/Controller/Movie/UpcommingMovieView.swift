@@ -7,8 +7,7 @@
 //
 
 import UIKit
-
-
+import SDWebImage
 
 
 class UpcommingMovieView: UIView {
@@ -18,17 +17,24 @@ class UpcommingMovieView: UIView {
     
     
     var movie = [Movie]()
-//    var
+    var app: Movie?
+    
+    
+    var didSelectCallback: (() -> Void)?
+    private var result = [Result]()
+    
+    var didSelectHandler : ((Movie) -> ())?
+    
+    var callback: ((_ id: Int) -> Void)?
+    
+//      var setData = Int
+    //    var
     private let collectionView : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         return collection
     }()
-    
-    
-    var didSelectCallback: (() -> Void)?
-      private var result = [Result]()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -40,7 +46,7 @@ class UpcommingMovieView: UIView {
         
         
         APIClient.getPopularMovieList { (response, error) in
-           // print(response)
+            // print(response)
             
             if let response = response {
                 print(response)
@@ -48,10 +54,8 @@ class UpcommingMovieView: UIView {
                 self.result = response[0].results ?? []
                 
             }
-            
-            
             DispatchQueue.main.async {
-
+                
                 self.collectionView.reloadData()
             }
         }
@@ -91,22 +95,22 @@ extension UpcommingMovieView: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CELL_ID, for: indexPath) as! UpcommingCollectionViewCell
-        cell.backgroundColor = .red
-        cell.layer.cornerRadius = 4
+        // cell.backgroundColor = .red
+        cell.layer.cornerRadius = 10
         
         let data = result[indexPath.item]
         
+        let imgUrl = URL(string: "\(APIClient.EndPoints.POSTER_URL + data.posterPath!)")
+        cell.imageView.sd_setImage(with: imgUrl, completed: nil)
         cell.movieTitle.text = data.originalTitle
         
         return cell
     }
-    
+  
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        if let callBack = didSelectCallback {
-            callBack()
-        }
-        print(indexPath)
+ 
+        callback?(indexPath.item)
+ 
     }
     
     

@@ -23,6 +23,10 @@ class  UpcommingCollectionViewCell: UICollectionViewCell {
                          trailing: trailingAnchor,
                          padding: .init()
         )
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.masksToBounds = true
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 8
         
         self.movieTitle = MyUILabel(frame: .zero, text: "installation with CocoaPods", textColor: .white, fontSize: UIFont.systemFont(ofSize: 18), textAlign: .left)
         imageView.addSubview(movieTitle)

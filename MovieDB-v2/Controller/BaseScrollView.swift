@@ -9,7 +9,7 @@
 import UIKit
 
 class BaseScrollView: UIViewController {
-    
+      var isTopbar = true
     let scrollView = UIScrollView()
     let contentView = UIView()
     
