@@ -8,14 +8,14 @@
 
 import UIKit
 
-class DashboardVC: BaseScrollView {
+class DashboardVC: BaseVC {
     
     let upcommingView = UpcommingMovieView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //  isTopbar = true
-        //  resetBase()
+          isTopbar = false
+          resetBase()
         view.backgroundColor = .white
         
         setupMovieUI()
@@ -39,12 +39,12 @@ class DashboardVC: BaseScrollView {
             //   upcommingView.frame = CGRect(x: 10, y: 200, width: 32, height: 400)
             contentView.addSubview(upcommingView)
             
-            upcommingView.translatesAutoresizingMaskIntoConstraints = false
+         //   upcommingView.translatesAutoresizingMaskIntoConstraints = false
             upcommingView.anchor(top: contentView.topAnchor,
                                  leading: contentView.leadingAnchor,
-                                 bottom: contentView.bottomAnchor,
+                                 bottom: nil,
                                  trailing: contentView.trailingAnchor,
-                                 padding: .init(top: 20, left: 10, bottom: 0, right: 10),
+                                 padding: .init(top: 60, left: 10, bottom: 0, right: 10),
                                  size: .init(width: upcommingView.frame.width, height: 180)
             )
             // MARK: // Another Solution
@@ -63,7 +63,7 @@ class DashboardVC: BaseScrollView {
                 print("callback - \(id)")
                 // print(id)
                 let vc = MovieDetailsVC()
-                vc.detailsId = id
+                vc.movie_id = id
                 self.navigationController?.pushViewController(vc, animated: true)
             }
             

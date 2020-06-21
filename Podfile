@@ -8,5 +8,7 @@ target 'MovieDB-v2' do
   # Pods for MovieDB-v2
 
   pod 'SDWebImage'
-
+#  pod 'YouTubePlayer'
+  pod 'YouTubePlayer'
+  pod 'SVProgressHUD'
 end

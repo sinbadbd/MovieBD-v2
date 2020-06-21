@@ -20,15 +20,19 @@ class UpcommingMovieView: UIView {
     var app: Movie?
     
     
-    var didSelectCallback: (() -> Void)?
+
     private var result = [Result]()
-    
-    var didSelectHandler : ((Movie) -> ())?
+//
+//    var didSelectHandler : ((Movie) -> ())?
+//        var didSelectCallback: (() -> Void)?
     
     var callback: ((_ id: Int) -> Void)?
     
-//      var setData = Int
+//    var setData = Int
     //    var
+    var global_movie_id :Int = 0
+    
+   
     private let collectionView : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -43,7 +47,7 @@ class UpcommingMovieView: UIView {
         
         setupCollectionView()
         
-        
+//        var global_id = app?.results.
         
         APIClient.getPopularMovieList { (response, error) in
             // print(response)
@@ -52,6 +56,7 @@ class UpcommingMovieView: UIView {
                 print(response)
                 self.movie = response
                 self.result = response[0].results ?? []
+//                self.global_movie_id = self.movie.
                 
             }
             DispatchQueue.main.async {
