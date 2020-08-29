@@ -56,6 +56,8 @@ class UpcommingMovieView: UIView {
                 print(response)
                 self.movie = response
                 self.result = response[0].results ?? []
+                GLOBAL_MOVIE_ID = self.result[0].id
+                print("MOVIE ID:::\(GLOBAL_MOVIE_ID)")
 //                self.global_movie_id = self.movie.
                 
             }
@@ -106,7 +108,7 @@ extension UpcommingMovieView: UICollectionViewDelegate, UICollectionViewDataSour
         let data = result[indexPath.item]
         
         let imgUrl = URL(string: "\(APIClient.EndPoints.POSTER_URL + data.posterPath!)")
-        cell.imageView.sd_setImage(with: imgUrl, completed: nil)
+        cell.imageView.sd_setImage(with: imgUrl, placeholderImage: UIImage(named: "frame-0"), options: .delayPlaceholder, completed: nil)
         cell.movieTitle.text = data.originalTitle
         
         return cell

@@ -33,6 +33,7 @@ class APIClient {
         case getTopRatedMovies
         case getDiscoverMovies
         case getMovieDetailsId(Int)
+//        case getMovieCreditAll
         case getMovieCreditsId(Int)
         case getArtistProfielId(Int)
         case getProfileImages(Int)
@@ -52,6 +53,7 @@ class APIClient {
             case .getTopRatedMovies: return EndPoints.BASE_URL + "movie/top_rated" + EndPoints.apiKeyParam
             case .getDiscoverMovies: return EndPoints.BASE_URL + "discover/movie" + EndPoints.apiKeyParam
             case .getMovieDetailsId(let id) : return EndPoints.BASE_URL + "movie/\(id)" + EndPoints.apiKeyParam
+//            case .getMovieCreditAll : return EndPoints.BASE_URL + "movie/\(id)/credits" + EndPoints.apiKeyParam
             case .getMovieCreditsId(let id) : return  EndPoints.BASE_URL + "movie/\(id)/credits" + EndPoints.apiKeyParam
             case .getArtistProfielId(let id) : return  EndPoints.BASE_URL + "person/\(id)" + EndPoints.apiKeyParam
             case .getProfileImages (let id): return  EndPoints.BASE_URL + "person/\(id)/images" + EndPoints.apiKeyParam

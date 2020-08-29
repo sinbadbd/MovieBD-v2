@@ -7,11 +7,13 @@
 //
 
 import UIKit
+
+
 class MovieDetailsVC: BaseVC {
     
     // var detailsId : Int = 0
     
-    var showID = MyUILabel()
+    var showID = UILabel()
     
     
     var movieDetails : MovieDetails?
@@ -57,35 +59,49 @@ class MovieDetailsVC: BaseVC {
         resetBase()
         view.backgroundColor = .white
         
-         navigationItem.title = "Movie Detais"
+        navigationItem.title = "Movie Detais"
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             // your code here
             self.getDetailsDtaa()
         }
         
-        print("detailsId \(String(describing: movie_id))")
+        print("detailsId \(String(describing: GLOBAL_MOVIE_ID))")
         
         
         movieCastView.callback = { (id) -> Void in
             print("callback - \(id)")
             // print(id)
             let vc = ArtistProfileVC()
-            vc.artistId = id
+            PERSON_ID = id
             self.navigationController?.pushViewController(vc, animated: true)
         }
+        
+        //        setContentHeight(height: contentView.frame.height)
     }
     
-    
-    var movie_id : Int? {
-        didSet {
-            //  print("id", id)
-        }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        print("hiii===\(contentView.frame.origin.y + contentView.frame.height+20)")
+        //    scrollView.contentSize = CGSize(width:self.view.bounds.width, height: 5000)
+        
+        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height)
+        scrollView.setContentOffset(bottomOffset, animated: true)
+        
+        //   setContentHeight(height: contentView.frame.origin.y + contentView.frame.height+20)
+        
     }
+//    var movie_id : Int? {
+//        didSet {
+//            //  print("id", id)
+//        }
+//    }
+    var movieID = GLOBAL_MOVIE_ID
+    
     func getDetailsDtaa(){
         
         
-        APIClient.getMovieId(id: movie_id ?? 0) { (response, error) in
-            print(APIClient.EndPoints.getMovieDetailsId(self.movie_id ?? 0).url)
+        APIClient.getMovieId(id: GLOBAL_MOVIE_ID ) { (response, error) in
+            print(APIClient.EndPoints.getMovieDetailsId(GLOBAL_MOVIE_ID).url)
             if let response = response {
                 print(response)
                 self.movieDetails = response
@@ -101,9 +117,11 @@ class MovieDetailsVC: BaseVC {
                     }
                     if response.posterPath != nil {
                         let posterURL = URL(string: "\(APIClient.EndPoints.POSTER_URL + response.posterPath!)")
-                        self.posterThumImage.sd_setImage(with: posterURL, completed: nil)
+                        self.posterThumImage.sd_setImage(with: posterURL, placeholderImage: UIImage(named: "frame-0"), options: .fromLoaderOnly, completed: nil)
                         
                     }
+                    self.movieTitleLabel.text = "\(String(describing: self.movieDetails?.title ?? ""))"
+                    self.overviewTextLabel.text = "\(self.movieDetails?.overview ?? "")"
                     self.ratingView()
                     
                 }
@@ -115,29 +133,29 @@ class MovieDetailsVC: BaseVC {
     func setupDetailsUI(){
         
         contentView.addSubview(topSliderImage)
-        topSliderImage.backgroundColor = .gray
+        //        topSliderImage.backgroundColor = .gray
         topSliderImage.isUserInteractionEnabled = true
         topSliderImage.contentMode = .scaleAspectFill
-        topSliderImage.anchor(top: view.safeAreaLayoutGuide.topAnchor,
-                              leading: contentView.leadingAnchor,
-                              bottom: nil,
-                              trailing: contentView.trailingAnchor,
-                              padding: .init(),
-                              size: CGSize(width: topSliderImage.frame.width, height: 280)
-        )
         
+        
+        topSliderImage.backgroundColor = .red
+        topSliderImage.position(top: contentView.topAnchor, left: contentView.leadingAnchor)
+        topSliderImage.size(height: 280 ,dimensionWidth: contentView.widthAnchor)
         
         topSliderImage.addSubview(movieTitleLabel)
-        movieTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        movieTitleLabel.text = "\(String(describing: self.movieDetails?.title ?? ""))"
+        //        movieTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+     
         movieTitleLabel.textColor = .white
-        movieTitleLabel.font = UIFont.boldSystemFont(ofSize: 30)
-        movieTitleLabel.numberOfLines = 5
-        movieTitleLabel.anchor(top: nil, leading: movieTitleLabel.leadingAnchor, bottom: topSliderImage.bottomAnchor, trailing: topSliderImage.trailingAnchor, padding: .init(top: 0, left: 0, bottom: 10, right: 10), size: CGSize(width: 250, height: movieTitleLabel.frame.height.dynamic()))
+        movieTitleLabel.font = UIFont.boldSystemFont(ofSize: 24)
+        movieTitleLabel.numberOfLines = 0
+        //        movieTitleLabel.backgroundColor = .green
+        
+        movieTitleLabel.position(bottom: topSliderImage.bottomAnchor, right: topSliderImage.trailingAnchor, insets: .init(top: 0, left: 0, bottom: 20, right: 20))
+        movieTitleLabel.size(width: 210)
+        
         
         //
         topSliderImage.addSubview(posterThumImage)
-        posterThumImage.translatesAutoresizingMaskIntoConstraints  = false
         posterThumImage.backgroundColor = .green
         posterThumImage.layer.cornerRadius = 12
         posterThumImage.layer.masksToBounds = true
@@ -146,7 +164,9 @@ class MovieDetailsVC: BaseVC {
         posterThumImage.layer.shadowColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
         posterThumImage.layer.shadowOffset = CGSize(width: 3, height: 3)
         posterThumImage.layer.shadowOpacity = 0.7
-        posterThumImage.anchor(top: nil, leading: topSliderImage.leadingAnchor, bottom: topSliderImage.bottomAnchor, trailing: nil, padding: .init(top: 0, left: 10, bottom: -120, right: 0), size: CGSize(width: 120, height: 180))
+        posterThumImage.position( left: topSliderImage.leadingAnchor, bottom: topSliderImage.bottomAnchor,
+                                  insets: .init(top: 0, left: 10, bottom: -120, right: 0))
+        posterThumImage.size( width: 120, height: 180)
         
         
         topSliderImage.addSubview(playVedioButton)
@@ -173,28 +193,6 @@ class MovieDetailsVC: BaseVC {
         ratingMainView.translatesAutoresizingMaskIntoConstraints = false
         // ratingMainView.backgroundColor = .blue
         ratingMainView.anchor(top: movieOverViewContainer.topAnchor, leading: nil, bottom: nil, trailing: nil, padding: .init(top: 0, left: 10, bottom: 0, right: 5), size: CGSize(width: 70, height: 70))
-        
-        //
-        //        movieOverViewContainer.addSubview(userScoreLabel)
-        //        userScoreLabel.translatesAutoresizingMaskIntoConstraints = false
-        //        userScoreLabel.text = "User Score"
-        //        userScoreLabel.font = UIFont.systemFont(ofSize: 12)
-        //        userScoreLabel.textColor = .black
-        //        userScoreLabel.textAlignment = .center
-        //        userScoreLabel.anchor(top: ratingMainView.bottomAnchor, leading: nil, bottom: nil, trailing: nil, padding: .init(top: 0, left: 0, bottom: 0, right: 0), size: CGSize(width: 70, height: userScoreLabel.frame.height))
-        
-        //        var xOffest:CGFloat = 80
-        //        self.favButton = UIButton(frame: CGRect(x: xOffest, y: 10, width: 50, height: 50))
-        //        xOffest += 55
-        //        favButton.tag = 1
-        //        favButton.setImage(UIImage(named: "heart"), for: .normal)
-        //        favButton.layer.cornerRadius = favButton.frame.width / 2
-        //        favButton.layer.borderWidth = 3
-        //        favButton.layer.borderColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
-        //        self.movieOverViewContainer.addSubview(favButton)
-        //        favButton.contentEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
-        //        favButton.addTarget(self, action: #selector(handleFavButton), for: .touchUpInside)
-        
         
         var xOffest:CGFloat = 80
         let colorValus = ["heart","favorite","bookmark"]
@@ -223,20 +221,36 @@ class MovieDetailsVC: BaseVC {
         
         
         
+        
         contentView.addSubview(overviewTextLabel)
         //  overviewTextLabel.translatesAutoresizingMaskIntoConstraints = false
-        overviewTextLabel.text = "\(movieDetails?.overview ?? "")"
+        
         //   overviewTextLabel.backgroundColor = .red
         overviewTextLabel.numberOfLines = 0
         overviewTextLabel.font = UIFont.systemFont(ofSize: 16)
-        overviewTextLabel.anchor(top: ratingMainView.bottomAnchor, leading: contentView.leadingAnchor, bottom: nil, trailing: contentView.trailingAnchor, padding: .init(top: 60, left: 10, bottom: 40, right: 15), size: CGSize(width: overviewTextLabel.frame.width, height: overviewTextLabel.frame.height))
+        overviewTextLabel.anchor(top: ratingMainView.bottomAnchor,
+                                 leading: contentView.leadingAnchor,
+                                 bottom: nil, trailing: contentView.trailingAnchor,
+                                 padding: .init(top: 60, left: 10, bottom: 40, right: 15)
+            // size: CGSize(width: overviewTextLabel.frame.width, height: overviewTextLabel.frame.height)
+        )
+        overviewTextLabel.textColor = .black
         
-        
-        
-        
-        
+        // MARK:: MOVIE CAST
         contentView.addSubview(movieCastView)
-        movieCastView.anchor(top: overviewTextLabel.bottomAnchor, leading: contentView.leadingAnchor, bottom: nil, trailing: contentView.trailingAnchor, padding: .init(top: 20, left: 10, bottom: 0, right: 20),size: CGSize(width: movieCastView.frame.width, height:140))
+        movieCastView.anchor(top: overviewTextLabel.bottomAnchor,
+                             leading: contentView.leadingAnchor,
+                             bottom: nil,
+                             trailing: contentView.trailingAnchor,
+                             padding: .init(top: 20, left: 10, bottom: 0, right: 20),
+                             size: CGSize(width: .init(), height:140)
+        )
+        movieCastView.backgroundColor = .red
+        contentView.addSubview(showID)
+        showID.anchor(top: movieCastView.bottomAnchor, leading: contentView.leadingAnchor, bottom: contentView.bottomAnchor, trailing: contentView.trailingAnchor, padding: .init(top: 20, left: 20, bottom: 0, right: 20))
+        showID.centerXInSuperview()
+        showID.text = "Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of "
+        showID.numberOfLines = 0
         
         
     }
@@ -255,8 +269,8 @@ class MovieDetailsVC: BaseVC {
             //  let coinAmount = aDict["amount"] as! Int
             let coinBtn = UIButton(type: .custom)
             coinBtn.tag = i
-            coinBtn.addTarget(self, action: #selector(coinPressed), for: .touchUpInside)
-            coinBtn.frame = CGRect(x: 60.dynamic() * CGFloat(i) + 3.dynamic() * CGFloat(i), y: 0, width: 60.dynamic(), height: 30)
+            coinBtn.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
+            coinBtn.frame = CGRect(x: 60.dynamic() * CGFloat(i) + 3.dynamic() * CGFloat(i), y: 0, width: 60.dynamic(), height: 30.dynamic())
             coinBtn.layer.cornerRadius = coinBtn.frame.size.height*0.43;
             coinBtn.setTitle("\(aDict.name ?? "")", for: UIControl.State.normal)
             coinBtn.setTitleColor(.black, for: UIControl.State.normal)
@@ -268,7 +282,7 @@ class MovieDetailsVC: BaseVC {
         }
         return coinView
     }
-    @objc func coinPressed(sender:UIButton) {
+    @objc func buttonPressed(sender:UIButton) {
         UIView.animate(withDuration: TimeInterval(0.1), delay: 0.0, options: [], animations: {
             sender.alpha = 0.5
         }) { finished in
@@ -281,8 +295,8 @@ class MovieDetailsVC: BaseVC {
                 }
             }
             
-            sender.setTitleColor(.white, for: UIControl.State.normal)
-            sender.backgroundColor = btnColorBlue
+            // sender.setTitleColor(.white, for: UIControl.State.normal)
+            //sender.backgroundColor = btnColorBlue
             //                  let aDict = self.comissionArray[sender.tag]
             //                  self.selectedAmnt = aDict["amount"] as? Double ?? 0.0
             //                  let discountAmount = aDict["discount"] as? Double ?? 0.0
@@ -387,7 +401,31 @@ class MovieDetailsVC: BaseVC {
         //
         //        vedioPlayer.bringSubviewToFront(contentView)
         vedioPlayer.id = self.movieDetails?.id
-        print(  vedioPlayer.id)
+//        print(  vedioPlayer.id)
         self.present(vedioPlayer, animated: true, completion: nil)
     }
 }
+
+
+
+//#if DEBUG
+//import SwiftUI
+//
+//struct InAppMarketVCRepresentable: UIViewControllerRepresentable {
+//    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+//        // leave this empty
+//    }
+//
+//    @available(iOS 13.0.0, *)
+//    func makeUIViewController(context: Context) -> UIViewController {
+//        MovieDetailsVC()
+//    }
+//}
+//
+//@available(iOS 13.0, *)
+//struct InAppMarketVC_Previews: PreviewProvider {
+//    static var previews: some View {
+//        InAppMarketVCRepresentable()
+//    }
+//}
+//#endif

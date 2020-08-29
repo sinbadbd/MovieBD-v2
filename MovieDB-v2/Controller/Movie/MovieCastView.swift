@@ -16,15 +16,17 @@ class MovieCastView: UIView {
     var movieDetails : MovieDetails?
     var casts = [MovieCast]()
     
-       var callback: ((_ id: Int) -> Void)?
+    var callback: ((_ id: Int) -> Void)?
     
     
     
-//     let upcommingView = UpcommingMovieView()
+    //     let upcommingView = UpcommingMovieView()
     
     var details_ID  : MovieDetailsVC?
     
     var upcommingView : UpcommingMovieView?
+    
+    var case_id = 0
     
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -33,7 +35,7 @@ class MovieCastView: UIView {
         return collection
     }()
     
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         //backgroundColor = .red
@@ -46,38 +48,18 @@ class MovieCastView: UIView {
         self.collectionView.anchor(top: topAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init())
         self.collectionView.isPagingEnabled = true
         self.collectionView.showsHorizontalScrollIndicator = false
-        // MOVIE CREDITS API CALL
-        //movieCredit
-        //   if id != nil {
-        
-//        APIClient.getMovieId(id: <#T##Int#>, completion: <#T##(MovieDetails?, Error?) -> Void#>)
-        
-//        guard let id = self.movieDetails?.id else {return}
         
         
-//        let id = details_ID.movie_id
-//        print("id-****\(id)")
-        
-//       upcommingView.callback = { (id) -> Void in
-//        print("imran")
-//            print("callback - \(id)")
-//        print("vc.movie_id \(String(describing: id))")
-//        }
-//
-        
-//        print("cast_id\(destaisl.id)")
-//        guard let id = movieDetails?.id else {return}
-//        guard let id = details_ID?.movie_id else {return}
-        
-        let id = upcommingView?.app?.results
-        print("movie_id\(id)")
-        APIClient.getMovieCreditsId(id:278) { (response, error) in
-            //                 print("id----movie credit id",self.id)
-            if let response = response {
-                self.casts = response[0].cast ?? []
-                print("credit =====\(response)")
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            // your code here
+            APIClient.getMovieCreditsId(id:GLOBAL_MOVIE_ID) { (response, error) in
+                //                 print("id----movie credit id",self.id)
+                if let response = response {
+                    self.casts = response[0].cast ?? []
+                    print("credit =====\(response)")
+                    DispatchQueue.main.async {
+                        self.collectionView.reloadData()
+                    }
                 }
             }
         }
@@ -99,38 +81,25 @@ extension MovieCastView : UICollectionViewDataSource, UICollectionViewDelegate, 
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-                let selected = casts[indexPath.item]
-                print(selected ?? "")
+        let selected = casts[indexPath.item]
+        print(selected ?? "")
         
-                  let callBackId =  selected.id
-                           
-                callback?(callBackId!)
-//                let details = ArtistProfileVC()
-//                details.artistId = selected.id
-//             print( details.artistId ?? "")
+        let callBackId =  selected.id
         
-        
-//       navController.pushViewController(details, animated:  true)
-//               self.present(details, animated: true, completion: nil)
-//                print(details.artistId)
-        
-        
-        //        let vc = ProfileVC()
-          //     (superview?.next as? UIViewController)?.navigationController?.pushViewController(details, animated: true)
+        callback?(callBackId!)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MOVIECAST_CELL, for: indexPath) as! MovieCastCell
-       // cell.backgroundColor = .black
+        // cell.backgroundColor = .black
         
         let apiResponse = casts[indexPath.item]
+        self.case_id = apiResponse.id ?? 0
         print(apiResponse, "apiResponse====")
         if apiResponse.profilePath != nil {
             let img =  URL(string: "\(APIClient.EndPoints.PROFILE_URL + apiResponse.profilePath!)")
             cell.imageView.sd_setImage(with: img, completed: nil)
             cell.titleNowPlayingMovie.text = apiResponse.name
-            
-            
         } else {
             
         }
@@ -138,6 +107,9 @@ extension MovieCastView : UICollectionViewDataSource, UICollectionViewDelegate, 
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 20
+    }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 70, height: 140)
     }

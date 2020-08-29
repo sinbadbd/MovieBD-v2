@@ -11,4 +11,6 @@ target 'MovieDB-v2' do
 #  pod 'YouTubePlayer'
   pod 'YouTubePlayer'
   pod 'SVProgressHUD'
+pod 'SnapKit'
+pod "TinyConstraints"
 end

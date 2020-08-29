@@ -8,6 +8,8 @@
 
 import UIKit
 
+var movieID = 0
+
 class DashboardVC: BaseVC {
     
     let upcommingView = UpcommingMovieView()
@@ -42,7 +44,7 @@ class DashboardVC: BaseVC {
          //   upcommingView.translatesAutoresizingMaskIntoConstraints = false
             upcommingView.anchor(top: contentView.topAnchor,
                                  leading: contentView.leadingAnchor,
-                                 bottom: nil,
+                                 bottom: contentView.bottomAnchor,
                                  trailing: contentView.trailingAnchor,
                                  padding: .init(top: 60, left: 10, bottom: 0, right: 10),
                                  size: .init(width: upcommingView.frame.width, height: 180)
@@ -63,7 +65,7 @@ class DashboardVC: BaseVC {
                 print("callback - \(id)")
                 // print(id)
                 let vc = MovieDetailsVC()
-                vc.movie_id = id
+                GLOBAL_MOVIE_ID = id
                 self.navigationController?.pushViewController(vc, animated: true)
             }
             

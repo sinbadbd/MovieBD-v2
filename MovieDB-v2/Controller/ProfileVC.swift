@@ -8,12 +8,23 @@
 
 import UIKit
 
-class ProfileVC: UIViewController {
+class ProfileVC: BaseVC {
 
+    let test = UILabel()
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        isTopbar = false
+        resetBase()
+//        contentView.backgroundColor = .cyan
+//        view.backgroundColor = .red
         // Do any additional setup after loading the view.
+        test.frame = CGRect(x: 20, y:50, width: test.frame.width, height: 3000)
+        test.text  = "sd "
+        contentView.addSubview(test)
+        test.backgroundColor = .green
+//        setContentHeight(height: 5000)
+        setContentHeight(height: contentView.frame.height)
     }
     
 

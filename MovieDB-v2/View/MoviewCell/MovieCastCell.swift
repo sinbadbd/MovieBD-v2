@@ -30,7 +30,7 @@ class MovieCastCell : UICollectionViewCell {
         imageView.layer.shadowOffset = CGSize(width: 3, height: 3)
         imageView.layer.shadowOpacity = 0.7
         imageView.layer.shadowRadius = 5.0
-        imageView.anchor(top: topAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, padding: .init(top: 10, left: 0, bottom: 0, right: 0),size: CGSize(width: 80, height: 105))
+        imageView.anchor(top: topAnchor, leading: nil, bottom: nil, trailing: nil, padding: .init(top: 10, left: 0, bottom: 0, right: 0),size: CGSize(width: 80, height: 105))
         
         addSubview(titleNowPlayingMovie)
         titleNowPlayingMovie.anchor(top: imageView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, padding: .init(top: 10, left: 0, bottom: 0, right: 0))
