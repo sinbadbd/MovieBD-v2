@@ -67,6 +67,29 @@ class MovieCastView: UIView {
         
     }
     
+    
+    func getAttributtedMsg(title:String?, msg:String?)->NSMutableAttributedString{
+          let atrTxt = NSMutableAttributedString(string: "")
+          var newLine = ""
+          if title != nil {
+              let attrTitle: NSMutableAttributedString = getAttributedText(string: title!.uppercased(), font: UIFont(name: appFontLight, size: 12.dynamic())!, color:UIColor.init(red: 0.05, green: 0.06, blue: 0.015, alpha: 1) , lineSpace: 5, alignment: .center)
+              atrTxt.append(attrTitle)
+              newLine = "\n"
+          }
+          if msg != nil {
+              let attrValue: NSMutableAttributedString = getAttributedText(string: "\(newLine)\(msg!)", font: UIFont(name: appFont, size: 10.dynamic())!, color: .darkGray, lineSpace: 5, alignment: .center)
+              atrTxt.append(attrValue)
+          }
+          
+          //MARK: DELETE NEW LINE:
+          while !atrTxt.string.isEmpty && CharacterSet.newlines.contains(atrTxt.string.unicodeScalars.last!) {
+              atrTxt.deleteCharacters(in: NSRange(location: atrTxt.length - 1, length: 1))
+          }
+          
+          return atrTxt
+      }
+    
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -91,7 +114,7 @@ extension MovieCastView : UICollectionViewDataSource, UICollectionViewDelegate, 
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MOVIECAST_CELL, for: indexPath) as! MovieCastCell
-        // cell.backgroundColor = .black
+//         cell.backgroundColor = .red
         
         let apiResponse = casts[indexPath.item]
         self.case_id = apiResponse.id ?? 0
@@ -99,7 +122,11 @@ extension MovieCastView : UICollectionViewDataSource, UICollectionViewDelegate, 
         if apiResponse.profilePath != nil {
             let img =  URL(string: "\(APIClient.EndPoints.PROFILE_URL + apiResponse.profilePath!)")
             cell.imageView.sd_setImage(with: img, completed: nil)
-            cell.titleNowPlayingMovie.text = apiResponse.name
+            
+            let originalnName = apiResponse.name
+            let movieName = apiResponse.character
+            
+            cell.titleNowPlayingMovie.attributedText = getAttributtedMsg(title: originalnName, msg: movieName)
         } else {
             
         }
@@ -111,6 +138,6 @@ extension MovieCastView : UICollectionViewDataSource, UICollectionViewDelegate, 
         return 20
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 70, height: 140)
+        return CGSize(width: 100, height: 220)
     }
 }

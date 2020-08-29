@@ -9,6 +9,23 @@
 
 import UIKit
 import SDWebImage
+
+@objc protocol ArtistMovieListDelegate {
+    @objc optional func pressedMovieList()
+}
+
+extension UIView {
+    func findViewController() -> UIViewController? {
+        if let nextResponder = self.next as? UIViewController {
+            return nextResponder
+        } else if let nextResponder = self.next as? UIView {
+            return nextResponder.findViewController()
+        } else {
+            return nil
+        }
+    }
+}
+
 class ArtistMovieView : UIView{
     
     let ARTIST_MOVIE_LIST = "MOVIELIST"
@@ -22,7 +39,7 @@ class ArtistMovieView : UIView{
         return collection
     }()
     
-      var callback: ((_ id: Int) -> Void)?
+    var callback: ((_ id: Int) -> Void)?
     
     var id : Int! {
         didSet {
@@ -30,16 +47,21 @@ class ArtistMovieView : UIView{
         }
     }
     
+    //    var artistMovieList : ArtistMovieListDelegate?
+    
+    @objc var delegate : ArtistMovieListDelegate!
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-       backgroundColor = #colorLiteral(red: 0.2033947077, green: 0.2201191104, blue: 0.2415348346, alpha: 1)
+        backgroundColor = #colorLiteral(red: 0.2033947077, green: 0.2201191104, blue: 0.2415348346, alpha: 1)
+        
         
         addSubview(colletionView)
         colletionView.register(artistMovieCell.self, forCellWithReuseIdentifier: ARTIST_MOVIE_LIST)
         colletionView.dataSource = self
         colletionView.delegate = self
-        colletionView.anchor(top: safeAreaLayoutGuide.topAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 20, left: 10, bottom: 10, right: 0), size: CGSize(width: colletionView.frame.width, height: 250))
+        colletionView.anchor(top: safeAreaLayoutGuide.topAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 10, bottom: 10, right: 0), size: CGSize(width: colletionView.frame.width, height: 250))
         colletionView.backgroundColor = #colorLiteral(red: 0.2033947077, green: 0.2201191104, blue: 0.2415348346, alpha: 1)
         colletionView.showsHorizontalScrollIndicator = false
         
@@ -91,13 +113,26 @@ extension ArtistMovieView : UICollectionViewDelegate, UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selected = casts[indexPath.item]
-
-        let callBackId =  selected.id
         
-        print("\(selected) - \(callBackId)")
-        callback?(callBackId!)
+        
+        let vc = MovieDetailsVC()
+        GLOBAL_MOVIE_ID = selected.id ?? 0
+     
+        
+        //
+        //        var callBackId =  selected.id
+        //        print(callBackId)
+        //
+        //        let vc = MovieDetailsVC()
+        //        GLOBAL_MOVIE_ID = callBackId!
+        ////        navController.pushViewController(vc, animated: true)
+        //
+        //
+        ////
+        ////        print("\(selected) - \(callBackId)")
+        //         callback?(callBackId!)
     }
-
+    
 }
 
 class artistMovieCell : UICollectionViewCell {
@@ -118,7 +153,7 @@ class artistMovieCell : UICollectionViewCell {
         
         addSubview(artistMovieImage)
         artistMovieImage.translatesAutoresizingMaskIntoConstraints = false
-        artistMovieImage.backgroundColor = .gray
+        //        artistMovieImage.backgroundColor = .gray
         artistMovieImage.layer.shadowColor = UIColor.black.cgColor
         artistMovieImage.layer.shadowOffset = CGSize(width: 3, height: 3)
         artistMovieImage.layer.shadowOpacity = 0.7

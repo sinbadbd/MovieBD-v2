@@ -66,13 +66,21 @@ class ArtistProfileVC : BaseVC {
         colletionView.delegate = self
         
         artistMovieList.callback = { (id) -> Void in
+            
+            self.artistMovieList.delegate = self
+            
+            print("xxxxxxxxxxxxxxxxxxxx")
             print("callback - \(id)")
             print(id)
-            let vc = MovieDetailsVC()
-            //            vc.movie_id = id
+            //            let vc = MovieDetailsVC()
+            //            GLOBAL_MOVIE_ID = id
+            //            self.navigationController!.viewControllers.removeAll()
+            //            self.navigationController?.pushViewController(vc, animated: true)
             
-            self.navigationController!.viewControllers.removeAll()
-            self.navigationController?.pushViewController(vc, animated: true)
+            let vc = MovieDetailsVC()
+            GLOBAL_MOVIE_ID = id
+            
+            //                           self.navigationController?.pushViewController(vc, animated: true)
         }
         
     }
@@ -217,11 +225,14 @@ class ArtistProfileVC : BaseVC {
         dateOfBirthLabel.anchor(top: artistDescription.bottomAnchor, leading: artistImage.trailingAnchor, bottom: nil, trailing: artistView.trailingAnchor, padding: .init(top: 15, left: 15, bottom: 0, right: 15))
         
         
-        let keyWindow = UIApplication.shared.keyWindow
         let artistmovieList = ArtistMovieView()
         contentView.addSubview(artistmovieList)
-        artistmovieList.translatesAutoresizingMaskIntoConstraints = false
-        artistmovieList.anchor(top: artistView.bottomAnchor, leading: contentView.trailingAnchor, bottom: contentView.bottomAnchor, trailing: contentView.trailingAnchor, padding: .init(top: 15, left: 15, bottom: 0, right: 0), size: CGSize(width: (keyWindow?.frame.width)!, height: 300))
+        //        artistmovieList.translatesAutoresizingMaskIntoConstraints = false
+        //        artistmovieList.anchor(top: artistView.bottomAnchor, leading: contentView.trailingAnchor, bottom: contentView.bottomAnchor, trailing: contentView.trailingAnchor, padding: .init(top: 15, left: 15, bottom: 0, right: 0), size: contentView.widthAnchor, height: 300))
+        
+        artistmovieList.position(top: artistView.bottomAnchor, left: contentView.leadingAnchor, bottom: contentView.bottomAnchor,right: contentView.trailingAnchor)
+        artistmovieList.size(height: 300, dimensionWidth: contentView.widthAnchor)
+        
     }
     
     
@@ -261,4 +272,10 @@ extension ArtistProfileVC : UICollectionViewDelegate, UICollectionViewDataSource
     }
     
     
+}
+
+extension ArtistProfileVC: ArtistMovieListDelegate{
+    func pressedMovieList() {
+        print("HIIIIIIIII")
+    }
 }

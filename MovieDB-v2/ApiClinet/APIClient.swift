@@ -33,7 +33,7 @@ class APIClient {
         case getTopRatedMovies
         case getDiscoverMovies
         case getMovieDetailsId(Int)
-//        case getMovieCreditAll
+        //        case getMovieCreditAll
         case getMovieCreditsId(Int)
         case getArtistProfielId(Int)
         case getProfileImages(Int)
@@ -41,6 +41,7 @@ class APIClient {
         case searchMovieResult(String)
         case getFavoriteMovies
         case getMovieVideoId(Int)
+        case getMovieImageId(Int)
         case markMovieFavorite
         // Auth
         case getRequestToken
@@ -53,7 +54,7 @@ class APIClient {
             case .getTopRatedMovies: return EndPoints.BASE_URL + "movie/top_rated" + EndPoints.apiKeyParam
             case .getDiscoverMovies: return EndPoints.BASE_URL + "discover/movie" + EndPoints.apiKeyParam
             case .getMovieDetailsId(let id) : return EndPoints.BASE_URL + "movie/\(id)" + EndPoints.apiKeyParam
-//            case .getMovieCreditAll : return EndPoints.BASE_URL + "movie/\(id)/credits" + EndPoints.apiKeyParam
+            //            case .getMovieCreditAll : return EndPoints.BASE_URL + "movie/\(id)/credits" + EndPoints.apiKeyParam
             case .getMovieCreditsId(let id) : return  EndPoints.BASE_URL + "movie/\(id)/credits" + EndPoints.apiKeyParam
             case .getArtistProfielId(let id) : return  EndPoints.BASE_URL + "person/\(id)" + EndPoints.apiKeyParam
             case .getProfileImages (let id): return  EndPoints.BASE_URL + "person/\(id)/images" + EndPoints.apiKeyParam
@@ -67,6 +68,7 @@ class APIClient {
             case .getFavoriteMovies : return EndPoints.BASE_URL + "account/\(Auth.accountId)/favorite/movies" + EndPoints.apiKeyParam + "&session_id=\(Auth.sessionId)" + "&sort_by=created_at.desc"
             case .getMovieVideoId(let id) : return EndPoints.BASE_URL + "movie/\(id)/videos" + EndPoints.apiKeyParam
             case .markMovieFavorite: return EndPoints.BASE_URL + "account/\(Auth.accountId)/favorite" + EndPoints.apiKeyParam
+            case .getMovieImageId(let id) : return EndPoints.BASE_URL + "movie/\(id)/images" + EndPoints.apiKeyParam
             }
         }
         var url : URL {
@@ -185,7 +187,7 @@ class APIClient {
     
     //@GET POPULAR MOVIE
     class func getPopularMovieList(completion: @escaping([Movie]?, Error?)-> Void) {
-    print(EndPoints.getPopularMovies.url)
+        print(EndPoints.getPopularMovies.url)
         taskForGETRequest(url: EndPoints.getPopularMovies.url, response: Movie.self) { (response, error) in
             if let response = response {
                 //  print(response)
@@ -233,7 +235,7 @@ class APIClient {
     class func getMovieId(id: Int, completion: @escaping(MovieDetails?, Error?)-> Void){
         taskForGETRequest(url: EndPoints.getMovieDetailsId(id).url, response: MovieDetails.self) { (response, error) in
             if let response = response {
-//                print("",response)
+                //                print("",response)
                 completion(response, nil)
             } else {
                 completion(nil, error)
@@ -248,7 +250,7 @@ class APIClient {
         print( EndPoints.getMovieCreditsId(id).url)
         taskForGETRequest(url: EndPoints.getMovieCreditsId(id).url, response: MovieCcredits.self) { (response, error) in
             if let response = response {
-             print("response:\(response)")
+                print("response:\(response)")
                 completion([response], nil)
             } else {
                 completion(nil, error)
@@ -357,6 +359,18 @@ class APIClient {
         }
     }
     
-    
+    class func getMovieImageId(id: Int, completion: @escaping([MovieImageList]?, Error?)->Void) {
+        print(EndPoints.getMovieImageId(id))
+        taskForGETRequest(url: EndPoints.getMovieImageId(id).url, response: MovieImageList.self) { (response, error) in
+            if let response = response {
+                print(response)
+                completion([response], nil)
+            } else {
+                completion([], error)
+                print(error.debugDescription)
+                print(error?.localizedDescription ?? "")
+            }
+        }
+    }
     
 }

@@ -13,7 +13,7 @@ class MovieDetailsVC: BaseVC {
     
     // var detailsId : Int = 0
     
-    var showID = UILabel()
+    var movieVedioTitle = UILabel()
     
     
     var movieDetails : MovieDetails?
@@ -51,7 +51,9 @@ class MovieDetailsVC: BaseVC {
     var isSelectedButton : Bool = false
     var coinV:UIScrollView!
     
-    var movieCastView = MovieCastView()
+    var movieCastView  = MovieCastView()
+    var movieVedioList = MovieVedioListView()
+    var movieImageList = MovieImageListView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,11 +64,8 @@ class MovieDetailsVC: BaseVC {
         navigationItem.title = "Movie Detais"
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             // your code here
-            self.getDetailsDtaa()
-        }
-        
-        print("detailsId \(String(describing: GLOBAL_MOVIE_ID))")
-        
+            self.getDetailsData()
+        } 
         
         movieCastView.callback = { (id) -> Void in
             print("callback - \(id)")
@@ -76,28 +75,11 @@ class MovieDetailsVC: BaseVC {
             self.navigationController?.pushViewController(vc, animated: true)
         }
         
-        //        setContentHeight(height: contentView.frame.height)
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        print("hiii===\(contentView.frame.origin.y + contentView.frame.height+20)")
-        //    scrollView.contentSize = CGSize(width:self.view.bounds.width, height: 5000)
-        
-        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height)
-        scrollView.setContentOffset(bottomOffset, animated: true)
-        
-        //   setContentHeight(height: contentView.frame.origin.y + contentView.frame.height+20)
-        
-    }
-//    var movie_id : Int? {
-//        didSet {
-//            //  print("id", id)
-//        }
-//    }
-    var movieID = GLOBAL_MOVIE_ID
     
-    func getDetailsDtaa(){
+    
+    func getDetailsData(){
         
         
         APIClient.getMovieId(id: GLOBAL_MOVIE_ID ) { (response, error) in
@@ -144,9 +126,9 @@ class MovieDetailsVC: BaseVC {
         
         topSliderImage.addSubview(movieTitleLabel)
         //        movieTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-     
+        
         movieTitleLabel.textColor = .white
-        movieTitleLabel.font = UIFont.boldSystemFont(ofSize: 24)
+        movieTitleLabel.font = UIFont(name: appFontBold, size: 24)
         movieTitleLabel.numberOfLines = 0
         //        movieTitleLabel.backgroundColor = .green
         
@@ -194,15 +176,15 @@ class MovieDetailsVC: BaseVC {
         // ratingMainView.backgroundColor = .blue
         ratingMainView.anchor(top: movieOverViewContainer.topAnchor, leading: nil, bottom: nil, trailing: nil, padding: .init(top: 0, left: 10, bottom: 0, right: 5), size: CGSize(width: 70, height: 70))
         
-        var xOffest:CGFloat = 80
+        var xOffest:CGFloat = 70
         let colorValus = ["heart","favorite","bookmark"]
         for color in 0..<colorValus.count {
-            let button = UIButton(frame: CGRect(x: xOffest, y: 10, width: 50, height: 50))
-            xOffest += 55
+            let button = UIButton(frame: CGRect(x: xOffest, y: 10, width: 45, height: 45))
+            xOffest += 50
             button.tag = color
             button.setImage(UIImage(named: "\(colorValus[color])"), for: .normal)
             button.layer.cornerRadius = button.frame.width / 2
-            button.layer.borderWidth = 3
+            button.layer.borderWidth = 1.5
             button.layer.borderColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
             button.contentEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
             button.addTarget(self, action: #selector(handleFavButton), for: .touchUpInside)
@@ -216,7 +198,7 @@ class MovieDetailsVC: BaseVC {
         //         contentSize = CGSize(width: paddi?ng * buttonWidth, height:  60)
         movieOverViewContainer.addSubview(movieTypeScrollView)
         
-        coinV = getCoinView(rect: CGRect(x: 10, y: 70, width: self.view.frame.width-20, height: 36.dynamic()))
+        coinV = getCoinView(rect: CGRect(x: 10, y: 70, width: self.contentView.frame.width-20, height: 36.dynamic()))
         movieOverViewContainer.addSubview(coinV)
         
         
@@ -227,7 +209,7 @@ class MovieDetailsVC: BaseVC {
         
         //   overviewTextLabel.backgroundColor = .red
         overviewTextLabel.numberOfLines = 0
-        overviewTextLabel.font = UIFont.systemFont(ofSize: 16)
+        overviewTextLabel.font = UIFont(name: appFont, size: 14)
         overviewTextLabel.anchor(top: ratingMainView.bottomAnchor,
                                  leading: contentView.leadingAnchor,
                                  bottom: nil, trailing: contentView.trailingAnchor,
@@ -236,22 +218,61 @@ class MovieDetailsVC: BaseVC {
         )
         overviewTextLabel.textColor = .black
         
+        let topActorTitle = UILabel()
+        contentView.addSubview(topActorTitle)
+        topActorTitle.text = "Top Cast"
+        topActorTitle.font = UIFont(name: appFontBold, size: 24)
+        topActorTitle.position(top: overviewTextLabel.bottomAnchor,left: contentView.leadingAnchor, insets: .init(top: 15, left: 10, bottom: 0, right: 0    ))
+        //        topActorTitle.size(height: 20)
+        
         // MARK:: MOVIE CAST
         contentView.addSubview(movieCastView)
-        movieCastView.anchor(top: overviewTextLabel.bottomAnchor,
+        movieCastView.anchor(top: topActorTitle.bottomAnchor,
                              leading: contentView.leadingAnchor,
                              bottom: nil,
                              trailing: contentView.trailingAnchor,
-                             padding: .init(top: 20, left: 10, bottom: 0, right: 20),
-                             size: CGSize(width: .init(), height:140)
+                             padding: .init(top: 0, left: 10, bottom: 0, right: 20),
+                             size: CGSize(width: .init(), height:280)
         )
-        movieCastView.backgroundColor = .red
-        contentView.addSubview(showID)
-        showID.anchor(top: movieCastView.bottomAnchor, leading: contentView.leadingAnchor, bottom: contentView.bottomAnchor, trailing: contentView.trailingAnchor, padding: .init(top: 20, left: 20, bottom: 0, right: 20))
-        showID.centerXInSuperview()
-        showID.text = "Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of Lorem Ipsum is simply dummy text of "
-        showID.numberOfLines = 0
         
+        
+        // movieCastView.backgroundColor = .red
+        contentView.addSubview(movieVedioTitle)
+        movieVedioTitle.anchor(top: movieCastView.bottomAnchor, leading: contentView.leadingAnchor, bottom: nil, trailing: contentView.trailingAnchor, padding: .init(top: 0, left: 10, bottom: 0, right: 20))
+        movieVedioTitle.centerXInSuperview()
+        
+        let attrStr1: NSMutableAttributedString = getAttributedText(string: "Vedios ", font: UIFont(name: appFontBold, size: 18)!, color: .black, lineSpace: 5, alignment: .left)
+        let attrStrCate: NSMutableAttributedString = getAttributedText(string: " \(totalVedioCount)", font: UIFont(name: appFontMedium, size: 18)!, color: .gray, lineSpace: 0, alignment: .left)
+        
+        attrStr1.append(attrStrCate)
+        movieVedioTitle.attributedText = attrStr1
+        movieVedioTitle.numberOfLines = 0
+        
+        
+        // MARK: MOVIE VEDIOS LIST
+        contentView.addSubview(movieVedioList)
+        movieVedioList.position(top: movieVedioTitle.bottomAnchor, left: movieVedioTitle.leadingAnchor, bottom: nil, right: contentView.trailingAnchor, insets: .init(top: 20, left: 0, bottom: 0, right: 0))
+        movieVedioList.size( height: 200, dimensionWidth: contentView.widthAnchor)
+        movieVedioList.backgroundColor = .blue
+        
+        // MARK: IMAGES LIST
+        let movieImageTitle = UILabel()
+        contentView.addSubview(movieImageTitle)
+        movieImageTitle.anchor(top: movieVedioList.bottomAnchor, leading: contentView.leadingAnchor, bottom: nil, trailing: contentView.trailingAnchor, padding: .init(top: 15, left: 10, bottom: 0, right: 20))
+        movieImageTitle.centerXInSuperview()
+        
+        let attr1: NSMutableAttributedString = getAttributedText(string: "Images ", font: UIFont(name: appFontBold, size: 18)!, color: .black, lineSpace: 5, alignment: .left)
+        let attr2: NSMutableAttributedString = getAttributedText(string: " \(totalImageCount)", font: UIFont(name: appFontMedium, size: 18)!, color: .gray, lineSpace: 0, alignment: .left)
+        
+        attr1.append(attr2)
+        movieImageTitle.attributedText = attr1
+        movieImageTitle.numberOfLines = 0
+        
+        
+        contentView.addSubview(movieImageList)
+        movieImageList.position(top: movieImageTitle.bottomAnchor, left: movieVedioTitle.leadingAnchor, bottom: contentView.bottomAnchor, right: contentView.trailingAnchor, insets: .init(top: 20, left: 0, bottom: 0, right: 0))
+             movieImageList.size( height: 130, dimensionWidth: contentView.widthAnchor)
+             movieImageList.backgroundColor = .blue
         
     }
     
@@ -263,19 +284,20 @@ class MovieDetailsVC: BaseVC {
         
         // let arr = ["Animation","Animation","avenger","Animation","game","lalal .","Animation","data"]
         
-        
         for i in 0..<genres.count {
             let aDict = genres[i]
             //  let coinAmount = aDict["amount"] as! Int
             let coinBtn = UIButton(type: .custom)
             coinBtn.tag = i
             coinBtn.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
-            coinBtn.frame = CGRect(x: 60.dynamic() * CGFloat(i) + 3.dynamic() * CGFloat(i), y: 0, width: 60.dynamic(), height: 30.dynamic())
-            coinBtn.layer.cornerRadius = coinBtn.frame.size.height*0.43;
+            coinBtn.frame = CGRect(x: 60.dynamic() * CGFloat(i) + 2.dynamic() * CGFloat(i), y: 0, width: 60.dynamic(), height: 24.dynamic())
+            coinBtn.layer.cornerRadius = coinBtn.frame.size.height*0.33;
             coinBtn.setTitle("\(aDict.name ?? "")", for: UIControl.State.normal)
             coinBtn.setTitleColor(.black, for: UIControl.State.normal)
-            coinBtn.backgroundColor = .green
-            coinBtn.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+            coinBtn.layer.borderColor = UIColor.link.cgColor
+            coinBtn.layer.borderWidth = 1
+            //            coinBtn.backgroundColor = .green
+            coinBtn.titleLabel?.font = UIFont(name: appFontLight, size: 12)
             coinView.addSubview(coinBtn)
             coinView.contentSize = CGSize(width: coinBtn.frame.origin.x+coinBtn.frame.size.width, height: coinView.frame.size.height)
             
@@ -291,7 +313,7 @@ class MovieDetailsVC: BaseVC {
                 if  aView is UIButton {
                     let coinBtn = aView as! UIButton
                     coinBtn.setTitleColor(.black, for: UIControl.State.normal)
-                    coinBtn.backgroundColor = .green
+                    //                    coinBtn.backgroundColor = .white
                 }
             }
             
@@ -394,38 +416,15 @@ class MovieDetailsVC: BaseVC {
         shapeLayer.addSublayer(textlayer) // caLayer is and instance of parent CALayer
     }
     
+    
+    
+    
     @objc func handleVedioPlayer(_ sender: UIButton){
         let vedioPlayer = MovieVideoVC()
-        //        containerView.addSubview(vedioPlayer)
-        //        vedioPlayer.anchor(top: containerView.topAnchor, leading: containerView.leadingAnchor, bottom: containerView.bottomAnchor, trailing: containerView.trailingAnchor, padding: .init(),size: CGSize(width: vedioPlayer.frame.width, height: vedioPlayer.frame.height))
-        //
-        //        vedioPlayer.bringSubviewToFront(contentView)
         vedioPlayer.id = self.movieDetails?.id
-//        print(  vedioPlayer.id)
+        //        print(  vedioPlayer.id)
         self.present(vedioPlayer, animated: true, completion: nil)
     }
 }
 
 
-
-//#if DEBUG
-//import SwiftUI
-//
-//struct InAppMarketVCRepresentable: UIViewControllerRepresentable {
-//    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-//        // leave this empty
-//    }
-//
-//    @available(iOS 13.0.0, *)
-//    func makeUIViewController(context: Context) -> UIViewController {
-//        MovieDetailsVC()
-//    }
-//}
-//
-//@available(iOS 13.0, *)
-//struct InAppMarketVC_Previews: PreviewProvider {
-//    static var previews: some View {
-//        InAppMarketVCRepresentable()
-//    }
-//}
-//#endif

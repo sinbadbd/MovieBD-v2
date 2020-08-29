@@ -14,10 +14,11 @@ class MovieCastCell : UICollectionViewCell {
         image.layer.cornerRadius = 8
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
+        image.layer.masksToBounds = true
         return image
     }()
     
-    let titleNowPlayingMovie = MyUILabel(frame: .zero, text: "gggg", textColor: .black, fontSize: UIFont.systemFont(ofSize: 14), textAlign: .left)
+    let titleNowPlayingMovie = MyUILabel(frame: .zero, text: "gggg", textColor: .black, fontSize: UIFont(name: appFont, size: 12), textAlign: .left)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -30,11 +31,11 @@ class MovieCastCell : UICollectionViewCell {
         imageView.layer.shadowOffset = CGSize(width: 3, height: 3)
         imageView.layer.shadowOpacity = 0.7
         imageView.layer.shadowRadius = 5.0
-        imageView.anchor(top: topAnchor, leading: nil, bottom: nil, trailing: nil, padding: .init(top: 10, left: 0, bottom: 0, right: 0),size: CGSize(width: 80, height: 105))
+        imageView.anchor(top: topAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 0),size: CGSize(width: 100, height: 150))
         
         addSubview(titleNowPlayingMovie)
         titleNowPlayingMovie.anchor(top: imageView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, padding: .init(top: 10, left: 0, bottom: 0, right: 0))
-        titleNowPlayingMovie.numberOfLines = 2
+        titleNowPlayingMovie.numberOfLines = 0
     }
     
     required init?(coder aDecoder: NSCoder) {
