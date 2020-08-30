@@ -72,7 +72,7 @@ class MovieCastView: UIView {
           let atrTxt = NSMutableAttributedString(string: "")
           var newLine = ""
           if title != nil {
-              let attrTitle: NSMutableAttributedString = getAttributedText(string: title!.uppercased(), font: UIFont(name: appFontLight, size: 12.dynamic())!, color:UIColor.init(red: 0.05, green: 0.06, blue: 0.015, alpha: 1) , lineSpace: 5, alignment: .center)
+              let attrTitle: NSMutableAttributedString = getAttributedText(string: title!.uppercased(), font: UIFont(name: appFont, size: 12.dynamic())!, color:UIColor.init(red: 0.05, green: 0.06, blue: 0.015, alpha: 1) , lineSpace: 5, alignment: .center)
               atrTxt.append(attrTitle)
               newLine = "\n"
           }

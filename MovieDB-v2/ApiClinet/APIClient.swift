@@ -12,7 +12,7 @@
 import Foundation
 class APIClient {
     static let key = "?api_key=de05a59a85ef1e7797de8d4a6d343d0e"
-    
+    var page_id = 1
     struct Auth {
         static var accountId = 0
         static var requestToken = ""
@@ -33,7 +33,6 @@ class APIClient {
         case getTopRatedMovies
         case getDiscoverMovies
         case getMovieDetailsId(Int)
-        //        case getMovieCreditAll
         case getMovieCreditsId(Int)
         case getArtistProfielId(Int)
         case getProfileImages(Int)
@@ -42,6 +41,9 @@ class APIClient {
         case getFavoriteMovies
         case getMovieVideoId(Int)
         case getMovieImageId(Int)
+        case getMovieReview(Int)
+        case getRecommendations(Int)
+         case getSimilarId(Int)
         case markMovieFavorite
         // Auth
         case getRequestToken
@@ -69,6 +71,10 @@ class APIClient {
             case .getMovieVideoId(let id) : return EndPoints.BASE_URL + "movie/\(id)/videos" + EndPoints.apiKeyParam
             case .markMovieFavorite: return EndPoints.BASE_URL + "account/\(Auth.accountId)/favorite" + EndPoints.apiKeyParam
             case .getMovieImageId(let id) : return EndPoints.BASE_URL + "movie/\(id)/images" + EndPoints.apiKeyParam
+            case .getMovieReview(let id) : return EndPoints.BASE_URL + "movie/\(id)/reviews" + EndPoints.apiKeyParam + "&page=\(1)"
+            case .getRecommendations(let id) : return EndPoints.BASE_URL + "movie/\(id)/recommendations" + EndPoints.apiKeyParam
+               case .getSimilarId(let id) : return EndPoints.BASE_URL + "movie/\(id)/similar" + EndPoints.apiKeyParam
+                //
             }
         }
         var url : URL {
@@ -92,6 +98,7 @@ class APIClient {
             let decoder =  JSONDecoder()
             do {
                 let requestObject = try decoder.decode(ResponseType.self, from: data)
+                
                 DispatchQueue.main.async {
                     completion(requestObject , nil)
                 }
@@ -119,6 +126,8 @@ class APIClient {
             do {
                 let responseObject = try decoder.decode(ResponseType.self, from: data)
                 completion(responseObject, nil)
+                
+                decoder.keyDecodingStrategy = .convertFromSnakeCase
             } catch {
                 DispatchQueue.main.sync {
                     completion(nil, error)
@@ -372,5 +381,46 @@ class APIClient {
             }
         }
     }
+    
+    class func getMovieReviewId(page:Int, id: Int, completion: @escaping([MovieReview]?, Error?)->Void) {
+           print(EndPoints.getMovieReview(id))
+           taskForGETRequest(url: EndPoints.getMovieReview(id).url, response: MovieReview.self) { (response, error) in
+               if let response = response {
+                   print(response)
+                   completion([response], nil)
+               } else {
+                   completion([], error)
+                   print(error.debugDescription)
+                   print(error?.localizedDescription ?? "")
+               }
+           }
+       }
+    class func getMovieRecommandationId(id: Int, completion: @escaping([Movie]?, Error?)->Void) {
+        print(EndPoints.getMovieReview(id))
+        taskForGETRequest(url: EndPoints.getRecommendations(id).url, response: Movie.self) { (response, error) in
+            if let response = response {
+                print(response)
+                completion([response], nil)
+            } else {
+                completion([], error)
+                print(error.debugDescription)
+                print(error?.localizedDescription ?? "")
+            }
+        }
+    }
+    class func getMovieSimilarId(id: Int, completion: @escaping([Movie]?, Error?)->Void) {
+           print(EndPoints.getSimilarId(id))
+           taskForGETRequest(url: EndPoints.getSimilarId(id).url, response: Movie.self) { (response, error) in
+               if let response = response {
+                   print(response)
+                   completion([response], nil)
+               } else {
+                   completion([], error)
+                   print(error.debugDescription)
+                   print(error?.localizedDescription ?? "")
+               }
+           }
+       }
+    //
     
 }

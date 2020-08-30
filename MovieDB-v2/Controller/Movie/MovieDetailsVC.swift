@@ -24,17 +24,17 @@ class MovieDetailsVC: BaseVC {
     
     
     
-    let topSliderImage: UIImageView = UIImageView()
-    let movieTitleLabel :UILabel = UILabel()
-    let playVedioButton: UIButton = UIButton(type: .system)
-    let posterThumImage:UIImageView = UIImageView()
+    let topSliderImage  : UIImageView = UIImageView()
+    let movieTitleLabel : UILabel    = UILabel()
+    let playVedioButton : UIButton   = UIButton(type: .system)
+    let posterThumImage : UIImageView = UIImageView()
     
     
-    let ratingMainView : UIView = UIView()
-    let shapeLayer: CAShapeLayer = CAShapeLayer()
-    let trackLayer: CAShapeLayer = CAShapeLayer()
+    let ratingMainView  : UIView = UIView()
+    let shapeLayer      : CAShapeLayer = CAShapeLayer()
+    let trackLayer      : CAShapeLayer = CAShapeLayer()
     let movieOverViewContainer = UIView()
-    let userScoreLabel: UILabel =  UILabel()
+    let userScoreLabel  : UILabel =  UILabel()
     
     let overviewTextLabel: UILabel = UILabel()
     let fullCastCrewLabel: UILabel = UILabel()
@@ -54,6 +54,8 @@ class MovieDetailsVC: BaseVC {
     var movieCastView  = MovieCastView()
     var movieVedioList = MovieVedioListView()
     var movieImageList = MovieImageListView()
+    var recommandMovieList = RecommandationMovieView()
+    var similarMovieList = SimilarMovieView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,6 +68,11 @@ class MovieDetailsVC: BaseVC {
             // your code here
             self.getDetailsData()
         } 
+callBackNavigation()
+        
+    }
+    
+    func callBackNavigation(){
         
         movieCastView.callback = { (id) -> Void in
             print("callback - \(id)")
@@ -75,13 +82,26 @@ class MovieDetailsVC: BaseVC {
             self.navigationController?.pushViewController(vc, animated: true)
         }
         
+        recommandMovieList.callback = { (id) -> Void in
+            print("callback - \(id)")
+            let vc = MovieDetailsVC()
+            GLOBAL_MOVIE_ID = id
+            //
+            self.navigationController?.setViewControllers([vc], animated: true)
+            self.navigationController?.setNeedsStatusBarAppearanceUpdate()
+        }
+        similarMovieList.callback = { (id) -> Void in
+                   print("callback - \(id)")
+                   let vc = MovieDetailsVC()
+                   GLOBAL_MOVIE_ID = id
+                   //
+                   self.navigationController?.setViewControllers([vc], animated: true)
+                   self.navigationController?.setNeedsStatusBarAppearanceUpdate()
+               }
     }
     
-    
-    
+    //
     func getDetailsData(){
-        
-        
         APIClient.getMovieId(id: GLOBAL_MOVIE_ID ) { (response, error) in
             print(APIClient.EndPoints.getMovieDetailsId(GLOBAL_MOVIE_ID).url)
             if let response = response {
@@ -92,7 +112,7 @@ class MovieDetailsVC: BaseVC {
                 DispatchQueue.main.async {
                     
                     
-                    self.setupDetailsUI()
+                    
                     if  response.backdropPath != nil {
                         let imgUrl = URL(string: "\(APIClient.EndPoints.BACKDROP_PATH + response.backdropPath!)")
                         self.topSliderImage.sd_setImage(with: imgUrl, completed: nil)
@@ -106,6 +126,7 @@ class MovieDetailsVC: BaseVC {
                     self.overviewTextLabel.text = "\(self.movieDetails?.overview ?? "")"
                     self.ratingView()
                     
+                    self.setupDetailsUI()
                 }
             }
             
@@ -255,25 +276,53 @@ class MovieDetailsVC: BaseVC {
         movieVedioList.size( height: 200, dimensionWidth: contentView.widthAnchor)
         movieVedioList.backgroundColor = .blue
         
-        // MARK: IMAGES LIST
-        let movieImageTitle = UILabel()
-        contentView.addSubview(movieImageTitle)
-        movieImageTitle.anchor(top: movieVedioList.bottomAnchor, leading: contentView.leadingAnchor, bottom: nil, trailing: contentView.trailingAnchor, padding: .init(top: 15, left: 10, bottom: 0, right: 20))
-        movieImageTitle.centerXInSuperview()
-        
-        let attr1: NSMutableAttributedString = getAttributedText(string: "Images ", font: UIFont(name: appFontBold, size: 18)!, color: .black, lineSpace: 5, alignment: .left)
-        let attr2: NSMutableAttributedString = getAttributedText(string: " \(totalImageCount)", font: UIFont(name: appFontMedium, size: 18)!, color: .gray, lineSpace: 0, alignment: .left)
-        
-        attr1.append(attr2)
-        movieImageTitle.attributedText = attr1
-        movieImageTitle.numberOfLines = 0
-        
-        
+        // MARK: MOVIE IMAGES LIST
         contentView.addSubview(movieImageList)
-        movieImageList.position(top: movieImageTitle.bottomAnchor, left: movieVedioTitle.leadingAnchor, bottom: contentView.bottomAnchor, right: contentView.trailingAnchor, insets: .init(top: 20, left: 0, bottom: 0, right: 0))
-             movieImageList.size( height: 130, dimensionWidth: contentView.widthAnchor)
-             movieImageList.backgroundColor = .blue
+        movieImageList.position(top: movieVedioList.bottomAnchor, left: movieVedioTitle.leadingAnchor, bottom:nil, right: contentView.trailingAnchor, insets: .init(top: 20, left: 0, bottom: 0, right: 0))
+        movieImageList.size( height: 200, dimensionWidth: contentView.widthAnchor)
         
+        let reviewView = UIView()
+        contentView.addSubview(reviewView)
+        reviewView.position(top: movieImageList.bottomAnchor,left: contentView.leadingAnchor, bottom: nil, right: contentView.trailingAnchor,insets: .init(top: 15, left: 10, bottom: 20, right: 10))
+        reviewView.size(  height: 50 )
+        //        reviewView.backgroundColor = .tertiaryLabel
+        reviewView.layer.cornerRadius = 4
+        
+        let userReviewTitle = UILabel()
+        reviewView.addSubview(userReviewTitle)
+        userReviewTitle.position(top: reviewView.topAnchor, left: reviewView.leadingAnchor, insets: .init(top: 10, left: 15, bottom: 0, right: 0))
+        userReviewTitle.text = "User Reviews"
+        userReviewTitle.font = UIFont(name: appFont, size: 18)
+        
+        let seeAllButtons = UIButton()
+        reviewView.addSubview(seeAllButtons)
+        seeAllButtons.position(top: reviewView.topAnchor,  right:reviewView.trailingAnchor, insets: .init(top: 10, left: 0, bottom: 0, right: 15))
+        seeAllButtons.setTitleColor(.blue, for: .normal)
+        //        let text =
+        seeAllButtons.setTitle("See All", for: .normal)
+        seeAllButtons.addTarget(self, action: #selector(handleSeeAll), for: .touchUpInside)
+        seeAllButtons.titleLabel?.font = UIFont(name: appFont, size:   14)
+        
+        
+        contentView.addSubview(recommandMovieList)
+        
+        recommandMovieList.position(top: reviewView.bottomAnchor, left: contentView.leadingAnchor, right: contentView.trailingAnchor, insets: .init(top: 20, left: 15, bottom: 20, right: 0))
+        recommandMovieList.size( height: 250, dimensionWidth: contentView.widthAnchor)
+        //        recommandMovieList.backgroundColor = .green
+        
+        //similarMovieList
+        contentView.addSubview(similarMovieList)
+        
+        similarMovieList.position(top: recommandMovieList.bottomAnchor, left: contentView.leadingAnchor, bottom: contentView.bottomAnchor, right: contentView.trailingAnchor, insets: .init(top: 20, left: 15, bottom: 20, right: 0))
+        similarMovieList.size( height: 250, dimensionWidth: contentView.widthAnchor)
+        similarMovieList.backgroundColor = .clear
+        
+    }
+    
+    @objc func handleSeeAll(_ sender: UIButton){
+        print(sender.tag)
+        let vc = MovieReviewVC()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func getCoinView(rect:CGRect) -> UIScrollView {
