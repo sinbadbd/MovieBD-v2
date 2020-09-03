@@ -112,11 +112,11 @@ extension ArtistMovieView : UICollectionViewDelegate, UICollectionViewDataSource
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selected = casts[indexPath.item]
-        
-        
-        let vc = MovieDetailsVC()
-        GLOBAL_MOVIE_ID = selected.id ?? 0
+//        let selected = casts[indexPath.item]
+//
+//
+//        let vc = MovieDetailsVC()
+//        GLOBAL_MOVIE_ID = selected.id ?? 0
      
         
         //
@@ -130,7 +130,16 @@ extension ArtistMovieView : UICollectionViewDelegate, UICollectionViewDataSource
         //
         ////
         ////        print("\(selected) - \(callBackId)")
-        //         callback?(callBackId!)
+        //
+        
+        
+        let selected = casts[indexPath.item]
+        let callBackId =  selected.id!
+        print(callBackId)
+        
+//        navController.popViewController(animated: true)
+//        navController.p
+        callback?(callBackId)
     }
     
 }

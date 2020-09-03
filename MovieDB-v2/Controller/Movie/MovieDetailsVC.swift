@@ -17,6 +17,7 @@ class MovieDetailsVC: BaseVC {
     
     
     var movieDetails : MovieDetails?
+    var favResponse : MarkFavoriteResponse?
     var movie = [Movie]()
     var result = [Result]()
     var genres = [Genre]()
@@ -48,14 +49,24 @@ class MovieDetailsVC: BaseVC {
     
     var favButton = UIButton(type: .system)
     
-    var isSelectedButton : Bool = false
+    
     var coinV:UIScrollView!
     
     var movieCastView  = MovieCastView()
     var movieVedioList = MovieVedioListView()
     var movieImageList = MovieImageListView()
-    var recommandMovieList = RecommandationMovieView()
     var similarMovieList = SimilarMovieView()
+    
+    var recommandMovieList = RecommandationMovieView()
+    
+    
+    let movieDetailsText = UILabel()
+    
+    let userDefault = UserDefaults.standard
+    
+    var isSelectedFavButton : Bool = false
+    var isSelectedStarButton : Bool = false
+    var isSelectedBookButton : Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,13 +74,16 @@ class MovieDetailsVC: BaseVC {
         resetBase()
         view.backgroundColor = .white
         
-        navigationItem.title = "Movie Detais"
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             // your code here
             self.getDetailsData()
         } 
-callBackNavigation()
+        callBackNavigation()
         
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        //          navigationItem.title = "\(String(describing: movieDetails?.originalTitle))"
     }
     
     func callBackNavigation(){
@@ -91,13 +105,13 @@ callBackNavigation()
             self.navigationController?.setNeedsStatusBarAppearanceUpdate()
         }
         similarMovieList.callback = { (id) -> Void in
-                   print("callback - \(id)")
-                   let vc = MovieDetailsVC()
-                   GLOBAL_MOVIE_ID = id
-                   //
-                   self.navigationController?.setViewControllers([vc], animated: true)
-                   self.navigationController?.setNeedsStatusBarAppearanceUpdate()
-               }
+            print("callback - \(id)")
+            let vc = MovieDetailsVC()
+            GLOBAL_MOVIE_ID = id
+            //
+            self.navigationController?.setViewControllers([vc], animated: true)
+            self.navigationController?.setNeedsStatusBarAppearanceUpdate()
+        }
     }
     
     //
@@ -111,8 +125,6 @@ callBackNavigation()
                 
                 DispatchQueue.main.async {
                     
-                    
-                    
                     if  response.backdropPath != nil {
                         let imgUrl = URL(string: "\(APIClient.EndPoints.BACKDROP_PATH + response.backdropPath!)")
                         self.topSliderImage.sd_setImage(with: imgUrl, completed: nil)
@@ -125,7 +137,7 @@ callBackNavigation()
                     self.movieTitleLabel.text = "\(String(describing: self.movieDetails?.title ?? ""))"
                     self.overviewTextLabel.text = "\(self.movieDetails?.overview ?? "")"
                     self.ratingView()
-                    
+                    self.navigationItem.title = "\(String(describing: self.movieDetails?.originalTitle ?? ""))"
                     self.setupDetailsUI()
                 }
             }
@@ -239,11 +251,63 @@ callBackNavigation()
         )
         overviewTextLabel.textColor = .black
         
+        
+        //
+        let borderBottomView = UIView()
+        contentView.addSubview(borderBottomView)
+        borderBottomView.position(top: overviewTextLabel.bottomAnchor, left: contentView.leadingAnchor, bottom: nil, right: contentView.trailingAnchor, insets:   .init(top: 20, left: 15, bottom: 0, right: 15))
+        borderBottomView.size(height: 0.2)
+        borderBottomView.backgroundColor = .lightGray
+        
+        
+        
+        contentView.addSubview(movieDetailsText)
+        movieDetailsText.position(top: borderBottomView.bottomAnchor, left: contentView.leadingAnchor, bottom: nil, right: borderBottomView.trailingAnchor, insets:  .init(top: 15, left: 15, bottom: 0, right: 15))
+        
+        
+        
+        
+        // 0
+        let attr0: NSMutableAttributedString = getAttributedText(string: "Status: ", font: UIFont(name: appFontBold, size: 14)!, color: .black, lineSpace: 5, alignment: .left)
+        let attr01: NSMutableAttributedString = getAttributedText(string: " \(self.movieDetails?.status ?? "")\n", font: UIFont(name: appFontMedium, size: 15)!, color: .gray, lineSpace: 0, alignment: .left)
+        
+        
+        // 1
+        let attr1: NSMutableAttributedString = getAttributedText(string: "Release date: ", font: UIFont(name: appFontBold, size: 14)!, color: .black, lineSpace: 5, alignment: .left)
+        
+        let attr2: NSMutableAttributedString = getAttributedText(string: " \(self.movieDetails?.releaseDate ?? "")\n", font: UIFont(name: appFontMedium, size: 15)!, color: .gray, lineSpace: 0, alignment: .left)
+        
+        //2
+        let attr3: NSMutableAttributedString = getAttributedText(string: "Run Time: ", font: UIFont(name: appFontBold, size: 14)!, color: .black, lineSpace: 5, alignment: .left)
+        let attr4: NSMutableAttributedString = getAttributedText(string: " \(self.movieDetails?.runtime ?? 0)m \n", font: UIFont(name: appFontMedium, size: 15)!, color: .gray, lineSpace: 0, alignment: .left)
+        
+        //2
+        
+        let attr5: NSMutableAttributedString = getAttributedText(string: "Revenue: ", font: UIFont(name: appFontBold, size: 14)!, color: .black, lineSpace: 5, alignment: .left)
+        let attr6: NSMutableAttributedString = getAttributedText(string: " $\(self.movieDetails?.revenue ?? 0) \n", font: UIFont(name: appFontMedium, size: 15)!, color: .gray, lineSpace: 0, alignment: .left)
+        
+        
+        //
+        
+        //        attr0.append(attr1)
+        attr0.append(attr01)
+        attr0.append(attr1)
+        attr0.append(attr2)
+        attr0.append(attr3)
+        attr0.append(attr4)
+        attr0.append(attr5)
+        attr0.append(attr6)
+        movieDetailsText.attributedText = attr0
+        movieDetailsText.numberOfLines = 0
+        
+        //runtime
+        
+        
         let topActorTitle = UILabel()
         contentView.addSubview(topActorTitle)
         topActorTitle.text = "Top Cast"
         topActorTitle.font = UIFont(name: appFontBold, size: 24)
-        topActorTitle.position(top: overviewTextLabel.bottomAnchor,left: contentView.leadingAnchor, insets: .init(top: 15, left: 10, bottom: 0, right: 0    ))
+        topActorTitle.position(top: movieDetailsText.bottomAnchor,left: contentView.leadingAnchor, insets: .init(top: 15, left: 10, bottom: 0, right: 0    ))
         //        topActorTitle.size(height: 20)
         
         // MARK:: MOVIE CAST
@@ -257,9 +321,23 @@ callBackNavigation()
         )
         
         
+        let movieDesView = UIView()
+        contentView.addSubview(movieDesView)
+        movieDesView.position(top: movieCastView.bottomAnchor, left: contentView.leadingAnchor, bottom: nil, right: contentView.trailingAnchor, insets: .init(top: 20, left: 15, bottom: 0, right:15))
+        
+        movieDesView.backgroundColor = .red
+        
+        let titleDes = UILabel()
+        movieDesView.addSubview(titleDes)
+        titleDes.position(top: movieDesView.topAnchor, left: movieDesView.leadingAnchor, bottom: movieDesView.bottomAnchor, right: movieDesView.trailingAnchor, insets: .init(top: 10, left: 10, bottom: 10, right: 10))
+        titleDes.text = "Functions can be nested. Nested functions have access to variables that were declared in the outer function. You can use nested functions to organize the code in a function that is long or complex."
+        titleDes.numberOfLines = 0
+        
+        
+        
         // movieCastView.backgroundColor = .red
         contentView.addSubview(movieVedioTitle)
-        movieVedioTitle.anchor(top: movieCastView.bottomAnchor, leading: contentView.leadingAnchor, bottom: nil, trailing: contentView.trailingAnchor, padding: .init(top: 0, left: 10, bottom: 0, right: 20))
+        movieVedioTitle.anchor(top: movieDesView.bottomAnchor, leading: contentView.leadingAnchor, bottom: nil, trailing: contentView.trailingAnchor, padding: .init(top: 0, left: 10, bottom: 0, right: 20))
         movieVedioTitle.centerXInSuperview()
         
         let attrStr1: NSMutableAttributedString = getAttributedText(string: "Vedios ", font: UIFont(name: appFontBold, size: 18)!, color: .black, lineSpace: 5, alignment: .left)
@@ -383,47 +461,95 @@ callBackNavigation()
     
     @objc func handleFavButton(sender: UIButton){
         print(sender.tag)
-        let selectedItem = sender.tag
+        
+        var selectedItem = sender.tag
         
         if selectedItem == 0 {
             
             
-            if isSelectedButton ==  false {
-                sender.setImage(UIImage(named: "heart-selected"), for: .normal)
-                self.isSelectedButton = true
-                print(isSelectedButton)
+            if isSelectedFavButton ==  false {
+                if userDefault.getLoginSatus() == true {
+                    
+                    print("save_session_token: \(save_session_token ?? "")")
+                    
+                    sender.setImage(UIImage(named: "heart-selected"), for: .normal)
+                    isSelectedFavButton = isFavoriteStatue
+                    
+                    if save_session_token ==  save_session_token {
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
+                            // your code here
+                            self.makeFavoriteMovie()
+                            
+                        }
+                    }
+                    
+                    print("isSelecteFavoriteButton: \(isSelectedFavButton)")
+                }else {
+                    let vc = LoginVC()
+                    // self.present(vc, animated: true, completion: nil)
+                    navigationController?.pushViewController(vc, animated: true)
+                }
+                selectedItem = sender.tag
             }else {
                 sender.setImage(UIImage(named: "heart"), for: .normal)
-                self.isSelectedButton = false
-                print(self.isSelectedButton)
+                isSelectedFavButton = false
+                print(isSelectedFavButton)
             }
-            //             self.isSelectedButton = false
-            
+            //                      isSelectedFavButton = false
+            //            return
         } else if selectedItem == 1 {
+            print("save_session_token: \(String(describing: save_session_token) )")
             print("watch list: \(selectedItem)")
-            if isSelectedButton ==  false {
+            if isSelectedStarButton ==  false {
                 sender.setImage(UIImage(named: "fav-selected"), for: .normal)
-                self.isSelectedButton = true
-                print(isSelectedButton)
+                isSelectedStarButton = true
+                
+                
+                
+                print(isSelectedStarButton)
             }else {
                 sender.setImage(UIImage(named: "favorite"), for: .normal)
-                self.isSelectedButton = false
-                print(self.isSelectedButton)
+                isSelectedStarButton = false
+                print(isSelectedStarButton)
             } 
-            
+            //             selectedItem = sender.tag
         } else {
             print("share: \(selectedItem)")
             
-            if isSelectedButton ==  false {
-                sender.setImage(UIImage(named: "bookmark-selected"), for: .normal)
-                self.isSelectedButton = true
-                print(isSelectedButton)
+            if isSelectedBookButton ==  false {
+                
+                if userDefault.getLoginSatus() == true {
+                    
+                    print("save_session_token: \(save_session_token ?? "")")
+                    
+                    sender.setImage(UIImage(named: "bookmark-selected"), for: .normal)
+                    isSelectedBookButton = true
+                    
+                    if save_session_token ==  save_session_token {
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
+                            // your code here
+                            self.markWatchMovieList()
+                            
+                        }
+                    }
+                    
+                    print("isSelecteFavoriteButton: \(isSelectedFavButton)")
+                }else {
+                    let vc = LoginVC()
+                    // self.present(vc, animated: true, completion: nil)
+                    navigationController?.pushViewController(vc, animated: true)
+                }
+                
+                
+                print(isSelectedBookButton)
             }else {
                 sender.setImage(UIImage(named: "bookmark"), for: .normal)
-                self.isSelectedButton = false
-                print(self.isSelectedButton)
+                isSelectedBookButton = false
+                print(isSelectedBookButton)
             }
-            
+            //             selectedItem = sender.tag
         }
     }
     func ratingView(){
@@ -466,7 +592,31 @@ callBackNavigation()
     }
     
     
+    func makeFavoriteMovie(){
+        
+        APIClient.markFavorite(movieId: GLOBAL_MOVIE_ID, favorite: isFavoriteStatue) { (success, error) in
+            if success {
+                //                self.favButton = success[0]
+                print(success)
+                self.showAlert(title: "Success", message: "\(setMessageStatus )")
+            }else {
+                self.showAlert(title: "Success", message: "\(setMessageStatus )")
+            }
+        }
+    }
     
+    
+    func markWatchMovieList(){
+        APIClient.markWatcMovie(movieId: GLOBAL_MOVIE_ID, watchList: isWatchStatus) { (success, error) in
+            if success {
+                //                self.favButton = success[0]
+                print(success)
+                self.showAlert(title: "Success", message: "\(setMessageStatus )")
+            }else {
+                self.showAlert(title: "Success", message: "\(setMessageStatus )")
+            }
+        }
+    }
     
     @objc func handleVedioPlayer(_ sender: UIButton){
         let vedioPlayer = MovieVideoVC()

@@ -43,8 +43,9 @@ class APIClient {
         case getMovieImageId(Int)
         case getMovieReview(Int)
         case getRecommendations(Int)
-         case getSimilarId(Int)
+        case getSimilarId(Int)
         case markMovieFavorite
+        case markWatchList
         // Auth
         case getRequestToken
         case login
@@ -69,7 +70,11 @@ class APIClient {
             case .createSessionId : return EndPoints.BASE_URL + "authentication/session/new" + EndPoints.apiKeyParam
             case .getFavoriteMovies : return EndPoints.BASE_URL + "account/\(Auth.accountId)/favorite/movies" + EndPoints.apiKeyParam + "&session_id=\(Auth.sessionId)" + "&sort_by=created_at.desc"
             case .getMovieVideoId(let id) : return EndPoints.BASE_URL + "movie/\(id)/videos" + EndPoints.apiKeyParam
-            case .markMovieFavorite: return EndPoints.BASE_URL + "account/\(Auth.accountId)/favorite" + EndPoints.apiKeyParam
+                
+            case .markMovieFavorite: return EndPoints.BASE_URL + "account/\(Auth.accountId)/favorite" + EndPoints.apiKeyParam + "&session_id=\(save_session_token ?? "")"
+
+           case .markWatchList: return EndPoints.BASE_URL + "account/\(Auth.accountId)/watchlist" + EndPoints.apiKeyParam + "&session_id=\(save_session_token ?? "")"
+//
             case .getMovieImageId(let id) : return EndPoints.BASE_URL + "movie/\(id)/images" + EndPoints.apiKeyParam
             case .getMovieReview(let id) : return EndPoints.BASE_URL + "movie/\(id)/reviews" + EndPoints.apiKeyParam + "&page=\(1)"
             case .getRecommendations(let id) : return EndPoints.BASE_URL + "movie/\(id)/recommendations" + EndPoints.apiKeyParam
@@ -155,6 +160,7 @@ class APIClient {
         taskForPOSTRequest(url: EndPoints.createSessionId.url, responseType: SessionResponse.self, body: body) { (response, error) in
             if let response = response {
                 Auth.sessionId = response.sessionId
+                session_token = response.sessionId
                 completion(true, nil)
             } else {
                 completion(false, error)
@@ -344,15 +350,33 @@ class APIClient {
     
     class func markFavorite(movieId: Int, favorite: Bool, completion: @escaping(Bool, Error?)->Void) {
         let body = MarkFavorite(mediaType: "movie", mediaId: movieId, favorite: favorite)
+        print("FAV: \(EndPoints.markMovieFavorite.url)")
         taskForPOSTRequest(url: EndPoints.markMovieFavorite.url, responseType: MarkFavoriteResponse.self, body: body) { (response, error) in
             if let response = response {
                 print(response)
+                
+                setMessageStatus = response.statusMessage
                 completion(response.statusCode == 1 || response.statusCode == 12 || response.statusCode == 13, nil)
             } else {
                 completion(false, nil)
             }
         }
     }
+    class func markWatcMovie(movieId: Int, watchList: Bool, completion: @escaping(Bool, Error?)->Void) {
+//           let body = MarkFavorite(mediaType: "movie", mediaId: movieId, favorite: favorite)
+        let body =  MarkWatchMovieList(mediaType: "movie", mediaId: movieId, watchlist: watchList)
+           print("FAV: \(EndPoints.markWatchList.url)")
+           taskForPOSTRequest(url: EndPoints.markWatchList.url, responseType: MarkFavoriteResponse.self, body: body) { (response, error) in
+               if let response = response {
+                   print(response)
+                   
+                   setMessageStatus = response.statusMessage
+                   completion(response.statusCode == 1 || response.statusCode == 12 || response.statusCode == 13, nil)
+               } else {
+                   completion(false, nil)
+               }
+           }
+       }
     
     class func getMovieVideoId(id: Int, completion: @escaping([Video]?, Error?)->Void) {
         print(EndPoints.getMovieVideoId(420818).url)

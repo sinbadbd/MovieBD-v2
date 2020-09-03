@@ -7,7 +7,7 @@
 //
 
 import UIKit
- 
+
 
 class BaseVC: UIViewController {
     var isTopbar = true
@@ -24,7 +24,7 @@ class BaseVC: UIViewController {
     var statusBarHeight:NSLayoutConstraint?,
     topBarHeight:NSLayoutConstraint?
     //contentHeight:NSLayoutConstraint?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -74,12 +74,12 @@ class BaseVC: UIViewController {
         /*
          
          scrollView.position(top: topBarView.bottomAnchor)
-                 scrollView.size(width: self.view.frame.size.width)
-                  
-                 
-                  let wAnchorContent = contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
-                  contentView.position(top: scrollView.topAnchor, bottom: scrollView.bottomAnchor)
-                  contentView.size(wAnchor: wAnchorContent)
+         scrollView.size(width: self.view.frame.size.width)
+         
+         
+         let wAnchorContent = contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+         contentView.position(top: scrollView.topAnchor, bottom: scrollView.bottomAnchor)
+         contentView.size(wAnchor: wAnchorContent)
          
          */
         
@@ -106,7 +106,7 @@ class BaseVC: UIViewController {
          */
         
     }
-   
+    
     func resetBase() {
         if !isCustomBgColor {
             self.view.backgroundColor = .white
@@ -126,21 +126,21 @@ class BaseVC: UIViewController {
     func setContentHeight(height:CGFloat) {
         //self.contentHeight!.constant = height+20.dynamic()//max
         contentView.translatesAutoresizingMaskIntoConstraints = false
-                contentView.heightAnchor.constraint(equalToConstant: height).isActive = true
+        contentView.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     func setupTopbar() {
         titleLbl.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: topBarHeight!.constant)
         titleLbl.textColor = txtColorBlue
-//        titleLbl.font = UIFont(name: appFont, size: 22.dynamic())
+        //        titleLbl.font = UIFont(name: appFont, size: 22.dynamic())
         titleLbl.textAlignment = .center
         topBarView.addSubview(titleLbl)
-//
-//        let imgSz = CGSize(width: 15.dynamic(),  height: 15.dynamic())
-//        let backButton = getButtonWithImage(frame: CGRect(x: 0, y: 0, width: 45.dynamic(), height:titleLbl.frame.size.height), imgName: "iosBack.png", imgSz: CGSize(width: imgSz.width, height: imgSz.height), imgClr: hexToUIColor(hex: "#007AD0"))
-//        backButton.addTarget(self, action: #selector(topBtnPressed), for: .touchUpInside)
-//        topBarView.addSubview(backButton)
-
+        //
+        //        let imgSz = CGSize(width: 15.dynamic(),  height: 15.dynamic())
+        //        let backButton = getButtonWithImage(frame: CGRect(x: 0, y: 0, width: 45.dynamic(), height:titleLbl.frame.size.height), imgName: "iosBack.png", imgSz: CGSize(width: imgSz.width, height: imgSz.height), imgClr: hexToUIColor(hex: "#007AD0"))
+        //        backButton.addTarget(self, action: #selector(topBtnPressed), for: .touchUpInside)
+        //        topBarView.addSubview(backButton)
+        
     }
     
     @objc func topBtnPressed(sender:UIButton) {

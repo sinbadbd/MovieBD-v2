@@ -12,9 +12,11 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
-
+  let userDefault = UserDefaults.standard
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+//        checkSession()
         return true
     }
 
@@ -30,6 +32,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the user discards a scene session.
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
+    }
+    
+    func checkSession(){
+        
+       
+        if (UserDefaults.standard.object(forKey: "session_token") != nil) {
+              self.userDefault.setLoginSatus(value: false)
+            
+            if (UserDefaults.standard.object(forKey: "user_name") != nil) {
+                user_name = (UserDefaults.standard.object(forKey: "user_name")) as! String
+            }
+            
+            session_token = (UserDefaults.standard.object(forKey: "session_token")) as! String
+            print(session_token)
+            print(user_name)
+            
+        }
     }
 
 

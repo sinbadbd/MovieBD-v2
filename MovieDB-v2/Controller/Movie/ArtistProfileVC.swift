@@ -60,29 +60,34 @@ class ArtistProfileVC : BaseVC {
         fetchAPI()
         
         navigationItem.title = "Profile"
+
+    
         
-        colletionView.register(ProfileSliderCell.self, forCellWithReuseIdentifier: TOPSLIDER)
-        colletionView.dataSource = self
-        colletionView.delegate = self
-        
-        artistMovieList.callback = { (id) -> Void in
-            
-            self.artistMovieList.delegate = self
-            
-            print("xxxxxxxxxxxxxxxxxxxx")
-            print("callback - \(id)")
-            print(id)
-            //            let vc = MovieDetailsVC()
-            //            GLOBAL_MOVIE_ID = id
-            //            self.navigationController!.viewControllers.removeAll()
-            //            self.navigationController?.pushViewController(vc, animated: true)
-            
-            let vc = MovieDetailsVC()
-            GLOBAL_MOVIE_ID = id
-            
-            //                           self.navigationController?.pushViewController(vc, animated: true)
-        }
-        
+    }
+    override func viewWillAppear(_ animated: Bool) {
+            artistMovieList.callback = { (id) -> Void in
+                    
+                    self.artistMovieList.delegate = self
+                    
+                    print("xxxxxxxxxxxxxxxxxxxx")
+                    print("callback - \(id)")
+                    print(id)
+                    //            let vc = MovieDetailsVC()
+                    //            GLOBAL_MOVIE_ID = id
+                    //            self.navigationController!.viewControllers.removeAll()
+                    //            self.navigationController?.pushViewController(vc, animated: true)
+                    
+                    let vc = MovieDetailsVC()
+                    GLOBAL_MOVIE_ID = id
+                    self.dismiss(animated: true, completion: nil)
+        //            self.navigationController?.setViewControllers([vc], animated: true)
+//                    self.navigationController?.popViewController(animated: true)
+                let vcs = ArtistProfileVC()
+                let bb = ProfileVC()
+//                self.navigationController?.popToViewController(bb, animated: true)
+                    
+                                       self.navigationController?.pushViewController(bb, animated: true)
+                }
     }
     
     func fetchAPI(){ //2888: id
@@ -145,6 +150,10 @@ class ArtistProfileVC : BaseVC {
     }
     func setupView(){
         
+        colletionView.register(ProfileSliderCell.self, forCellWithReuseIdentifier: TOPSLIDER)
+        colletionView.dataSource = self
+        colletionView.delegate = self
+        
         contentView.addSubview(colletionView)
         // colletionView.backgroundColor = .white
         colletionView.backgroundColor = .white
@@ -153,7 +162,7 @@ class ArtistProfileVC : BaseVC {
         colletionView.isPagingEnabled = true
         //        colletionView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: contentView.leadingAnchor, bottom: nil, trailing: contentView.trailingAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 0),size : CGSize(width: colletionView.frame.width, height: 300))
         
-        colletionView.position(top: contentView.topAnchor)
+        colletionView.position(top: contentView.topAnchor, insets: .init(top: 0, left: 0, bottom: 0, right: 0))
         colletionView.size(  height: 250, dimensionWidth: contentView.widthAnchor)
         view.addSubview(pageControl)
         
@@ -242,6 +251,12 @@ class ArtistProfileVC : BaseVC {
         print("tappedIma====")
         //        let artistSlider =  ArtistImageSlider()
         //        self.present(artistSlider, animated: true, completion: nil)
+//        let bb = ()
+        //                self.navigationController?.popToViewController(bb, animated: true)
+                            
+//                                               self.navigationController?.pushViewController(bb, animated: true)
+        self.navigationController?.popViewController(animated: true)
+        
         
     }
     
