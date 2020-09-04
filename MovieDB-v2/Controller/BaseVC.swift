@@ -12,6 +12,7 @@ import UIKit
 class BaseVC: UIViewController {
     var isTopbar = true
     var isTLogo = true
+    var isShowBottomTab = true
     var isCustomBgColor = false
     var topbarTitle = ""//maximus
     let scrollView = UIScrollView(),
@@ -24,6 +25,9 @@ class BaseVC: UIViewController {
     var statusBarHeight:NSLayoutConstraint?,
     topBarHeight:NSLayoutConstraint?
     //contentHeight:NSLayoutConstraint?
+    
+    
+    var bottomView : BottomTabView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -118,11 +122,41 @@ class BaseVC: UIViewController {
         if isTLogo {
             setViewBackgroundImageDash(vc: self)
         }
+   
         self.view.layoutIfNeeded()
         //self.contentHeight!.constant = scrollView.frame.size.height//max
-        
+        if isShowBottomTab{
+               setupBottomTabBar()
+           }
     }
-    
+    func setupBottomTabBar(){
+        bottomView = BottomTabView()
+        bottomView?.delegate = self
+        contentView.addSubview(bottomView!)
+        bottomView?.position( bottom: contentView.bottomAnchor, right: nil, insets: .init(top: 0, left: 0, bottom: 0, right: 0))
+        bottomView?.size(wAnchor: nil, hAnchor: nil,  height: 50, dimensionWidth: contentView.widthAnchor)
+        
+//        UIApplication.shared.windows.addSubview(bottomView!)
+//        UIApplication.shared.keyWindow?.bringSubviewToFront(bottomView!)
+//        bottomView?.translatesAutoresizingMaskIntoConstraints = false
+         //bottomTab.backgroundColor = .gray
+//        bottomView?.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
+//        bottomView?.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+//        bottomView?.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+//        bottomView?.heightAnchor.constraint(equalToConstant: 50).isActive = true
+//        bottomView?.bringSubviewToFront(contentView)
+       bottomView?.layer.zPosition = 999999
+//        UIApplication.shared.keyWindow!.bringSubviewToFront((bottomView)!)
+  
+         if #available(iOS 11.0, *) {
+            bottomView?.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+         } else {
+            bottomView?.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+         }
+     }
+
+
+//    }
     func setContentHeight(height:CGFloat) {
         //self.contentHeight!.constant = height+20.dynamic()//max
         contentView.translatesAutoresizingMaskIntoConstraints = false
@@ -156,4 +190,12 @@ class BaseVC: UIViewController {
     
     
 }
+ 
 
+
+extension BaseVC: BottomViewProtocol {
+    func profileBtn(sender: UIButton) {
+        let vc = ProfileVC()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+}

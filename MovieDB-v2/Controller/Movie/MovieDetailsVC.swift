@@ -71,6 +71,7 @@ class MovieDetailsVC: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         isTopbar = false
+        isShowBottomTab = false
         resetBase()
         view.backgroundColor = .white
         
@@ -440,21 +441,8 @@ class MovieDetailsVC: BaseVC {
                 if  aView is UIButton {
                     let coinBtn = aView as! UIButton
                     coinBtn.setTitleColor(.black, for: UIControl.State.normal)
-                    //                    coinBtn.backgroundColor = .white
                 }
             }
-            
-            // sender.setTitleColor(.white, for: UIControl.State.normal)
-            //sender.backgroundColor = btnColorBlue
-            //                  let aDict = self.comissionArray[sender.tag]
-            //                  self.selectedAmnt = aDict["amount"] as? Double ?? 0.0
-            //                  let discountAmount = aDict["discount"] as? Double ?? 0.0
-            //                  let total = self.selectedAmnt-discountAmount
-            //                  self.amountTxF.text = "\(self.selectedAmnt.commaRepresentation)"
-            //                  self.amntLbl.text = getFormatedAmount(Int(self.selectedAmnt))
-            //                  self.earningLbl.text = getFormatedAmount(Int(discountAmount))
-            //                  self.totalLbl.text = getFormatedAmount(Int(total))
-            
         }
     }
     
@@ -472,32 +460,28 @@ class MovieDetailsVC: BaseVC {
                     
                     print("save_session_token: \(save_session_token ?? "")")
                     
-                    sender.setImage(UIImage(named: "heart-selected"), for: .normal)
-                    isSelectedFavButton = isFavoriteStatue
-                    
                     if save_session_token ==  save_session_token {
-                        
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
                             // your code here
-                            self.makeFavoriteMovie()
-                            
+                            sender.setImage(UIImage(named: "heart-selected"), for: .normal)
+                            self.isSelectedFavButton = true
+                            self.makeFavoriteMovie(isFav: true)
                         }
                     }
                     
                     print("isSelecteFavoriteButton: \(isSelectedFavButton)")
                 }else {
                     let vc = LoginVC()
-                    // self.present(vc, animated: true, completion: nil)
                     navigationController?.pushViewController(vc, animated: true)
                 }
                 selectedItem = sender.tag
             }else {
                 sender.setImage(UIImage(named: "heart"), for: .normal)
+                self.makeFavoriteMovie(isFav: false)
                 isSelectedFavButton = false
                 print(isSelectedFavButton)
             }
-            //                      isSelectedFavButton = false
-            //            return
+            
         } else if selectedItem == 1 {
             print("save_session_token: \(String(describing: save_session_token) )")
             print("watch list: \(selectedItem)")
@@ -505,7 +489,7 @@ class MovieDetailsVC: BaseVC {
                 sender.setImage(UIImage(named: "fav-selected"), for: .normal)
                 isSelectedStarButton = true
                 
-                
+                setRatingMovie(value: 6.5)
                 
                 print(isSelectedStarButton)
             }else {
@@ -518,35 +502,28 @@ class MovieDetailsVC: BaseVC {
             print("share: \(selectedItem)")
             
             if isSelectedBookButton ==  false {
-                
                 if userDefault.getLoginSatus() == true {
-                    
                     print("save_session_token: \(save_session_token ?? "")")
                     
-                    sender.setImage(UIImage(named: "bookmark-selected"), for: .normal)
-                    isSelectedBookButton = true
-                    
                     if save_session_token ==  save_session_token {
-                        
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
-                            // your code here
-                            self.markWatchMovieList()
-                            
+                            sender.setImage(UIImage(named: "bookmark-selected"), for: .normal)
+                            self.isSelectedBookButton = true
+                            self.markWatchMovieList(isWatch: true)
                         }
                     }
                     
                     print("isSelecteFavoriteButton: \(isSelectedFavButton)")
                 }else {
                     let vc = LoginVC()
-                    // self.present(vc, animated: true, completion: nil)
                     navigationController?.pushViewController(vc, animated: true)
                 }
-                
                 
                 print(isSelectedBookButton)
             }else {
                 sender.setImage(UIImage(named: "bookmark"), for: .normal)
-                isSelectedBookButton = false
+                self.isSelectedBookButton = false
+                      self.markWatchMovieList(isWatch: false)
                 print(isSelectedBookButton)
             }
             //             selectedItem = sender.tag
@@ -592,28 +569,34 @@ class MovieDetailsVC: BaseVC {
     }
     
     
-    func makeFavoriteMovie(){
+    func makeFavoriteMovie(isFav: Bool){
         
-        APIClient.markFavorite(movieId: GLOBAL_MOVIE_ID, favorite: isFavoriteStatue) { (success, error) in
+        APIClient.markFavorite(movieId: GLOBAL_MOVIE_ID, favorite: isFav) { (success, error) in
             if success {
-                //                self.favButton = success[0]
                 print(success)
-                self.showAlert(title: "Success", message: "\(setMessageStatus )")
+                self.showAlert(title: self.isSelectedFavButton ? "Added" : "Removed", message: "\(setMessageStatus )")
             }else {
-                self.showAlert(title: "Success", message: "\(setMessageStatus )")
+                self.showAlert(title: "Remove", message: "\(setMessageStatus )")
             }
         }
     }
     
     
-    func markWatchMovieList(){
-        APIClient.markWatcMovie(movieId: GLOBAL_MOVIE_ID, watchList: isWatchStatus) { (success, error) in
+    func markWatchMovieList(isWatch: Bool){
+        APIClient.markWatcMovie(movieId: GLOBAL_MOVIE_ID, watchList: isWatch) { (success, error) in
             if success {
-                //                self.favButton = success[0]
                 print(success)
-                self.showAlert(title: "Success", message: "\(setMessageStatus )")
-            }else {
-                self.showAlert(title: "Success", message: "\(setMessageStatus )")
+                self.showAlert(title:self.isSelectedBookButton ? "Added" : "Removed", message: "\(setMessageStatus )")
+            }
+        }
+    }
+    
+    
+    func setRatingMovie(value: Double){
+        APIClient.setRatingMovie(movieId: GLOBAL_MOVIE_ID, value: value) { (success, error) in
+            if success {
+                print(success)
+                self.showAlert(title: self.isSelectedStarButton ? "Success" : "Removed", message: "\(setMessageStatus )")
             }
         }
     }
@@ -621,7 +604,6 @@ class MovieDetailsVC: BaseVC {
     @objc func handleVedioPlayer(_ sender: UIButton){
         let vedioPlayer = MovieVideoVC()
         vedioPlayer.id = self.movieDetails?.id
-        //        print(  vedioPlayer.id)
         self.present(vedioPlayer, animated: true, completion: nil)
     }
 }

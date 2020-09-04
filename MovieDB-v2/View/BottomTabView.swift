@@ -1,13 +1,22 @@
 //
 //  BottomTabView.swift
-//  CustomApp
+//  MovieDB-v2
 //
-//  Created by Imran on 21/5/20.
+//  Created by Imran on 3/9/20.
 //  Copyright © 2020 portonics. All rights reserved.
 //
 
+import Foundation
+
 import UIKit
 var navController: UINavigationController!
+
+@objc protocol BottomViewProtocol {
+    @objc optional func profileBtn(sender:UIButton)
+    @objc optional func btn2(sender:UIButton)
+    @objc optional func resetAll()
+}
+
 
 class BottomTabView: UIView{
     
@@ -18,6 +27,8 @@ class BottomTabView: UIView{
     
     let mainMenuButton = UIButton(type: .custom)
     
+      @objc var delegate : BottomViewProtocol!
+      var callback: (() -> Void)?
     
    // var rainbowCircle = RainbowCircle()
     
@@ -82,7 +93,7 @@ class BottomTabView: UIView{
         profileButton.addTarget(self, action: #selector(handlePofile), for: .touchUpInside)
         // profileButton.setTitle("Profile", for: .normal)
         // profileButton.setTitleColor(.white, for: .normal)
-        profileButton.setImage(UIImage(named: "user"), for: .normal)
+        profileButton.setImage(UIImage(named: "star"), for: .normal)
         
         addSubview(settingsButton)
         settingsButton.translatesAutoresizingMaskIntoConstraints = false
@@ -180,9 +191,16 @@ class BottomTabView: UIView{
 //        (superview?.next as? UIViewController)?.navigationController?.pushViewController(vc, animated: true)
     }
     
-    @objc func handlePofile(){
+    @objc func handlePofile(_ sender: UIButton){
            print("1")
 //        let vc = ProfileVC()
+        if self.delegate != nil {
+            self.delegate.profileBtn?(sender: sender)
+        }
+        
+        
+        
+//        navController.pushViewController(vc, animated: true)
 //        (superview?.next as? UIViewController)?.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -216,3 +234,4 @@ extension CGFloat {
     var degreesToRadians: CGFloat { return self * .pi / 180 }
     var radiansToDegrees: CGFloat { return self * 180 / .pi }
 }
+

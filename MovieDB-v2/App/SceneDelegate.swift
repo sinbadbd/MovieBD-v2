@@ -20,6 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let vc = DashboardVC()
        let nav = UINavigationController(rootViewController: vc)
+//        let tab = UITabView
         window?.rootViewController  = nav
         
         guard let _ = (scene as? UIWindowScene) else { return }

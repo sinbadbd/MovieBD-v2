@@ -46,6 +46,7 @@ class APIClient {
         case getSimilarId(Int)
         case markMovieFavorite
         case markWatchList
+        case setRating
         // Auth
         case getRequestToken
         case login
@@ -72,13 +73,15 @@ class APIClient {
             case .getMovieVideoId(let id) : return EndPoints.BASE_URL + "movie/\(id)/videos" + EndPoints.apiKeyParam
                 
             case .markMovieFavorite: return EndPoints.BASE_URL + "account/\(Auth.accountId)/favorite" + EndPoints.apiKeyParam + "&session_id=\(save_session_token ?? "")"
-
-           case .markWatchList: return EndPoints.BASE_URL + "account/\(Auth.accountId)/watchlist" + EndPoints.apiKeyParam + "&session_id=\(save_session_token ?? "")"
-//
+                
+            case .markWatchList: return EndPoints.BASE_URL + "account/\(Auth.accountId)/watchlist" + EndPoints.apiKeyParam + "&session_id=\(save_session_token ?? "")"
+                
+            case .setRating: return EndPoints.BASE_URL + "account/\(Auth.accountId)/rating" + EndPoints.apiKeyParam + "&session_id=\(save_session_token ?? "")"
+            //
             case .getMovieImageId(let id) : return EndPoints.BASE_URL + "movie/\(id)/images" + EndPoints.apiKeyParam
             case .getMovieReview(let id) : return EndPoints.BASE_URL + "movie/\(id)/reviews" + EndPoints.apiKeyParam + "&page=\(1)"
             case .getRecommendations(let id) : return EndPoints.BASE_URL + "movie/\(id)/recommendations" + EndPoints.apiKeyParam
-               case .getSimilarId(let id) : return EndPoints.BASE_URL + "movie/\(id)/similar" + EndPoints.apiKeyParam
+            case .getSimilarId(let id) : return EndPoints.BASE_URL + "movie/\(id)/similar" + EndPoints.apiKeyParam
                 //
             }
         }
@@ -363,20 +366,38 @@ class APIClient {
         }
     }
     class func markWatcMovie(movieId: Int, watchList: Bool, completion: @escaping(Bool, Error?)->Void) {
-//           let body = MarkFavorite(mediaType: "movie", mediaId: movieId, favorite: favorite)
         let body =  MarkWatchMovieList(mediaType: "movie", mediaId: movieId, watchlist: watchList)
-           print("FAV: \(EndPoints.markWatchList.url)")
-           taskForPOSTRequest(url: EndPoints.markWatchList.url, responseType: MarkFavoriteResponse.self, body: body) { (response, error) in
-               if let response = response {
-                   print(response)
-                   
-                   setMessageStatus = response.statusMessage
-                   completion(response.statusCode == 1 || response.statusCode == 12 || response.statusCode == 13, nil)
-               } else {
-                   completion(false, nil)
-               }
-           }
-       }
+        print("FAV: \(EndPoints.markWatchList.url)")
+        taskForPOSTRequest(url: EndPoints.markWatchList.url, responseType: MarkFavoriteResponse.self, body: body) { (response, error) in
+            if let response = response {
+                print(response)
+                
+                setMessageStatus = response.statusMessage
+                completion(response.statusCode == 1 || response.statusCode == 12 || response.statusCode == 13, nil)
+            } else {
+                completion(false, nil)
+            }
+        }
+    }
+    
+    class func setRatingMovie(movieId: Int, value: Double, completion: @escaping(Bool, Error?)->Void) {
+        //           let body =  MarkWatchMovieList(mediaType: "movie", mediaId: movieId, watchlist: watchList)
+        let body = RatingMovie(value: value)
+        print("FAV: \(EndPoints.setRating.url)")
+        taskForPOSTRequest(url: EndPoints.setRating.url, responseType: MarkFavoriteResponse.self, body: body) { (response, error) in
+            if let response = response {
+                print(response)
+                
+                setMessageStatus = response.statusMessage
+                completion(response.statusCode == 1 || response.statusCode == 12 || response.statusCode == 13, nil)
+            } else {
+                completion(false, nil)
+            }
+        }
+    }
+    
+    
+    
     
     class func getMovieVideoId(id: Int, completion: @escaping([Video]?, Error?)->Void) {
         print(EndPoints.getMovieVideoId(420818).url)
@@ -407,18 +428,18 @@ class APIClient {
     }
     
     class func getMovieReviewId(page:Int, id: Int, completion: @escaping([MovieReview]?, Error?)->Void) {
-           print(EndPoints.getMovieReview(id))
-           taskForGETRequest(url: EndPoints.getMovieReview(id).url, response: MovieReview.self) { (response, error) in
-               if let response = response {
-                   print(response)
-                   completion([response], nil)
-               } else {
-                   completion([], error)
-                   print(error.debugDescription)
-                   print(error?.localizedDescription ?? "")
-               }
-           }
-       }
+        print(EndPoints.getMovieReview(id))
+        taskForGETRequest(url: EndPoints.getMovieReview(id).url, response: MovieReview.self) { (response, error) in
+            if let response = response {
+                print(response)
+                completion([response], nil)
+            } else {
+                completion([], error)
+                print(error.debugDescription)
+                print(error?.localizedDescription ?? "")
+            }
+        }
+    }
     class func getMovieRecommandationId(id: Int, completion: @escaping([Movie]?, Error?)->Void) {
         print(EndPoints.getMovieReview(id))
         taskForGETRequest(url: EndPoints.getRecommendations(id).url, response: Movie.self) { (response, error) in
@@ -433,18 +454,18 @@ class APIClient {
         }
     }
     class func getMovieSimilarId(id: Int, completion: @escaping([Movie]?, Error?)->Void) {
-           print(EndPoints.getSimilarId(id))
-           taskForGETRequest(url: EndPoints.getSimilarId(id).url, response: Movie.self) { (response, error) in
-               if let response = response {
-                   print(response)
-                   completion([response], nil)
-               } else {
-                   completion([], error)
-                   print(error.debugDescription)
-                   print(error?.localizedDescription ?? "")
-               }
-           }
-       }
+        print(EndPoints.getSimilarId(id))
+        taskForGETRequest(url: EndPoints.getSimilarId(id).url, response: Movie.self) { (response, error) in
+            if let response = response {
+                print(response)
+                completion([response], nil)
+            } else {
+                completion([], error)
+                print(error.debugDescription)
+                print(error?.localizedDescription ?? "")
+            }
+        }
+    }
     //
     
 }
