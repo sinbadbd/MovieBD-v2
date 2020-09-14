@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import CoreData
 
 class MovieDetailsVC: BaseVC {
     
@@ -67,6 +67,10 @@ class MovieDetailsVC: BaseVC {
     var isSelectedFavButton : Bool = false
     var isSelectedStarButton : Bool = false
     var isSelectedBookButton : Bool = false
+    
+    
+    var student = [MovieDataSaveTable]()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -322,23 +326,23 @@ class MovieDetailsVC: BaseVC {
         )
         
         
-        let movieDesView = UIView()
-        contentView.addSubview(movieDesView)
-        movieDesView.position(top: movieCastView.bottomAnchor, left: contentView.leadingAnchor, bottom: nil, right: contentView.trailingAnchor, insets: .init(top: 20, left: 15, bottom: 0, right:15))
+//        let movieDesView = UIView()
+//        contentView.addSubview(movieDesView)
+//        movieDesView.position(top: movieCastView.bottomAnchor, left: contentView.leadingAnchor, bottom: nil, right: contentView.trailingAnchor, insets: .init(top: 20, left: 15, bottom: 0, right:15))
+//
+//        movieDesView.backgroundColor = .red
         
-        movieDesView.backgroundColor = .red
-        
-        let titleDes = UILabel()
-        movieDesView.addSubview(titleDes)
-        titleDes.position(top: movieDesView.topAnchor, left: movieDesView.leadingAnchor, bottom: movieDesView.bottomAnchor, right: movieDesView.trailingAnchor, insets: .init(top: 10, left: 10, bottom: 10, right: 10))
-        titleDes.text = "Functions can be nested. Nested functions have access to variables that were declared in the outer function. You can use nested functions to organize the code in a function that is long or complex."
-        titleDes.numberOfLines = 0
+//        let titleDes = UILabel()
+//        movieDesView.addSubview(titleDes)
+//        titleDes.position(top: movieDesView.topAnchor, left: movieDesView.leadingAnchor, bottom: movieDesView.bottomAnchor, right: movieDesView.trailingAnchor, insets: .init(top: 10, left: 10, bottom: 10, right: 10))
+//        titleDes.text = "Functions can be nested. Nested functions have access to variables that were declared in the outer function. You can use nested functions to organize the code in a function that is long or complex."
+//        titleDes.numberOfLines = 0
         
         
         
         // movieCastView.backgroundColor = .red
         contentView.addSubview(movieVedioTitle)
-        movieVedioTitle.anchor(top: movieDesView.bottomAnchor, leading: contentView.leadingAnchor, bottom: nil, trailing: contentView.trailingAnchor, padding: .init(top: 0, left: 10, bottom: 0, right: 20))
+        movieVedioTitle.anchor(top: movieCastView.bottomAnchor, leading: contentView.leadingAnchor, bottom: nil, trailing: contentView.trailingAnchor, padding: .init(top: 0, left: 10, bottom: 0, right: 20))
         movieVedioTitle.centerXInSuperview()
         
         let attrStr1: NSMutableAttributedString = getAttributedText(string: "Vedios ", font: UIFont(name: appFontBold, size: 18)!, color: .black, lineSpace: 5, alignment: .left)
@@ -463,9 +467,18 @@ class MovieDetailsVC: BaseVC {
                     if save_session_token ==  save_session_token {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
                             // your code here
+                        //    let dict = ["isFavMovie": self.isSelectedFavButton] // CORE DATA: DIC
+                            
+//                            DatabaseHelper.
+                        //    DatabaseHelper.shared.saveFavorite(dic: dict)
+//                            self.student =  DatabaseHelper.shared.getStudentData()
+//                            print(<#T##items: Any...##Any#>)
+//                            if self.student {
+//                                sender.setImage(UIImage(named: "heart-selected"), for: .normal)
+//                            }
                             sender.setImage(UIImage(named: "heart-selected"), for: .normal)
-                            self.isSelectedFavButton = true
-                            self.makeFavoriteMovie(isFav: true)
+                            self.isSelectedFavButton = true //
+                            self.makeFavoriteMovie(isFav: true) // API
                         }
                     }
                     

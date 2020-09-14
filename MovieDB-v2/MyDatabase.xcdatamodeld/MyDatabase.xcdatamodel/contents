@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19G2021" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Department" representedClassName="DepartmentTable" syncable="YES">
+        <attribute name="address" optional="YES" attributeType="String"/>
+        <attribute name="city" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="phone" optional="YES" attributeType="String"/>
+        <attribute name="zipcode" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="employe" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Employe" inverseName="department" inverseEntity="Employe"/>
+    </entity>
+    <entity name="Employe" representedClassName="EmployeTable" parentEntity="Person" syncable="YES">
+        <attribute name="hiredate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="indentifire" optional="YES" attributeType="String"/>
+        <attribute name="isManager" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="department" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Department" inverseName="employe" inverseEntity="Department"/>
+    </entity>
+    <entity name="MovieDataSave" representedClassName="MovieDataSaveTable" syncable="YES">
+        <attribute name="isFavorite" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="Person" representedClassName="PersonTable" syncable="YES">
+        <attribute name="date_of_birth" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+    </entity>
+    <elements>
+        <element name="Department" positionX="-63.75390625" positionY="250.55859375" width="128" height="133"/>
+        <element name="Employe" positionX="45.81640625" positionY="-25.171875" width="128" height="118"/>
+        <element name="MovieDataSave" positionX="-505.8828125" positionY="-15.33984375" width="128" height="58"/>
+        <element name="Person" positionX="-151.18359375" positionY="-10.91015625" width="128" height="73"/>
+    </elements>
+</model>

@@ -31,11 +31,11 @@ func getButtonWithImage(frame:CGRect, imgName:String, imgSz:CGSize, imgClr:UICol
     let imgView = UIImageView(frame: CGRect(x: aBtn.frame.size.width*0.5-imgSz.width*0.5, y: aBtn.frame.size.height*0.5-imgSz.height*0.5, width: imgSz.width, height: imgSz.height))
     imgView.tag = 1
     imgView.image = UIImage(named: imgName)
-   if imgClr != nil {
-       imgView.image = image
-       imgView.tintColor = imgClr
-   }
-   
+    if imgClr != nil {
+        imgView.image = image
+        imgView.tintColor = imgClr
+    }
+    
     aBtn.addSubview(imgView)
     
     return aBtn
@@ -46,18 +46,18 @@ func getButtonWithImage(frame:CGRect, imgName:String, imgSz:CGSize, imgClr:UICol
 //MARK: Color
 func hexToUIColor (hex:String) -> UIColor {
     var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
-
+    
     if (cString.hasPrefix("#")) {
         cString.remove(at: cString.startIndex)
     }
-
+    
     if ((cString.count) != 6) {
         return UIColor.gray
     }
-
+    
     var rgbValue:UInt64 = 0
     Scanner(string: cString).scanHexInt64(&rgbValue)
-
+    
     return UIColor(
         red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
         green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
@@ -118,19 +118,19 @@ func getAttributedText(string:String, font:UIFont, color:UIColor, lineSpace:Floa
  - className : class name of UIViewController
  **/
 func removeVCFromStack(className : AnyClass) -> Void {
- let mutableArray: NSMutableArray = (navController.viewControllers as NSArray).mutableCopy() as! NSMutableArray
- var isRemoved:Bool = false
-     for i in 0..<(navController.viewControllers.count-1){
-         let vc:UIViewController = navController.viewControllers[i]
-         if vc.isKind(of: className) {
-             mutableArray.remove(vc)
-             isRemoved = true
-         }
-     }
- if isRemoved {
-     navController.setViewControllers(mutableArray as! [UIViewController], animated: false)
- }
- }
+    let mutableArray: NSMutableArray = (navController.viewControllers as NSArray).mutableCopy() as! NSMutableArray
+    var isRemoved:Bool = false
+    for i in 0..<(navController.viewControllers.count-1){
+        let vc:UIViewController = navController.viewControllers[i]
+        if vc.isKind(of: className) {
+            mutableArray.remove(vc)
+            isRemoved = true
+        }
+    }
+    if isRemoved {
+        navController.setViewControllers(mutableArray as! [UIViewController], animated: false)
+    }
+}
 
 func gotToPage(_ className: AnyClass) {
     for controller in navController.viewControllers {
@@ -139,4 +139,17 @@ func gotToPage(_ className: AnyClass) {
             break
         }
     }
+}
+
+//
+func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
+    
+    let scale = newWidth / image.size.width
+    let newHeight = image.size.height * scale
+    UIGraphicsBeginImageContext(CGSize(width: newWidth, height: newHeight))
+    image.draw(in: CGRect(x: 0, y: 0, width: newWidth, height: newHeight))
+    let newImage = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    
+    return newImage!
 }

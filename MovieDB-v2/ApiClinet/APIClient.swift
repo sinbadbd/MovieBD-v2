@@ -47,10 +47,15 @@ class APIClient {
         case markMovieFavorite
         case markWatchList
         case setRating
+        
         // Auth
         case getRequestToken
         case login
         case createSessionId
+        case getUserFavoriteMovie(Int)
+        case getUserWatchListMovie(Int)
+        
+        
         var stringValue : String {
             switch self {
             case .getNowPlayingMovie: return EndPoints.BASE_URL + "movie/now_playing" + EndPoints.apiKeyParam
@@ -83,7 +88,15 @@ class APIClient {
             case .getRecommendations(let id) : return EndPoints.BASE_URL + "movie/\(id)/recommendations" + EndPoints.apiKeyParam
             case .getSimilarId(let id) : return EndPoints.BASE_URL + "movie/\(id)/similar" + EndPoints.apiKeyParam
                 //
+                
+            // account
+            case .getUserFavoriteMovie(let id) : return EndPoints.BASE_URL +  "account/\(id)/favorite/movies" + EndPoints.apiKeyParam + "&session_id=\(save_session_token ?? "")"
+                
+            case .getUserWatchListMovie(let id) : return EndPoints.BASE_URL +  "account/\(id)/watchlist/movies" + EndPoints.apiKeyParam + "&session_id=\(save_session_token ?? "")"
+                
+                
             }
+            // account/278/favorite/movies?api_key=de05a59a85ef1e7797de8d4a6d343d0e&session_id=b16c44eab94c78513d62946a881a3be71760b7d9&language=en-US&sort_by=created_at.desc&page=1
         }
         var url : URL {
             return URL(string: stringValue)!
@@ -467,5 +480,32 @@ class APIClient {
         }
     }
     //
+    
+    
+    class func getFavoriteMovieList(id: Int? = nil,  completion: @escaping([Movie]?, Error?)-> Void){
+        taskForGETRequest(url: EndPoints.getUserFavoriteMovie(id ?? 0).url, response: Movie.self) { (response, error) in
+              if let response = response {
+                  // print("search:\(response)")
+                  completion([response], nil)
+              } else {
+                  completion(nil, error)
+                  print(error.debugDescription)
+                  print(error?.localizedDescription ?? "")
+              }
+          }
+      }
+    
+    class func getFavoriteWatchList(id: Int? = nil,  completion: @escaping([Movie]?, Error?)-> Void){
+           taskForGETRequest(url: EndPoints.getUserWatchListMovie(id ?? 0).url, response: Movie.self) { (response, error) in
+                 if let response = response {
+                     // print("search:\(response)")
+                     completion([response], nil)
+                 } else {
+                     completion(nil, error)
+                     print(error.debugDescription)
+                     print(error?.localizedDescription ?? "")
+                 }
+             }
+         }
     
 }

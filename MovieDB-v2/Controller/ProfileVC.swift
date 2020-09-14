@@ -11,6 +11,9 @@ import UIKit
 class ProfileVC: BaseVC {
 
     let test = UILabel()
+    
+ 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -38,16 +41,33 @@ class ProfileVC: BaseVC {
         
         let btn1 = UIButton()
         contentView.addSubview(btn1)
-        btn1.position(top: logoView.bottomAnchor, bottom: contentView.bottomAnchor)
-        btn1.size( width: 200, height: 100)
+        btn1.position(top: logoView.bottomAnchor, bottom: contentView.bottomAnchor, insets: .init(top: 10, left: 10, bottom: 0, right: 0))
+        btn1.size( width: 100, height: 100)
         btn1.backgroundColor = .blue
         btn1.addTarget(self, action: #selector(favoriteBtn), for: .touchUpInside)
         btn1.setTitle("Favorite", for: .normal)
+        
+        
+        let btn2 = UIButton()
+        contentView.addSubview(btn2)
+        btn2.position(top: logoView.bottomAnchor,left:btn1.trailingAnchor , bottom: contentView.bottomAnchor, insets: .init(top: 10, left: 10, bottom: 0, right: 10))
+        btn2.size( width: 100, height: 100)
+        btn2.backgroundColor = .blue
+        btn2.addTarget(self, action: #selector(watchListbtn), for: .touchUpInside)
+        btn2.setTitle("Watch List", for: .normal)
     }
     
     @objc func favoriteBtn(){
         print("hi")
         let vc = UserMovieList()
+        vc.isChangeView = 0
         navigationController?.pushViewController(vc, animated: true)
     }
+    @objc func watchListbtn(){
+        print("hi")
+        let vc = UserMovieList()
+        vc.isChangeView = 1
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
 }

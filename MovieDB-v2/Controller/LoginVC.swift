@@ -24,6 +24,7 @@ class LoginVC : BaseVC {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        isShowBottomTab = false
         resetBase()
         view.backgroundColor = .white
         setupLogin()

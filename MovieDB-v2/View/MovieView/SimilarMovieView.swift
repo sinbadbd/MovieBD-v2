@@ -39,6 +39,9 @@ class SimilarMovieView: UIView {
                         
                         self.collectionView.reloadData()
                         self.setupUI()
+                        self.collectionView.isHidden = false
+                    }else {
+                        self.collectionView.isHidden = true
                     }
                 }
             }
