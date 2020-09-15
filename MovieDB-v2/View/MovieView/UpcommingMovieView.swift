@@ -42,32 +42,29 @@ class UpcommingMovieView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        //        backgroundColor = .blue
-        
-        setupCollectionView()
-        
-//        var global_id = app?.results.
-        
-        APIClient.getPopularMovieList { (response, error) in
-            // print(response)
-            
-            if let response = response {
-                print(response)
-                self.movie = response
-                self.result = response[0].results ?? []
-                GLOBAL_MOVIE_ID = self.result[0].id
-                print("MOVIE ID:::\(GLOBAL_MOVIE_ID)")
-//                self.global_movie_id = self.movie.
-                
-            }
-            DispatchQueue.main.async {
-                
-                self.collectionView.reloadData()
-            }
-        }
-        
-        //        print("hello up view")
+ serverData()
+    }
+    
+    func serverData(){
+           APIClient.getUpcomingMovies { (response, error) in
+                    // print(response)
+                    
+                    if let response = response {
+                        print("response-upcommig: \(response)")
+                        self.movie = response
+                        self.result = response[0].results ?? []
+                        GLOBAL_MOVIE_ID = self.result[0].id
+                        print("MOVIE ID:::\(GLOBAL_MOVIE_ID)")
+        //                self.global_movie_id = self.movie.
+                        
+                    }
+                    DispatchQueue.main.async {
+                       self.setupCollectionView()
+                        self.collectionView.reloadData()
+                        
+                    }
+           
+                }
     }
     
     func setupCollectionView(){

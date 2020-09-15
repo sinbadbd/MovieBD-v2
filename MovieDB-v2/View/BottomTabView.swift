@@ -20,10 +20,10 @@ var navController: UINavigationController!
 
 class BottomTabView: UIView{
     
-    let homeButton = UIButton(type: .system)
-    let profileButton = UIButton(type: .custom)
+    let homeButton     = UIButton(type: .system)
+    let profileButton  = UIButton(type: .custom)
     let settingsButton = UIButton(type: .custom)
-    let otherButton = UIButton(type: .custom)
+    let otherButton    = UIButton(type: .custom)
     
     let mainMenuButton = UIButton(type: .custom)
     
@@ -60,26 +60,16 @@ class BottomTabView: UIView{
         
         addSubview(mainMenuButton)
         mainMenuButton.translatesAutoresizingMaskIntoConstraints = false
-        mainMenuButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -27).isActive = true
+        mainMenuButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -48).isActive = true
         mainMenuButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         mainMenuButton.widthAnchor.constraint(equalToConstant: 46).isActive = true
         mainMenuButton.heightAnchor.constraint(equalToConstant: 46).isActive = true
         mainMenuButton.layer.cornerRadius =  23
-        
-  
-       // mainMenuButton.layer.borderWidth = 4.0
-//        mainMenuButton.layer.borderColor = UIColor.blue.cgColor
-        mainMenuButton.backgroundColor = .green
+ 
+        mainMenuButton.backgroundColor = .red
         mainMenuButton.setImage(UIImage(named: "gear"), for: .normal)
         
-        
-//
-//        mainMenuButton.addSubview(rainbowCircle!)
-//          rainbowCircle?.translatesAutoresizingMaskIntoConstraints = false
-//          rainbowCircle?.widthAnchor.constraint(equalToConstant: 65).isActive = true
-//          rainbowCircle?.heightAnchor.constraint(equalToConstant: 65).isActive = true
-//
-        
+ 
         
         
         addSubview(profileButton)
@@ -127,7 +117,7 @@ class BottomTabView: UIView{
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = createPath()
         shapeLayer.strokeColor = UIColor.red.cgColor
-        shapeLayer.fillColor = UIColor.green.cgColor
+        shapeLayer.fillColor = UIColor(red: 0.969, green: 0.969, blue: 0.969, alpha: 1.0).cgColor
         shapeLayer.lineWidth = 0.1
         
         if let oldShapeLayer = self.shapeLayer {

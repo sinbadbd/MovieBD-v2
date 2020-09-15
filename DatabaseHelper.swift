@@ -11,6 +11,7 @@ import UIKit
 import CoreData
 
 class DatabaseHelper {
+    
     static let shared = DatabaseHelper()
     
     let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext

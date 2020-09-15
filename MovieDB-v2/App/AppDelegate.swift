@@ -36,23 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
     
-    func checkSession(){
-        
-       
-        if (UserDefaults.standard.object(forKey: "session_token") != nil) {
-              self.userDefault.setLoginSatus(value: false)
-            
-            if (UserDefaults.standard.object(forKey: "user_name") != nil) {
-                user_name = (UserDefaults.standard.object(forKey: "user_name")) as! String
-            }
-            
-            session_token = (UserDefaults.standard.object(forKey: "session_token")) as! String
-            print(session_token)
-            print(user_name)
-            
-        }
-    }
-
+ 
     
     // MARK: - Core Data stack
        

@@ -8,7 +8,13 @@
 
 import UIKit
 
+extension UIApplication {
 
+   var statusBarView: UIView? {
+      return value(forKey: "statusBar") as? UIView
+    }
+
+}
 class BaseVC: UIViewController {
     var isTopbar = true
     var isTLogo = true
@@ -36,6 +42,7 @@ class BaseVC: UIViewController {
     
     func setupUI() {
         
+
         self.view.addSubview(containerView)
         
         containerView.translatesAutoresizingMaskIntoConstraints = false
@@ -133,26 +140,10 @@ class BaseVC: UIViewController {
         bottomView = BottomTabView()
         bottomView?.delegate = self
         contentView.addSubview(bottomView!)
-        bottomView?.position( bottom: contentView.bottomAnchor, right: nil, insets: .init(top: 0, left: 0, bottom: 0, right: 0))
-        bottomView?.size(wAnchor: nil, hAnchor: nil,  height: 50, dimensionWidth: contentView.widthAnchor)
-        
-//        UIApplication.shared.windows.addSubview(bottomView!)
-//        UIApplication.shared.keyWindow?.bringSubviewToFront(bottomView!)
-//        bottomView?.translatesAutoresizingMaskIntoConstraints = false
-         //bottomTab.backgroundColor = .gray
-//        bottomView?.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
-//        bottomView?.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-//        bottomView?.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-//        bottomView?.heightAnchor.constraint(equalToConstant: 50).isActive = true
-//        bottomView?.bringSubviewToFront(contentView)
+        bottomView?.position( bottom: view.bottomAnchor, right: nil, insets: .init(top: 0, left: 0, bottom: 0, right: 0))
+        bottomView?.size(wAnchor: nil, hAnchor: nil,  height: 70, dimensionWidth: contentView.widthAnchor)
        bottomView?.layer.zPosition = 999999
-//        UIApplication.shared.keyWindow!.bringSubviewToFront((bottomView)!)
-  
-         if #available(iOS 11.0, *) {
-            bottomView?.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-         } else {
-            bottomView?.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-         }
+
      }
 
 

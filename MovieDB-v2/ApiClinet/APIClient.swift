@@ -32,6 +32,7 @@ class APIClient {
         case getPopularMovies
         case getTopRatedMovies
         case getDiscoverMovies
+        case getUpcomingMovies
         case getMovieDetailsId(Int)
         case getMovieCreditsId(Int)
         case getArtistProfielId(Int)
@@ -62,6 +63,7 @@ class APIClient {
             case .getPopularMovies : return EndPoints.BASE_URL + "movie/popular" + EndPoints.apiKeyParam
             case .getTopRatedMovies: return EndPoints.BASE_URL + "movie/top_rated" + EndPoints.apiKeyParam
             case .getDiscoverMovies: return EndPoints.BASE_URL + "discover/movie" + EndPoints.apiKeyParam
+            case .getUpcomingMovies: return EndPoints.BASE_URL + "movie/upcoming" + EndPoints.apiKeyParam
             case .getMovieDetailsId(let id) : return EndPoints.BASE_URL + "movie/\(id)" + EndPoints.apiKeyParam
             //            case .getMovieCreditAll : return EndPoints.BASE_URL + "movie/\(id)/credits" + EndPoints.apiKeyParam
             case .getMovieCreditsId(let id) : return  EndPoints.BASE_URL + "movie/\(id)/credits" + EndPoints.apiKeyParam
@@ -203,6 +205,20 @@ class APIClient {
         }
         task.resume()
     }
+    
+    class func getUpcomingMovies(completion: @escaping([Movie]?, Error?)-> Void) {
+           // print(EndPoints.getNowPlayingMovie.url)
+           taskForGETRequest(url: EndPoints.getUpcomingMovies.url, response: Movie.self) { (response, error) in
+               if let response = response {
+                   completion([response], nil)
+               } else {
+                   completion([], error)
+                   print(error.debugDescription)
+               }
+           }
+       }
+    
+    
     //@GET NOW PLAYING MOVIE LIST
     class func getNowPlayingMovieList(completion: @escaping([NowPlayingMovie]?, Error?)-> Void) {
         // print(EndPoints.getNowPlayingMovie.url)
@@ -232,9 +248,9 @@ class APIClient {
     }
     
     //@GET TOP RATED MOVIE
-    class func getTopRatedMovieList(completion: @escaping([TopRated]?, Error?)-> Void) {
+    class func getTopRatedMovieList(completion: @escaping([Movie]?, Error?)-> Void) {
         //print(EndPoints.getTopRatedMovies.url)
-        taskForGETRequest(url: EndPoints.getTopRatedMovies.url, response: TopRated.self) { (response, error) in
+        taskForGETRequest(url: EndPoints.getTopRatedMovies.url, response: Movie.self) { (response, error) in
             if let response = response {
                 //  print("topMovi\([response.results])")
                 completion([response], nil)
