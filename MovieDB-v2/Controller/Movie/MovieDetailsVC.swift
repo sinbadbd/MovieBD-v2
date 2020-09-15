@@ -71,6 +71,7 @@ class MovieDetailsVC: BaseVC {
     
     var student = [MovieDataSaveTable]()
     
+    var rateValue:Double = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -326,17 +327,17 @@ class MovieDetailsVC: BaseVC {
         )
         
         
-//        let movieDesView = UIView()
-//        contentView.addSubview(movieDesView)
-//        movieDesView.position(top: movieCastView.bottomAnchor, left: contentView.leadingAnchor, bottom: nil, right: contentView.trailingAnchor, insets: .init(top: 20, left: 15, bottom: 0, right:15))
-//
-//        movieDesView.backgroundColor = .red
+        //        let movieDesView = UIView()
+        //        contentView.addSubview(movieDesView)
+        //        movieDesView.position(top: movieCastView.bottomAnchor, left: contentView.leadingAnchor, bottom: nil, right: contentView.trailingAnchor, insets: .init(top: 20, left: 15, bottom: 0, right:15))
+        //
+        //        movieDesView.backgroundColor = .red
         
-//        let titleDes = UILabel()
-//        movieDesView.addSubview(titleDes)
-//        titleDes.position(top: movieDesView.topAnchor, left: movieDesView.leadingAnchor, bottom: movieDesView.bottomAnchor, right: movieDesView.trailingAnchor, insets: .init(top: 10, left: 10, bottom: 10, right: 10))
-//        titleDes.text = "Functions can be nested. Nested functions have access to variables that were declared in the outer function. You can use nested functions to organize the code in a function that is long or complex."
-//        titleDes.numberOfLines = 0
+        //        let titleDes = UILabel()
+        //        movieDesView.addSubview(titleDes)
+        //        titleDes.position(top: movieDesView.topAnchor, left: movieDesView.leadingAnchor, bottom: movieDesView.bottomAnchor, right: movieDesView.trailingAnchor, insets: .init(top: 10, left: 10, bottom: 10, right: 10))
+        //        titleDes.text = "Functions can be nested. Nested functions have access to variables that were declared in the outer function. You can use nested functions to organize the code in a function that is long or complex."
+        //        titleDes.numberOfLines = 0
         
         
         
@@ -467,15 +468,15 @@ class MovieDetailsVC: BaseVC {
                     if save_session_token ==  save_session_token {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
                             // your code here
-                        //    let dict = ["isFavMovie": self.isSelectedFavButton] // CORE DATA: DIC
+                            //    let dict = ["isFavMovie": self.isSelectedFavButton] // CORE DATA: DIC
                             
-//                            DatabaseHelper.
-                        //    DatabaseHelper.shared.saveFavorite(dic: dict)
-//                            self.student =  DatabaseHelper.shared.getStudentData()
-//                            print(<#T##items: Any...##Any#>)
-//                            if self.student {
-//                                sender.setImage(UIImage(named: "heart-selected"), for: .normal)
-//                            }
+                            //                            DatabaseHelper.
+                            //    DatabaseHelper.shared.saveFavorite(dic: dict)
+                            //                            self.student =  DatabaseHelper.shared.getStudentData()
+                            //                            print(<#T##items: Any...##Any#>)
+                            //                            if self.student {
+                            //                                sender.setImage(UIImage(named: "heart-selected"), for: .normal)
+                            //                            }
                             sender.setImage(UIImage(named: "heart-selected"), for: .normal)
                             self.isSelectedFavButton = true //
                             self.makeFavoriteMovie(isFav: true) // API
@@ -536,7 +537,7 @@ class MovieDetailsVC: BaseVC {
             }else {
                 sender.setImage(UIImage(named: "bookmark"), for: .normal)
                 self.isSelectedBookButton = false
-                      self.markWatchMovieList(isWatch: false)
+                self.markWatchMovieList(isWatch: false)
                 print(isSelectedBookButton)
             }
             //             selectedItem = sender.tag
@@ -565,20 +566,27 @@ class MovieDetailsVC: BaseVC {
         
         
         
-        //Animation#
-        basickAnimation.toValue = 0.5
+         //Animation#
+        rateValue =   movieDetails!.voteAverage
+        let calValue = rateValue/10
+         basickAnimation.toValue = Double(String(format: "%.1f", calValue))
+//        basickAnimation.toValue = getMovieRating(rating:movieDetails?.voteAverage ?? 0)
+        print("basickAnimation.toValue \(basickAnimation.toValue ?? 0)")
         basickAnimation.duration = 3
         basickAnimation.fillMode = .forwards
         basickAnimation.isRemovedOnCompletion = false
         shapeLayer.add(basickAnimation, forKey: "Basic")
         
-        textlayer.frame = CGRect(x: -20, y: -12, width: 40, height: 22)
+        textlayer.frame = CGRect(x: -20, y: -10, width: 40, height: 22)
         textlayer.fontSize = 20
         textlayer.alignmentMode = .center
         textlayer.isWrapped = true
-        self.textlayer.string = "\(String(describing:0.3))"
+        self.textlayer.string = "\(String(describing:movieDetails?.voteAverage ?? 0))"
+        textlayer.fontSize = 15
         textlayer.foregroundColor = UIColor.black.cgColor
         shapeLayer.addSublayer(textlayer) // caLayer is and instance of parent CALayer
+        
+//        setNeedsFocusUpdate()
     }
     
     
@@ -619,6 +627,7 @@ class MovieDetailsVC: BaseVC {
         vedioPlayer.id = self.movieDetails?.id
         self.present(vedioPlayer, animated: true, completion: nil)
     }
+
 }
 
 
