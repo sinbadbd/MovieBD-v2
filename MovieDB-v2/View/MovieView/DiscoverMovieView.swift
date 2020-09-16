@@ -16,25 +16,13 @@ class DiscoverMovieView: UIView {
     
     private let CELL_ID =  "CELL"
     
-    
-    
     var movie = [Discover]()
     var app: Movie?
     
-    
-
     private var result = [Result]()
-//
-//    var didSelectHandler : ((Movie) -> ())?
-//        var didSelectCallback: (() -> Void)?
-    
+
     var callback: ((_ id: Int) -> Void)?
-    
-//    var setData = Int
-    //    var
-    var global_movie_id :Int = 0
-    
-   
+       
     private let collectionView : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -45,31 +33,19 @@ class DiscoverMovieView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        //        backgroundColor = .blue
-        
         setupCollectionView()
         
-//        var global_id = app?.results.
-        
         APIClient.getDiscoverMovieList { (response, error) in
-            // print(response)
-            
             if let response = response {
                 print(response)
                 self.movie = response
-                self.result = response[0].results ?? []
+                self.result = response[0].results
                 GLOBAL_MOVIE_ID = self.result[0].id
-                print("MOVIE ID:::\(GLOBAL_MOVIE_ID)")
-//                self.global_movie_id = self.movie.
-                
             }
             DispatchQueue.main.async {
-                
                 self.collectionView.reloadData()
             }
         }
-        
-        //        print("hello up view")
     }
     
     func setupCollectionView(){
@@ -86,9 +62,6 @@ class DiscoverMovieView: UIView {
     
     override func layoutIfNeeded() {
         backgroundColor = .red
-        
-        
-        print("hello up view")
     }
     
     required init?(coder: NSCoder) {
@@ -104,7 +77,6 @@ extension DiscoverMovieView: UICollectionViewDelegate, UICollectionViewDataSourc
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CELL_ID, for: indexPath) as! UpcommingCollectionViewCell
-        // cell.backgroundColor = .red
         cell.layer.cornerRadius = 10
         
         let data = result[indexPath.item]
@@ -120,7 +92,6 @@ extension DiscoverMovieView: UICollectionViewDelegate, UICollectionViewDataSourc
          let data = result[indexPath.item]
         
         let callBackId =  data.id
-        
         callback?(callBackId)
  
     }

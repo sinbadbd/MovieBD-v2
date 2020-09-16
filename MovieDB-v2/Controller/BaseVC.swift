@@ -33,7 +33,7 @@ class BaseVC: UIViewController {
     //contentHeight:NSLayoutConstraint?
     
     
-    var bottomView : BottomTabView?
+//    var bottomView : BottomTabView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -130,21 +130,22 @@ class BaseVC: UIViewController {
             setViewBackgroundImageDash(vc: self)
         }
    
-        self.view.layoutIfNeeded()
+     
         //self.contentHeight!.constant = scrollView.frame.size.height//max
-        if isShowBottomTab{
-               setupBottomTabBar()
-           }
+//        if isShowBottomTab{
+//               setupBottomTabBar()
+//           }
+           self.view.layoutIfNeeded()
     }
-    func setupBottomTabBar(){
-        bottomView = BottomTabView()
-        bottomView?.delegate = self
-        contentView.addSubview(bottomView!)
-        bottomView?.position( bottom: view.bottomAnchor, right: nil, insets: .init(top: 0, left: 0, bottom: 0, right: 0))
-        bottomView?.size(wAnchor: nil, hAnchor: nil,  height: 70, dimensionWidth: contentView.widthAnchor)
-       bottomView?.layer.zPosition = 999999
-
-     }
+//    func setupBottomTabBar(){
+//        bottomView = BottomTabView()
+//        bottomView?.delegate = self
+//        view.addSubview(bottomView!)
+//        bottomView?.position( bottom: view.bottomAnchor, right: nil, insets: .init(top: 0, left: 0, bottom: 0, right: 0))
+//        bottomView?.size(wAnchor: nil, hAnchor: nil,  height: 70, dimensionWidth: view.widthAnchor)
+//        bottomView?.layer.zPosition = 999999
+//        bottomView?.bringSubviewToFront(contentView)
+//     }
 
 
 //    }
@@ -178,15 +179,12 @@ class BaseVC: UIViewController {
         }
         
     }
-    
-    
 }
  
 
-
-extension BaseVC: BottomViewProtocol {
-    func profileBtn(sender: UIButton) {
-        let vc = ProfileVC()
-        navigationController?.pushViewController(vc, animated: true)
-    }
-}
+//extension BaseVC: BottomViewProtocol {
+//    func profileBtn(sender: UIButton) {
+//        let vc = ProfileVC()
+//        navigationController?.pushViewController(vc, animated: true)
+//    }
+//}

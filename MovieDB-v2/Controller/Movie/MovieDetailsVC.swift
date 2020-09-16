@@ -64,7 +64,7 @@ class MovieDetailsVC: BaseVC {
     
     let userDefault = UserDefaults.standard
     
-    var isSelectedFavButton : Bool = false
+    var isSelectedFavButton  : Bool = false
     var isSelectedStarButton : Bool = false
     var isSelectedBookButton : Bool = false
     
@@ -198,7 +198,7 @@ class MovieDetailsVC: BaseVC {
         playVedioButton.isUserInteractionEnabled = true
         //             playVedioButton.layer.cornerRadius = self.playVedioButton.frame.size.width / 2
         //             playVedioButton.layer.masksToBounds = true
-        playVedioButton.anchor(top: nil, leading: nil, bottom: nil, trailing: nil, size: CGSize(width: 60, height: 60))
+        playVedioButton.anchor(top: nil, leading: nil, bottom: nil, trailing: nil, size: CGSize(width: 40, height: 40))
         playVedioButton.setImage(UIImage(named: "play")?.withRenderingMode(.alwaysOriginal), for: .normal)
         playVedioButton.clipsToBounds = true
         
