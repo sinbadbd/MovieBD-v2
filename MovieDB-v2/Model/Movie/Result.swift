@@ -7,8 +7,9 @@
 //
 
 import Foundation
+import SwiftUI
 
-struct Result: Decodable {
+struct Result: Decodable, Identifiable {
     let voteCount: Int
     let id: Int
     let video: Bool

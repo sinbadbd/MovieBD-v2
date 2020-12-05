@@ -526,7 +526,19 @@ class APIClient {
              }
      }
     
-    
+    class func getUserProfileData(completion: @escaping(UserModel?, Error?)->Void) {
+         print(EndPoints.getUserProfileData.url)
+         taskForGETRequest(url: EndPoints.getUserProfileData.url, response: UserModel.self) { (response, error) in
+             if let response = response {
+                 print(response)
+                 completion(response, nil)
+             } else {
+                 completion(response, error)
+                 print(error.debugDescription)
+                 print(error?.localizedDescription ?? "")
+             }
+         }
+     }
     
     
 }

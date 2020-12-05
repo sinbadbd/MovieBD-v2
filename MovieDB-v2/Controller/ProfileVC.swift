@@ -7,20 +7,25 @@
 //
 
 import UIKit
+import SDWebImage
 
 class ProfileVC: BaseVC {
 
     let test = UILabel()
     
- 
+    let userData : UserModel? = nil
+    var userArray = [String:Any]()
     
+    var userName = ""
+    
+    var imageURL = ""
     override func viewDidLoad() {
         super.viewDidLoad()
         
         isTopbar = false
         isShowBottomTab = false
         resetBase()
-        
+        getServerdata()
         setupView()
     }
     func setupView(){
@@ -31,12 +36,15 @@ class ProfileVC: BaseVC {
         hederView.backgroundColor = .red
         
         
-        let logoView = UIView()
+        let logoView = UIImageView()
         contentView.addSubview(logoView)
         logoView.position(top: hederView.bottomAnchor, insets: .init(top: -50, left: 0, bottom: 0, right: 0))
         logoView.size(  width: 100, height: 100)
         logoView.layer.cornerRadius = 50
         logoView.centerXInSuper()
+        let url = URL(string: self.imageURL)
+        print("url:\(String(describing: url))")
+        logoView.sd_setImage(with: url, completed: nil)
         logoView.backgroundColor = .green
         
         let btn1 = UIButton()
@@ -57,6 +65,18 @@ class ProfileVC: BaseVC {
         btn2.setTitle("Watch List", for: .normal)
     }
     
+    
+    func getServerdata(){
+        APIClient.getUserProfileData { (response, error) in
+            if let response = response {
+                print(response)
+                self.userName = response.name
+                self.imageURL =  response.avatar.gravatar.hash
+                print("self.imageURL: \(self.imageURL)")
+//                self.userArray = response.
+            }
+        }
+    }
     @objc func favoriteBtn(){
         print("hi")
         let vc = UserMovieList()

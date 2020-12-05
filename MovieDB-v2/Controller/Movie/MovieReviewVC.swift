@@ -26,7 +26,7 @@ class MovieReviewVC: UIViewController {
     }
     
     func getServerData(_ page: Int){
-        APIClient.getMovieReviewId(page: page, id: 299536) { (response, error) in
+        APIClient.getMovieReviewId(page: page, id:GLOBAL_MOVIE_ID) { (response, error) in
             if let response = response {
                 self.page = response[0].page
                 self.totalPages = response[0].totalPages

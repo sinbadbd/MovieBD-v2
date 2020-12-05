@@ -141,10 +141,14 @@ class AlertView: UIView {
         //        UIApplication.shared.windows.a
         
         //        UIApplication.shared.windows.first { $0.isKeyWindow }
-        if let app = UIApplication.shared.delegate as? AppDelegate{
-            //            MBProgressHUD.show(text, view:window)
-            addSubview(mainContainer)
-            //            app.addS
+        if #available(iOS 13.0, *) {
+            if let app = UIApplication.shared.delegate as? AppDelegate{
+                //            MBProgressHUD.show(text, view:window)
+                addSubview(mainContainer)
+                //            app.addS
+            }
+        } else {
+            // Fallback on earlier versions
         }
         
         

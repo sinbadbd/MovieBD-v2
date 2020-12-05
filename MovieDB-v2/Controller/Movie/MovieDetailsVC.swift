@@ -37,6 +37,7 @@ class MovieDetailsVC: BaseVC {
     let movieOverViewContainer = UIView()
     let userScoreLabel  : UILabel =  UILabel()
     
+    let topActorTitle = UILabel()
     let overviewTextLabel: UILabel = UILabel()
     let fullCastCrewLabel: UILabel = UILabel()
     let textlayer = CATextLayer()
@@ -309,22 +310,35 @@ class MovieDetailsVC: BaseVC {
         //runtime
         
         
-        let topActorTitle = UILabel()
+      
         contentView.addSubview(topActorTitle)
-        topActorTitle.text = "Top Cast"
+     
         topActorTitle.font = UIFont(name: appFontBold, size: 24)
         topActorTitle.position(top: movieDetailsText.bottomAnchor,left: contentView.leadingAnchor, insets: .init(top: 15, left: 10, bottom: 0, right: 0    ))
         //        topActorTitle.size(height: 20)
         
         // MARK:: MOVIE CAST
         contentView.addSubview(movieCastView)
-        movieCastView.anchor(top: topActorTitle.bottomAnchor,
-                             leading: contentView.leadingAnchor,
-                             bottom: nil,
-                             trailing: contentView.trailingAnchor,
-                             padding: .init(top: 0, left: 10, bottom: 0, right: 20),
-                             size: CGSize(width: .init(), height:280)
-        )
+        if movieCastView.casts.count > 0 {
+            topActorTitle.text = "Top Cast"
+            movieCastView.anchor(top: topActorTitle.bottomAnchor,
+                                 leading: contentView.leadingAnchor,
+                                 bottom: nil,
+                                 trailing: contentView.trailingAnchor,
+                                 padding: .init(top: 0, left: 10, bottom: 0, right: 20),
+                                 size: CGSize(width: .init(), height:280)
+            )
+        }else {
+            topActorTitle.text = ""
+            movieCastView.anchor(top: topActorTitle.bottomAnchor,
+                                 leading: contentView.leadingAnchor,
+                                 bottom: nil,
+                                 trailing: contentView.trailingAnchor,
+                                 padding: .init(top: 0, left: 10, bottom: 0, right: 20),
+                                 size: CGSize(width: .init(), height:0)
+            )
+        }
+
         
         
         //        let movieDesView = UIView()
@@ -427,7 +441,11 @@ class MovieDetailsVC: BaseVC {
             coinBtn.layer.cornerRadius = coinBtn.frame.size.height*0.33;
             coinBtn.setTitle("\(aDict.name ?? "")", for: UIControl.State.normal)
             coinBtn.setTitleColor(.black, for: UIControl.State.normal)
-            coinBtn.layer.borderColor = UIColor.link.cgColor
+            if #available(iOS 13.0, *) {
+                coinBtn.layer.borderColor = UIColor.link.cgColor
+            } else {
+                // Fallback on earlier versions
+            }
             coinBtn.layer.borderWidth = 1
             //            coinBtn.backgroundColor = .green
             coinBtn.titleLabel?.font = UIFont(name: appFontLight, size: 12)
