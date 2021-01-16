@@ -74,6 +74,10 @@ class MovieDetailsVC: BaseVC {
     
     var rateValue:Double = 0
     
+    
+    let moviesaveKey = "\(GLOBAL_MOVIE_ID)movieID"
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         isTopbar = false
@@ -495,6 +499,8 @@ class MovieDetailsVC: BaseVC {
                             //                            if self.student {
                             //                                sender.setImage(UIImage(named: "heart-selected"), for: .normal)
                             //                            }
+                            self.userDefault.set(self.isSelectedFavButton, forKey: self.moviesaveKey)
+                            //self.userDefault.bool(forKey: self.moviesaveKey)
                             sender.setImage(UIImage(named: "heart-selected"), for: .normal)
                             self.isSelectedFavButton = true //
                             self.makeFavoriteMovie(isFav: true) // API
@@ -508,6 +514,9 @@ class MovieDetailsVC: BaseVC {
                 }
                 selectedItem = sender.tag
             }else {
+                self.userDefault.set(self.isSelectedFavButton, forKey: self.moviesaveKey)
+//                self.userDefault.set(false, forKey: "SwitchState")
+//                sender.setImage(UIImage(named: "heart-selected"), for: .normal)
                 sender.setImage(UIImage(named: "heart"), for: .normal)
                 self.makeFavoriteMovie(isFav: false)
                 isSelectedFavButton = false
