@@ -100,7 +100,7 @@ class APIClient {
             case .getUserProfileData:  return EndPoints.BASE_URL +  "account" + EndPoints.apiKeyParam + "&session_id=\(save_session_token ?? "")"
                 
             }
-            // account/278/favorite/movies?api_key=de05a59a85ef1e7797de8d4a6d343d0e&session_id=b16c44eab94c78513d62946a881a3be71760b7d9&language=en-US&sort_by=created_at.desc&page=1
+
         }
         var url : URL {
             return URL(string: stringValue)!
