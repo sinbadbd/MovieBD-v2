@@ -25,6 +25,7 @@ var user_name = ""
 //
 
 let save_session_token = UserDefaults.standard.string(forKey: "session_token")
+let save_movie_key = UserDefaults.standard.string(forKey: "\(GLOBAL_MOVIE_ID)key" ?? "")
 //print(name)?
 
 

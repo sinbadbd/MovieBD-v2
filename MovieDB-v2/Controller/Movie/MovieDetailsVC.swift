@@ -75,7 +75,7 @@ class MovieDetailsVC: BaseVC {
     var rateValue:Double = 0
     
     
-    let moviesaveKey = "\(GLOBAL_MOVIE_ID)movieID"
+    let moviesaveKey = "\(GLOBAL_MOVIE_ID)_key"
     
     
     override func viewDidLoad() {
@@ -91,7 +91,8 @@ class MovieDetailsVC: BaseVC {
             self.getDetailsData()
         } 
         callBackNavigation()
-        
+        let strings = self.userDefault.object(forKey: "\(save_movie_key ?? "")")
+        print("all_save_key:\(strings ?? "")")
     }
     override func viewWillAppear(_ animated: Bool) {
         //          navigationItem.title = "\(String(describing: movieDetails?.originalTitle))"
@@ -489,21 +490,38 @@ class MovieDetailsVC: BaseVC {
                     
                     if save_session_token ==  save_session_token {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
-                            // your code here
-                            //    let dict = ["isFavMovie": self.isSelectedFavButton] // CORE DATA: DIC
+
+                            var dataToSave:[String:Any]  = [:]
+
                             
-                            //                            DatabaseHelper.
-                            //    DatabaseHelper.shared.saveFavorite(dic: dict)
-                            //                            self.student =  DatabaseHelper.shared.getStudentData()
-                            //                            print(<#T##items: Any...##Any#>)
-                            //                            if self.student {
-                            //                                sender.setImage(UIImage(named: "heart-selected"), for: .normal)
-                            //                            }
-                            self.userDefault.set(self.isSelectedFavButton, forKey: self.moviesaveKey)
-                            //self.userDefault.bool(forKey: self.moviesaveKey)
-                            sender.setImage(UIImage(named: "heart-selected"), for: .normal)
+                           // dataToSave["movie+key"] = save_movie_key//"\(save_movie_key ?? "")"
+//
+                            //dataToSave["movie_key"] = self.moviesaveKey //"\(save_movie_key ?? "")"
+                            dataToSave["\(self.moviesaveKey)"] =  self.moviesaveKey
+                            //
+                            
+                            // self.userDefault.set(self.isSelectedFavButton, forKey: self.moviesaveKey)
+//                            //self.userDefault.bool(forKey: self.moviesaveKey)
+//                            self.userDefault.set(dataToSave, forKey: save_movie_key ?? "")
+//                            print("dataToSave::\(dataToSave)")
+//
+                            
+//                            saveDictionary(dict: dataToSave, key: save_movie_key ?? "")
+//                            getDictionary(key:  save_movie_key ?? "")
+//                            print(getDictionary(key:  save_movie_key ?? ""))
+//
+                            self.userDefault.set(dataToSave, forKey: "\(save_movie_key ?? "")")
+                          //  let strings = self.userDefault.object(forKey: "\(save_movie_key ?? "")")
+                            var strings: [String:Any] = self.userDefault.object(forKey: save_movie_key ?? "") as? [String:Any] ?? [:]
+
+                            print("strings: \(String(describing: strings))")
+                            print("dataToSave:\(dataToSave)")
+                            if (strings != nil) {
+                                sender.setImage(UIImage(named: "heart-selected"), for: .normal)
+                            }
+                          
                             self.isSelectedFavButton = true //
-                            self.makeFavoriteMovie(isFav: true) // API
+//                            self.makeFavoriteMovie(isFav: true) // API
                         }
                     }
                     
@@ -514,12 +532,12 @@ class MovieDetailsVC: BaseVC {
                 }
                 selectedItem = sender.tag
             }else {
-                self.userDefault.set(self.isSelectedFavButton, forKey: self.moviesaveKey)
+               // self.userDefault.set(self.isSelectedFavButton, forKey: self.moviesaveKey)
 //                self.userDefault.set(false, forKey: "SwitchState")
 //                sender.setImage(UIImage(named: "heart-selected"), for: .normal)
                 sender.setImage(UIImage(named: "heart"), for: .normal)
-                self.makeFavoriteMovie(isFav: false)
-                isSelectedFavButton = false
+//                self.makeFavoriteMovie(isFav: false)
+                //isSelectedFavButton = false
                 print(isSelectedFavButton)
             }
             

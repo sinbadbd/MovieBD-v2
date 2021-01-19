@@ -33,17 +33,22 @@ class SimilarMovieView: UIView {
     func getServerData(){
         APIClient.getMovieSimilarId(id: GLOBAL_MOVIE_ID) { (response, error) in
             if let response = response {
-                self.result = response[0].results ?? []
-                DispatchQueue.main.async {
-                    if self.result.count > 0 {
-                        
-                        self.collectionView.reloadData()
-                        self.setupUI()
-                        self.collectionView.isHidden = false
-                    }else {
-                        self.collectionView.isHidden = true
-                    }
+                
+                for item in response {
+                    print(item.results)
                 }
+                
+//                self.result = response[0].results ?? []
+////                DispatchQueue.main.async {
+//                    if self.result.count > 0 {
+//                        
+//                        self.collectionView.reloadData()
+//                        self.setupUI()
+//                        self.collectionView.isHidden = false
+//                    }else {
+//                        self.collectionView.isHidden = true
+//                    }
+////                }
             }
         }
     }

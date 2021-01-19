@@ -153,3 +153,24 @@ func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
     
     return newImage!
 }
+
+//func saveDictionary(dict: Dictionary<String, Any>, key: String){
+//     let preferences = UserDefaults.standard
+//     let encodedData: Data = NSKeyedArchiver.archivedData(withRootObject: dict)
+//     preferences.set(encodedData, forKey: key)
+//     // Checking the preference is saved or not
+//     didSave(preferences: preferences)
+//}
+//    
+//func getDictionary(key: String) -> Dictionary<String, Any> {
+//     let preferences = UserDefaults.standard
+//     if preferences.object(forKey: key) != nil{
+//     let decoded = preferences.object(forKey: key)  as! Data
+//     let decodedDict = NSKeyedUnarchiver.unarchiveObject(with: decoded) as! Dictionary<String, Any>
+//            
+//     return decodedDict
+//   } else {
+//      let emptyDict = Dictionary<String, Any>()
+//      return emptyDict
+//   }
+//}

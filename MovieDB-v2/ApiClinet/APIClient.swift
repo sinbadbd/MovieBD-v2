@@ -488,7 +488,7 @@ class APIClient {
         print(EndPoints.getSimilarId(id))
         taskForGETRequest(url: EndPoints.getSimilarId(id).url, response: Movie.self) { (response, error) in
             if let response = response {
-                print(response)
+                print(response.results ?? [])
                 completion([response], nil)
             } else {
                 completion([], error)
