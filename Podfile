@@ -11,7 +11,10 @@ target 'MovieDB-v2' do
 #  pod 'YouTubePlayer'
   pod 'YouTubePlayer'
   pod 'SVProgressHUD'
-pod 'SnapKit'
-pod "TinyConstraints"
+  pod 'SnapKit'
+  pod "TinyConstraints"
+  pod 'RxSwift', '6.5.0'
+  pod "PromiseKit", "~> 6.8"
+  pod 'XCGLogger', '~> 7.0.1'
 #pod 'TwitterKit'
 end
