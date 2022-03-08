@@ -13,5 +13,5 @@ target 'MovieDB-v2' do
   pod 'SVProgressHUD'
 pod 'SnapKit'
 pod "TinyConstraints"
-pod 'TwitterKit'
+#pod 'TwitterKit'
 end

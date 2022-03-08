@@ -516,7 +516,6 @@
 				1D21DDDF249C84E000B55D9A /* Frameworks */,
 				1D21DDE0249C84E000B55D9A /* Resources */,
 				1484B11686C368772CAD1D24 /* [CP] Embed Pods Frameworks */,
-				74F4BA2AAA07DD616838AA77 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -628,23 +627,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MovieDB-v2/Pods-MovieDB-v2-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		74F4BA2AAA07DD616838AA77 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MovieDB-v2/Pods-MovieDB-v2-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MovieDB-v2/Pods-MovieDB-v2-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MovieDB-v2/Pods-MovieDB-v2-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8ADE66C4916ED0C1C3F516DE /* [CP] Check Pods Manifest.lock */ = {
