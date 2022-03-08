@@ -29,7 +29,7 @@ final class PlatformVC: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         adjustTabbar()
-        view.backgroundColor = .blue
+//        view.backgroundColor = .blue
 //        delegate = self
         Log.info()
      }

@@ -21,7 +21,8 @@ final class HomeCoordinator: Coordinator {
         viewModel = HomeVM()
 //        viewModel.delegate = viewController
         viewController.viewModel = viewModel
- 
+        viewModel.delegate = viewController
+        Log.info()
         //if InboxManager.isEmpty { InboxManager.mockList() }
     }
 }

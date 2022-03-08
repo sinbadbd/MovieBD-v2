@@ -15,7 +15,7 @@ final class PlatformCoordinator: Coordinator {
     lazy var platformVC = PlatformVC.getVC()
     
     private var homeCo: HomeCoordinator!
-//    private var packagesCo: PackageBrowserCoordinator! //PackagesCoordinator!
+    private var tvCo: TvCoordinator! //PackagesCoordinator!
 //    private var rewardsCo: RewardsCoordinator!
 //    private var servicesCo: ServicesCoordinator!
 //    private var moreCo: MoreCoordinator!
@@ -52,7 +52,7 @@ final class PlatformCoordinator: Coordinator {
 extension PlatformCoordinator {
     private func setupTabCo() {
         homeCo = .init(navController: navController)
-//        packagesCo = .init(requester: self)
+        tvCo = .init(navController: navController)
 //        rewardsCo = .init(requester: self)
 //        servicesCo = .init(requester: self)
 //        moreCo = .init(requester: self)
@@ -68,16 +68,16 @@ extension PlatformCoordinator {
     private func setupTabbar() {
         addTab(
             coord: homeCo,
-            normalImage: #imageLiteral(resourceName: "heart"),
-            selectedImage: #imageLiteral(resourceName: "heart-selected"),
+            normalImage: #imageLiteral(resourceName: "home"),
+            selectedImage: #imageLiteral(resourceName: "home"),
             title: "Home"//PlatformTab.home.string.localized()
         )
-//        addTab(
-//            coord: packagesCo,
-//            normalImage: #imageLiteral(resourceName: "ic_package"),
-//            selectedImage: #imageLiteral(resourceName: "ic_packages_selected"),
-//            title: PlatformTab.packages.string.localized()
-//        )
+        addTab(
+            coord: tvCo,
+            normalImage: #imageLiteral(resourceName: "search"),
+            selectedImage: #imageLiteral(resourceName: "search"),
+            title: "Tv"//PlatformTab.packages.string.localized()
+        )
 //        addTab(
 //            coord: rewardsCo,
 //            normalImage: #imageLiteral(resourceName: "ic_rewards"),
@@ -99,7 +99,7 @@ extension PlatformCoordinator {
 //
         platformVC.viewControllers = [
             homeCo.getVC(),
-//            packagesCo.getVC(),
+            tvCo.getVC(),
 //            rewardsCo.getVC(),
 //            servicesCo.getVC(),
 //            moreCo.getVC()
@@ -111,6 +111,7 @@ extension PlatformCoordinator {
         let vc = coord.getVC()
         vc.tabBarItem = UITabBarItem(title: title, image: normalImage,
                                      selectedImage: selectedImage)
+        
     }
     
 //    private func handleLoadTab(_ tab: PlatformTab) {

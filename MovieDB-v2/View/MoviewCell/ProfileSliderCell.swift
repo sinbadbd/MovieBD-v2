@@ -8,7 +8,9 @@
 
 import Foundation
 import UIKit
-class ProfileSliderCell : UICollectionViewCell {
+
+class ProfileSliderCell : UICollectionViewCell, Reusable {
+    
     let imageSlider : UIImageView = UIImageView()
     
     override init(frame: CGRect) {
@@ -26,3 +28,4 @@ class ProfileSliderCell : UICollectionViewCell {
     }
     
 }
+
