@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 public class MovieCollectionCell: UICollectionViewCell, Reusable {
     
@@ -32,7 +33,9 @@ public class MovieCollectionCell: UICollectionViewCell, Reusable {
         stackView = mainView.VStack(spacing: 10)
         stackView?.fitToSuper(insets: .init(top: 0, left: 0, bottom:10, right: 0))
         
-        imageView.backgroundColor = .red
+        imageView.backgroundColor = .gray
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         stackView?.addArrangedSubview(imageView)
 
         stackView?.addArrangedSubview(setView())
@@ -44,7 +47,7 @@ public class MovieCollectionCell: UICollectionViewCell, Reusable {
         stackView = view.VStack(spacing: 10)
         stackView?.fitToSuper(insets: .init(top: 0, left: 10, bottom:0, right: 0))
 
-        starLabel.text = "7.8"
+
         starLabel.font = UIFont.boldSystemFont(ofSize: 14)
         starLabel.textColor = .black
         starLabel.numberOfLines = 0
@@ -61,7 +64,10 @@ public class MovieCollectionCell: UICollectionViewCell, Reusable {
         return view
     }
     
-    func configure() {
+    func configureCell(poster: URL?, rating: Double?, title: String?) {
+        imageView.sd_setImage(with: poster, completed: nil)
+        starLabel.text = "\(rating ?? 0.0)"
+        movieTitle.text = title
     }
     
     required init?(coder: NSCoder) {

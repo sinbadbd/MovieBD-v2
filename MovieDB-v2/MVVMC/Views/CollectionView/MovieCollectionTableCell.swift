@@ -17,6 +17,7 @@ class MovieCollectionTableCell: UITableViewCell, Reusable {
     
     weak var delegate: MovieDetilsProtocol?
     
+    var movie: [Result]?
     
     private let collectionView : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -25,9 +26,10 @@ class MovieCollectionTableCell: UITableViewCell, Reusable {
         return collection
     }()
     
-    public init(delegate: MovieDetilsProtocol?){
+    public init(movie: [Result], delegate: MovieDetilsProtocol?){
         super.init(style: .default, reuseIdentifier: MovieCollectionTableCell.nibName)
-        self.delegate = delegate
+        self.movie = movie
+        self.delegate = delegate 
         setupUI()
     }
     
@@ -44,6 +46,9 @@ class MovieCollectionTableCell: UITableViewCell, Reusable {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.register(MovieCollectionCell.self, forCellWithReuseIdentifier: MovieCollectionCell.nibName)
         shadowForViewLight(shadow: collectionView)
+        collectionView.reloadData()
+        
+         
     }
     
     
@@ -51,14 +56,22 @@ class MovieCollectionTableCell: UITableViewCell, Reusable {
     
 }
 
+extension MovieCollectionTableCell {
+    func getMovieData(){
+        
+    }
+}
+
 extension MovieCollectionTableCell: UICollectionViewDelegate, UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 9
+        return movie?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView .dequeueReusableCell(withReuseIdentifier: MovieCollectionCell.nibName, for: indexPath) as! MovieCollectionCell
-        
+        let data = movie?[indexPath.item]
+        let img =  URL(string: "\(APIClient.EndPoints.BACKDROP_PATH + (data?.backdropPath)!)")
+        cell.configureCell(poster: img, rating: data?.voteAverage, title: data?.title)
         return cell
     }
     

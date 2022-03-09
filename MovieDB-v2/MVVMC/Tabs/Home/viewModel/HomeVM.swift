@@ -20,6 +20,7 @@ final class HomeVM {
     
     var onCompletion: Completion?
     
+    private var movies: [Result]?
     private var rows: [TVRow] = []
     enum RowType: ItemType {
         case separator
@@ -30,24 +31,26 @@ final class HomeVM {
 }
 extension HomeVM {
     func LoadData(){
+        fetchUpcomingCall()
         setupdata()
     }
     
     private func setupdata(){
         defer { delegate?.listUpdated(rows)}
         rows = []
-        
+
         rows.append(TVRow(.separator, cell: SeparatorCell.separator(20, .clear)))
         rows.append(TVRow(.topbar, cell: MainTopbarTableCell()))
         rows.append(TVRow(.separator, cell: SeparatorCell.separator(20, .clear)))
         
-        for i in 0..<4 {
-            
-            rows.append(TVRow(.topbar, cell: TitleBarTableCell()))
-            rows.append(TVRow(.separator, cell: SeparatorCell.separator(12, .clear)))
-            rows.append(TVRow(.topbar, cell: MovieCollectionTableCell(delegate: self)))
-            rows.append(TVRow(.separator, cell: SeparatorCell.separator(40, .clear)))
+        rows.append(TVRow(.topbar, cell: TitleBarTableCell()))
+        rows.append(TVRow(.separator, cell: SeparatorCell.separator(12, .clear)))
+        
+        for _ in 0..<[movies].count {
+            rows.append(TVRow(.topbar, cell: MovieCollectionTableCell(movie: movies ?? [], delegate: self)))
         }
+        rows.append(TVRow(.separator, cell: SeparatorCell.separator(40, .clear)))
+      
         
     }
 }
@@ -65,3 +68,19 @@ extension HomeVM: MovieDetilsProtocol {
    }
 }
    
+extension HomeVM {
+    func fetchUpcomingCall(){
+        APIClient.getAllMovieList(type: .upcoming) {[weak self] response, error in
+            if let error = error {
+                print(error)
+                return
+            }
+            if let response = response {
+                self?.movies = response[0].results ?? []
+            }
+            DispatchQueue.main.async { 
+                self?.setupdata()
+            }
+        }
+    }
+}

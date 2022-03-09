@@ -35,12 +35,8 @@ extension  HomeCoordinator {
     func setDetailsVC(){
         let coor = MoviesDetailsCoordinator(navController: navController)
         coor.start()
-        
-        
     }
 }
-
-
 
 extension HomeCoordinator: TabBarItemCoordinator {
     func getVC() -> UIViewController { return viewController }

@@ -10,6 +10,24 @@
 //http://api.themoviedb.org/3/movie/420817?api_key=de05a59a85ef1e7797de8d4a6d343d0e&append_to_response=videos
 
 import Foundation
+
+enum MovieURl {
+    case nowPlaying
+    case popular
+    case topRated
+    case upcoming
+    
+    func description() -> String {
+        switch self {
+        case .nowPlaying: return "now_playing"
+        case .popular: return "popular"
+        case .topRated: return "top_rated"
+        case .upcoming: return "upcoming"
+        }
+    }
+}
+
+
 class APIClient {
     static let key = "?api_key=de05a59a85ef1e7797de8d4a6d343d0e"
     var page_id = 1
@@ -49,6 +67,8 @@ class APIClient {
         case markWatchList
         case setRating
         
+        case getAllMovieList(String)
+        
         // Auth
         case getRequestToken
         case login
@@ -64,6 +84,10 @@ class APIClient {
             case .getTopRatedMovies: return EndPoints.BASE_URL + "movie/top_rated" + EndPoints.apiKeyParam
             case .getDiscoverMovies: return EndPoints.BASE_URL + "discover/movie" + EndPoints.apiKeyParam
             case .getUpcomingMovies: return EndPoints.BASE_URL + "movie/upcoming" + EndPoints.apiKeyParam
+                
+            case .getAllMovieList(let query): return EndPoints.BASE_URL + "movie/\(query)" + EndPoints.apiKeyParam
+                
+                
             case .getMovieDetailsId(let id) : return EndPoints.BASE_URL + "movie/\(id)" + EndPoints.apiKeyParam
             //            case .getMovieCreditAll : return EndPoints.BASE_URL + "movie/\(id)/credits" + EndPoints.apiKeyParam
             case .getMovieCreditsId(let id) : return  EndPoints.BASE_URL + "movie/\(id)/credits" + EndPoints.apiKeyParam
@@ -206,6 +230,19 @@ class APIClient {
             
         }
         task.resume()
+    }
+    
+    
+    class func getAllMovieList(type: MovieURl, completion: @escaping([Movie]?, Error?)-> Void){
+        let url = type.description()
+        taskForGETRequest(url: EndPoints.getAllMovieList(url).url, response: Movie.self) { response, error in
+            if let response = response {
+                completion([response], nil)
+            } else {
+                completion([], error)
+                print(error.debugDescription)
+            }
+        }
     }
     
     class func getUpcomingMovies(completion: @escaping([Movie]?, Error?)-> Void) {
