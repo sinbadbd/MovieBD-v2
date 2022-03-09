@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
- 
+
 protocol HomeVMVMDelegate: AnyObject {
     func listUpdated(_ list:[TVRow])
 }
@@ -18,13 +18,10 @@ final class HomeVM {
     weak var delegate: HomeVMVMDelegate?
     private var rows: [TVRow] = []
     enum RowType: ItemType {
-        case caption
         case separator
-        case border
-        case title
-        case list
+        case topbar
     }
- 
+    
     deinit { Log.info() }
 }
 extension HomeVM {
@@ -34,11 +31,11 @@ extension HomeVM {
     
     private func setupdata(){
         defer { delegate?.listUpdated(rows)}
-         rows = []
+        rows = []
         
-        for i in 0..<50 {
-            rows.append(TVRow(.list, cell: TestCell(item: i)))
-        }
+        rows.append(TVRow(.separator, cell: SeparatorCell.separator(20, .clear)))
+        rows.append(TVRow(.topbar, cell: MainTopbarTableCell()))
+
     }
 }
 fileprivate extension TVRow {
@@ -47,37 +44,4 @@ fileprivate extension TVRow {
     }
 }
 
-
-
-
-class TestCell : UITableViewCell, Reusable {
-    
-    let imageSlider = UIImageView()
-    
-    public init(item: Int){
-        super.init(style: .default, reuseIdentifier: TestCell.nibName)
-        backgroundColor = .clear
-        selectionStyle = .none
-        setsdfdf(item: item)
-    }
-    
-    func setsdfdf(item: Int){
-        addSubview(imageSlider)
-        if item % 2 == 0 {
-            
-            imageSlider.backgroundColor = .blue
-        }else {
-            
-            imageSlider.backgroundColor = .red
-        }
-        imageSlider.contentMode = .scaleAspectFill
-        imageSlider.anchor(top: topAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor)
-        imageSlider.translatesAutoresizingMaskIntoConstraints = false
-        imageSlider.size(width:100,height: 100)
-    }
-  
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-}
+ 

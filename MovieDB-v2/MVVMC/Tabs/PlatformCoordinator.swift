@@ -26,8 +26,8 @@ final class PlatformCoordinator: Coordinator {
         self.window = window
         //        delegate = .init()
         navController = UINavigationController(rootViewController: platformVC)
-        //        navController?.navigationBar.isHidden = false
-        //        navController?.setNavigationBarHidden(true, animated: false)
+        navController?.navigationBar.isHidden = false
+        navController?.setNavigationBarHidden(true, animated: false)
         //        viewModel = PlatformVM()
         //        platformVC.requester = self
         //        platformVC.viewModel = viewModel

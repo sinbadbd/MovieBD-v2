@@ -40,7 +40,6 @@ final class HomeVC: UIViewController, Reusable {
       
         view.addSubview(tableView)
         tableView.fitToSuper()
-        tableView.allowsSelection = false
         tableView.separatorStyle = .none
       
      }

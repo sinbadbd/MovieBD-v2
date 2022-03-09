@@ -44,7 +44,7 @@ func getButtonWithImage(frame:CGRect, imgName:String, imgSz:CGSize, imgClr:UICol
 
 
 //MARK: Color
-func hexToUIColor (hex:String) -> UIColor {
+public func hexToUIColor (hex:String) -> UIColor {
     var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
     
     if (cString.hasPrefix("#")) {
