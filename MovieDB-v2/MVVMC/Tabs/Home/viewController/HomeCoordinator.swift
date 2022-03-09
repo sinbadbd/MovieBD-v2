@@ -14,12 +14,12 @@ final class HomeCoordinator: Coordinator {
     private var viewController: HomeVC
     private var childCo: Coordinator?
     private var viewModel: HomeVM
- 
+    
     init(navController: UINavigationController?) {
         self.navController = navController
         viewController = HomeVC()
         viewModel = HomeVM()
-//        viewModel.delegate = viewController
+        //        viewModel.delegate = viewController
         viewController.viewModel = viewModel
         viewModel.delegate = viewController
         Log.info()

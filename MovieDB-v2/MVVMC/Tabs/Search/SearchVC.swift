@@ -1,14 +1,14 @@
 //
-//  TvVC.swift
+//  SearchVC.swift
 //  MovieDB-v2
 //
-//  Created by Imran on 8/3/22.
+//  Created by Imran on 9/3/22.
 //  Copyright © 2022 portonics. All rights reserved.
 //
 
 import UIKit
 
-final class TvVC: UIViewController, Reusable {
+final class SearchVC: UIViewController, Reusable {
     public var viewModel: HomeVM!
     
     override func viewDidLoad() {
@@ -19,6 +19,6 @@ final class TvVC: UIViewController, Reusable {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         Log.info()
-        self.navigationController?.navigationBar.topItem?.title = "TV" 
+        self.navigationController?.navigationBar.topItem?.title = "Search"
     }
 }

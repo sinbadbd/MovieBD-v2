@@ -31,12 +31,13 @@ final class HomeVC: UIViewController, Reusable {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         Log.info()
+        self.navigationController?.navigationBar.topItem?.title = "Movies"
+
     }
     
     func setupUI() {
         Log.info()
-     
-        
+      
         view.addSubview(tableView)
         tableView.fitToSuper()
         tableView.allowsSelection = false
