@@ -35,7 +35,16 @@ extension HomeVM {
         
         rows.append(TVRow(.separator, cell: SeparatorCell.separator(20, .clear)))
         rows.append(TVRow(.topbar, cell: MainTopbarTableCell()))
-
+        rows.append(TVRow(.separator, cell: SeparatorCell.separator(20, .clear)))
+        
+        for i in 0..<4 {
+            
+            rows.append(TVRow(.topbar, cell: TitleBarTableCell()))
+            rows.append(TVRow(.separator, cell: SeparatorCell.separator(12, .clear)))
+            rows.append(TVRow(.topbar, cell: MovieCollectionTableCell()))
+            rows.append(TVRow(.separator, cell: SeparatorCell.separator(40, .clear)))
+        }
+        
     }
 }
 fileprivate extension TVRow {
