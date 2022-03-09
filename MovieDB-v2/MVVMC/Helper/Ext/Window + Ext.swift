@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 public extension UIWindow {
     
     static var key: UIWindow? {
@@ -29,6 +30,18 @@ public extension UIWindow {
                           options: .transitionCrossDissolve, animations: {}, completion: nil)
     }
 }
+
+public extension UINavigationController {
+    func eliminate<T: UIViewController>(_ : T.Type) -> [UIViewController]? {
+        return viewControllers.compactMap { $0 is T ? nil : $0 }
+    }
+    
+    func push(vc: UIViewController?, animated: Bool = true) {
+        guard let vc = vc else { return }
+        pushViewController(vc, animated: animated)
+    }
+}
+
 
 
 public protocol Reusable: AnyObject {

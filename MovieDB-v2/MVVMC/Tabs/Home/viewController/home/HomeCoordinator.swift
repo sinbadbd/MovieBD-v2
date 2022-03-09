@@ -24,8 +24,24 @@ final class HomeCoordinator: Coordinator {
         viewModel.delegate = viewController
         Log.info()
         //if InboxManager.isEmpty { InboxManager.mockList() }
+        
+        viewModel.onCompletion = { [weak self] in
+            self?.setDetailsVC()
+        }
     }
 }
+
+extension  HomeCoordinator {
+    func setDetailsVC(){
+        let coor = MoviesDetailsCoordinator(navController: navController)
+        coor.start()
+        
+        
+    }
+}
+
+
+
 extension HomeCoordinator: TabBarItemCoordinator {
     func getVC() -> UIViewController { return viewController }
 }

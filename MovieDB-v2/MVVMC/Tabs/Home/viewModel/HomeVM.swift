@@ -16,6 +16,10 @@ protocol HomeVMVMDelegate: AnyObject {
 
 final class HomeVM {
     weak var delegate: HomeVMVMDelegate?
+    weak var detailsDelegate: MovieDetilsProtocol?
+    
+    var onCompletion: Completion?
+    
     private var rows: [TVRow] = []
     enum RowType: ItemType {
         case separator
@@ -41,7 +45,7 @@ extension HomeVM {
             
             rows.append(TVRow(.topbar, cell: TitleBarTableCell()))
             rows.append(TVRow(.separator, cell: SeparatorCell.separator(12, .clear)))
-            rows.append(TVRow(.topbar, cell: MovieCollectionTableCell()))
+            rows.append(TVRow(.topbar, cell: MovieCollectionTableCell(delegate: self)))
             rows.append(TVRow(.separator, cell: SeparatorCell.separator(40, .clear)))
         }
         
@@ -54,3 +58,10 @@ fileprivate extension TVRow {
 }
 
  
+extension HomeVM: MovieDetilsProtocol {
+   func setIndexPath(item: IndexPath) {
+       print(item)
+       onCompletion?()
+   }
+}
+   

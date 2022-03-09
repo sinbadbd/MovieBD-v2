@@ -7,12 +7,16 @@
 //
 
 import UIKit
-
-class MovieCollectionView {
-    
+ 
+protocol MovieDetilsProtocol: AnyObject {
+    func setIndexPath(item: IndexPath)
 }
 
 class MovieCollectionTableCell: UITableViewCell, Reusable {
+    
+    
+    weak var delegate: MovieDetilsProtocol?
+    
     
     private let collectionView : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -21,8 +25,9 @@ class MovieCollectionTableCell: UITableViewCell, Reusable {
         return collection
     }()
     
-    public init(){
+    public init(delegate: MovieDetilsProtocol?){
         super.init(style: .default, reuseIdentifier: MovieCollectionTableCell.nibName)
+        self.delegate = delegate
         setupUI()
     }
     
@@ -62,6 +67,7 @@ extension MovieCollectionTableCell: UICollectionViewDelegate, UICollectionViewDa
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath.item)
+        delegate?.setIndexPath(item: indexPath)
+        Log.debug(delegate?.setIndexPath(item: indexPath))
     }
 }
