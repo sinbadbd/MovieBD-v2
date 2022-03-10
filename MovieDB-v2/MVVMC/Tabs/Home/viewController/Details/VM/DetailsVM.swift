@@ -18,7 +18,7 @@ final class DetailsVM {
     weak var delegate: DetailsVMVMDelegate?
     var onCompletion: Completion?
     
-    public var movies: [Result]?
+    public var movies: Result?
     public var type: MovieUrlPath?
 
     private var rows: [TVRow] = []
@@ -27,6 +27,10 @@ final class DetailsVM {
         case caption
         case separator
         case imageContent
+    }
+    
+    init(movie: Result?){
+        self.movies = movie
     }
     
     deinit { Log.info() }
@@ -40,11 +44,11 @@ extension DetailsVM {
         defer { delegate?.listUpdated(rows)}
         rows = []
  
-        rows.append(TVRow.init(.topBanner, cell: BannerImageCell()))
+        rows.append(TVRow.init(.topBanner, cell: BannerImageCell(movie: movies)))
         rows.append(TVRow(.separator, cell: SeparatorCell.separator(10, .clear)))
         rows.append(TVRow.init(.caption, cell: CaptionCell()))
         rows.append(TVRow(.separator, cell: SeparatorCell.separator(10, .clear)))
-        rows.append(TVRow.init(.imageContent, cell: ImageWithContentCell()))
+        rows.append(TVRow.init(.imageContent, cell: ImageWithContentCell(movie: movies)))
         rows.append(TVRow(.separator, cell: SeparatorCell.separator(20, .clear)))
         rows.append(TVRow.init(.imageContent, cell: WishListButtonCell()))
     }

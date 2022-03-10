@@ -16,10 +16,10 @@ final class MoviesDetailsCoordinator: Coordinator {
     private var viewModel: DetailsVM
     var onBack: Completion?
     
-    init(navController: UINavigationController?) {
+    init(movie: Result?,navController: UINavigationController?) {
         self.navController = navController
         viewController = MoviesDetailsVC()
-        viewModel = DetailsVM()
+        viewModel = DetailsVM(movie: movie)
         viewModel.delegate = viewController
         viewController.viewModel = viewModel
         Log.info()

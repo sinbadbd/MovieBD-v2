@@ -27,8 +27,12 @@ final class HomeCoordinator: Coordinator {
         Log.info()
         //if InboxManager.isEmpty { InboxManager.mockList() }
         
-        viewModel.onCompletion = { [weak self] in
-            self?.setDetailsVC()
+//        viewModel.onCompletion = { [weak self] in
+//            self?.setDetailsVC(movie: <#Result?#>)
+//        }
+        
+        viewModel.onCompletion = { [weak self] movie in
+            self?.setDetailsVC(movie: movie)
         }
     }
     
@@ -42,8 +46,8 @@ final class HomeCoordinator: Coordinator {
 }
 
 extension  HomeCoordinator {
-    func setDetailsVC(){
-        let coord = MoviesDetailsCoordinator(navController: navController)
+    func setDetailsVC(movie: Result?){
+        let coord = MoviesDetailsCoordinator(movie: movie, navController: navController)
         childCo = coord
         coord.onBack = { [weak self] in self?.removeChaild() }
         coord.start()

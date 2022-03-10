@@ -15,10 +15,13 @@ protocol HomeVMVMDelegate: AnyObject {
 }
 
 final class HomeVM {
+    
+    typealias MovieDetails = (_ movie: Result?) -> Void
+    
     weak var delegate: HomeVMVMDelegate?
     weak var detailsDelegate: MovieDetilsProtocol?
     
-    var onCompletion: Completion?
+    var onCompletion: MovieDetails? //Completion?
     
     public var movies: [Result]?
     public var type: MovieUrlPath?
@@ -111,8 +114,8 @@ fileprivate extension TVRow {
 
 extension HomeVM: MovieDetilsProtocol {
     func setIndexPath(item: Result) {
-        Log.debug(item)
-        onCompletion?()
+        //Log.debug(item)
+        onCompletion?(item)
     }
     
 //    func setIndexPath(item: IndexPath) {

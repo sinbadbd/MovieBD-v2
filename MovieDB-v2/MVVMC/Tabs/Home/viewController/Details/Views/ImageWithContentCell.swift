@@ -13,16 +13,18 @@ class ImageWithContentCell: UITableViewCell, Reusable {
     var stackView : UIStackView?
     let posterImage = UIImageView()
     let detailsLbl = UILabel()
+    
     var movie: Result?
     
-    public init(){ //movie: Result?
+    public init(movie: Result?){ //movie: Result?
         super.init(style: .default, reuseIdentifier: BannerImageCell.nibName)
-        //        self.movie =  movie
+        self.movie =  movie
         setupUI()
     }
     func setupUI(){
         setupStact()
         addToStack()
+        configureCell()
     }
     
     func setupStact(){
@@ -31,14 +33,15 @@ class ImageWithContentCell: UITableViewCell, Reusable {
     }
     
     func addToStack(){
-        posterImage.backgroundColor = .systemGreen
-        posterImage.size(width:140,height: 140,widthPriority: 250)
+        posterImage.backgroundColor = .clear
+        posterImage.size(width:120,height: 180,widthPriority: 250)
         posterImage.contentMode = .scaleAspectFit
-        posterImage.layer.cornerRadius = 4
+        posterImage.layer.masksToBounds = true
+//        posterImage.clipsToBounds = true
+        posterImage.layer.cornerRadius = 6
         stackView?.addArrangedSubview(posterImage)
-       
-        detailsLbl.text = "This 7-day valThis 7-day valThis 7-day valThis 7-day valThis 7-day valThis 7-day valThis 7-day valThis 7-day valThis 7-day valThis 7-day valThis 7-day valThis 7-day valThis 7-day valThis 7-day valThis 7-day valThis 7-day valThis 7-day valThis 7-day valThis 7-day valThis 7-day valThis 7-day valThis 7-day valThis 7-day valThis 7-day valThis 7-day valThis 7-day valThis 7-day valThis 7-day valThis 7-day valThis 7-day"
-        detailsLbl.numberOfLines = 4
+
+        detailsLbl.numberOfLines = 6
         detailsLbl.font = UIFont.systemFont(ofSize: 14)
         detailsLbl.textColor = .lightGray
         
@@ -46,7 +49,9 @@ class ImageWithContentCell: UITableViewCell, Reusable {
     }
     
     func configureCell(){
-        
+        let img =  URL(string: "\(APIClient.EndPoints.POSTER_URL + (movie?.posterPath)!)")
+        posterImage.sd_setImage(with: img, completed: nil)
+        detailsLbl.text = movie?.overview
     }
     
     required init?(coder: NSCoder) {  fatalError("init(coder:) has not been implemented")  }
