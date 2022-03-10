@@ -36,6 +36,7 @@ public class MovieCollectionCell: UICollectionViewCell, Reusable {
         imageView.backgroundColor = .gray
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
+        imageView.size(height:190, heightPriority: 250)
         stackView?.addArrangedSubview(imageView)
 
         stackView?.addArrangedSubview(setView())

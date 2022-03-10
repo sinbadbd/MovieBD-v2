@@ -13,7 +13,9 @@ final class HomeCoordinator: Coordinator {
     private var navController: UINavigationController?
     private var viewController: HomeVC
     private var childCo: Coordinator?
+    private var oldStack: [UIViewController]?
     private var viewModel: HomeVM
+    var onBack: Completion?
     
     init(navController: UINavigationController?) {
         self.navController = navController
@@ -29,12 +31,27 @@ final class HomeCoordinator: Coordinator {
             self?.setDetailsVC()
         }
     }
+    
+    func stop() {
+        guard let stack = oldStack else { return }
+        childCo = nil
+        navController?.setViewControllers(stack, animated: true)
+    }
+    
+   deinit{ Log.info() }
 }
 
 extension  HomeCoordinator {
     func setDetailsVC(){
-        let coor = MoviesDetailsCoordinator(navController: navController)
-        coor.start()
+        let coord = MoviesDetailsCoordinator(navController: navController)
+        childCo = coord
+        coord.onBack = { [weak self] in self?.removeChaild() }
+        coord.start()
+    }
+    
+    func removeChaild(){
+        childCo?.stop?()
+        childCo = nil
     }
 }
 

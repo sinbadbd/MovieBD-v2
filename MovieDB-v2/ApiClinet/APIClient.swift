@@ -11,7 +11,7 @@
 
 import Foundation
 
-enum MovieURl {
+enum MovieUrlPath {
     case nowPlaying
     case popular
     case topRated
@@ -233,7 +233,7 @@ class APIClient {
     }
     
     
-    class func getAllMovieList(type: MovieURl, completion: @escaping([Movie]?, Error?)-> Void){
+    class func getAllMovieList(type: MovieUrlPath, completion: @escaping([Movie]?, Error?)-> Void){
         let url = type.description()
         taskForGETRequest(url: EndPoints.getAllMovieList(url).url, response: Movie.self) { response, error in
             if let response = response {

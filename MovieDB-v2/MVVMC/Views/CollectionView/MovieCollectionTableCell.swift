@@ -9,7 +9,7 @@
 import UIKit
  
 protocol MovieDetilsProtocol: AnyObject {
-    func setIndexPath(item: IndexPath)
+    func setIndexPath(item: Result)
 }
 
 class MovieCollectionTableCell: UITableViewCell, Reusable {
@@ -48,9 +48,7 @@ class MovieCollectionTableCell: UITableViewCell, Reusable {
         shadowForViewLight(shadow: collectionView)
         collectionView.reloadData()
         
-         
     }
-    
     
     required init?(coder: NSCoder) {   fatalError("init(coder:) has not been implemented")   }
     
@@ -80,7 +78,8 @@ extension MovieCollectionTableCell: UICollectionViewDelegate, UICollectionViewDa
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate?.setIndexPath(item: indexPath)
-        Log.debug(delegate?.setIndexPath(item: indexPath))
+        guard let data = movie?[indexPath.item] else { return  }
+        delegate?.setIndexPath(item: data)
+        Log.debug(data)
     }
 }

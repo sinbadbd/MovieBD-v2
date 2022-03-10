@@ -13,23 +13,24 @@ final class MoviesDetailsCoordinator: Coordinator {
     private var navController: UINavigationController?
     private var viewController: MoviesDetailsVC
     private var childCo: Coordinator?
-//    private var viewModel: HomeVM
+    private var viewModel: DetailsVM
+    var onBack: Completion?
     
     init(navController: UINavigationController?) {
         self.navController = navController
         viewController = MoviesDetailsVC()
-//        viewModel = HomeVM()
-        //        viewModel.delegate = viewController
-//        viewController.viewModel = viewModel
-//        viewModel.delegate = viewController
+        viewModel = DetailsVM()
+        viewModel.delegate = viewController
+        viewController.viewModel = viewModel
         Log.info()
-        //if InboxManager.isEmpty { InboxManager.mockList() }
     }
     
     func start() {
         Log.info()
+        viewController.onBack = onBack
         navController?.push(vc: viewController)
     }
+    func stop() { viewController.pop() }
 }
 extension MoviesDetailsCoordinator: TabBarItemCoordinator {
     func getVC() -> UIViewController { return viewController }
