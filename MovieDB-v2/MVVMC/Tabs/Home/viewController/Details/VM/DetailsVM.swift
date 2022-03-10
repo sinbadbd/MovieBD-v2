@@ -46,11 +46,14 @@ extension DetailsVM {
  
         rows.append(TVRow.init(.topBanner, cell: BannerImageCell(movie: movies)))
         rows.append(TVRow(.separator, cell: SeparatorCell.separator(10, .clear)))
-        rows.append(TVRow.init(.caption, cell: CaptionCell()))
+        rows.append(TVRow.init(.caption, cell: CaptionCell(movie: movies)))
         rows.append(TVRow(.separator, cell: SeparatorCell.separator(10, .clear)))
         rows.append(TVRow.init(.imageContent, cell: ImageWithContentCell(movie: movies)))
         rows.append(TVRow(.separator, cell: SeparatorCell.separator(20, .clear)))
         rows.append(TVRow.init(.imageContent, cell: WishListButtonCell()))
+        rows.append(TVRow(.separator, cell: SeparatorCell.separator(15, .clear)))
+        rows.append(TVRow.init(.caption, cell: MovieRatingScoreCell(movie: movies)))
+
     }
 }
 fileprivate extension TVRow {

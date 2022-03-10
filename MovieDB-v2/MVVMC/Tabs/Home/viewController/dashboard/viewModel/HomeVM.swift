@@ -55,7 +55,7 @@ extension HomeVM {
         }.then { _ in
             self.fetchUpcomingCall(for: .popular)
         }.then { _ in
-            self.fetchUpcomingCall(for: .topRated)
+            self.fetchUpcomingCall(for: .popular)
         }.done { _ in
             
         }.catch { error in
@@ -81,25 +81,25 @@ extension HomeVM {
         
     }
     func upcommingMovie(){
-        rows.append(TVRow(.topbar, cell: TitleBarTableCell(type: type)))
+        rows.append(TVRow(.topbar, cell: TitleBarTableCell.init(color: .red, title: "Upcomming Movies", seeAll: "See All")))
         rows.append(TVRow(.separator, cell: SeparatorCell.separator(12, .clear)))
         rows.append(TVRow(.upcoming, cell: MovieCollectionTableCell(movie: movies ?? [], delegate: self)))
         rows.append(TVRow(.separator, cell: SeparatorCell.separator(40, .clear)))
     }
     func nowPlayingMovie(){
-        rows.append(TVRow(.topbar, cell: TitleBarTableCell(type: type)))
+        rows.append(TVRow(.topbar, cell: TitleBarTableCell.init(color: .green, title: "Now Playing Movies", seeAll: "See All")))
         rows.append(TVRow(.separator, cell: SeparatorCell.separator(12, .clear)))
         rows.append(TVRow(.playing, cell: MovieCollectionTableCell(movie: movies ?? [], delegate: self)))
         rows.append(TVRow(.separator, cell: SeparatorCell.separator(40, .clear)))
     }
     func popularMovie(){
-        rows.append(TVRow(.topbar, cell: TitleBarTableCell(type: type)))
+        rows.append(TVRow(.topbar, cell: TitleBarTableCell.init(color: .blue, title: "Popular Movies", seeAll: "See All")))
         rows.append(TVRow(.separator, cell: SeparatorCell.separator(12, .clear)))
         rows.append(TVRow(.popular, cell: MovieCollectionTableCell(movie: movies ?? [], delegate: self)))
         rows.append(TVRow(.separator, cell: SeparatorCell.separator(40, .clear)))
     }
     func topRatedMovie(){
-        rows.append(TVRow(.topbar, cell: TitleBarTableCell(type: type)))
+        rows.append(TVRow(.topbar, cell: TitleBarTableCell.init(color: .orange, title: "TopRated Movies", seeAll: "See All")))
         rows.append(TVRow(.separator, cell: SeparatorCell.separator(12, .clear)))
         rows.append(TVRow(.toprated, cell: MovieCollectionTableCell(movie: movies ?? [], delegate: self)))
         rows.append(TVRow(.separator, cell: SeparatorCell.separator(40, .clear)))

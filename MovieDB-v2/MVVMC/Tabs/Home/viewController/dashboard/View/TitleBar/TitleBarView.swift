@@ -41,7 +41,7 @@ class TitleBarView: UIView {
     }
     
     func addToStack(){
-        colorView.size(width: 6)
+        colorView.size(width: 4)
         colorView.layer.cornerRadius = 2
         stackView?.addArrangedSubview(colorView)
         

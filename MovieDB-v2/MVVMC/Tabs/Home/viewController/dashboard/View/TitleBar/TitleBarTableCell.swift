@@ -12,13 +12,14 @@ class TitleBarTableCell: UITableViewCell, Reusable {
     
     var stackView : UIStackView?
     var type: MovieUrlPath?
+    let titleBar = TitleBarView()
     
-    public init(type: MovieUrlPath?){
+    public init(color: UIColor?, title: String?, seeAll: String?){
         super.init(style: .default, reuseIdentifier: TitleBarTableCell.nibName)
         backgroundColor = .clear
         selectionStyle = .none
-        self.type = type ?? .upcoming
         setupUI()
+        getCell(color: color ?? .gray, title: title ?? "", seeAll: seeAll ?? "")
         Log.info()
     }
     
@@ -34,24 +35,10 @@ class TitleBarTableCell: UITableViewCell, Reusable {
     }
     
     func addToStack(){
-        let titleBar = TitleBarView()
         stackView?.addArrangedSubview(titleBar)
-        
-        if type == .upcoming {
-            Log.info()
-            titleBar.getTitleInfo(color: .red, title: "Upcomming Movies sf", seeAll: "See All")
-        }else if type == .nowPlaying {
-            Log.info()
-            titleBar.getTitleInfo(color: .red, title: "Now Playing Movies", seeAll: "See All")
-
-        }else if type == .popular {
-            Log.info()
-            titleBar.getTitleInfo(color: .red, title: "Popular Movies", seeAll: "See All")
-
-        } else if type == .topRated {
-            Log.info()
-            titleBar.getTitleInfo(color: .red, title: "TopRated Movies", seeAll: "See All")
-        }
     }
- 
+    
+    func getCell(color: UIColor, title: String, seeAll: String) {
+        titleBar.getTitleInfo(color: color, title: title , seeAll: seeAll)
+    }
 }

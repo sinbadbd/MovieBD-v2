@@ -39,8 +39,7 @@ class MovieCollectionTableCell: UITableViewCell, Reusable {
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(collectionView)
         collectionView.fitToSuper(insets: .init(top: 0, left: 20, bottom: 0, right: 0))
-        //        collectionView.updateHeight(constant: 200)
-        collectionView.size( height: 250,  heightPriority: 250)
+        collectionView.size( height: 260,  heightPriority: 250)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.showsHorizontalScrollIndicator = false
@@ -74,7 +73,7 @@ extension MovieCollectionTableCell: UICollectionViewDelegate, UICollectionViewDa
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 150, height: collectionView.frame.height)
+        return CGSize(width: 150, height: collectionView.frame.height-10)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

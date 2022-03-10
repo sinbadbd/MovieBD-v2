@@ -20,9 +20,9 @@ public class MovieCollectionCell: UICollectionViewCell, Reusable {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .yellow
+        backgroundColor = .white
         layer.cornerRadius = 4
-        
+        shadowForViewLight(shadow: self)
         setupUI()
     }
     
