@@ -27,6 +27,7 @@ class MoviesDetailsVC: UIViewController {
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        titleBar.titleLabel.text = viewModel.movies?.title
         titleBar.onBackAction = onBack
     }
     

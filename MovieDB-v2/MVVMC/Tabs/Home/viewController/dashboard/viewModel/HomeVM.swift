@@ -46,8 +46,6 @@ extension HomeVM {
         
         setupdata()
 
-        
-        
         firstly {
             self.fetchUpcomingCall(for: .upcoming)
         }.then { _ in
@@ -114,13 +112,7 @@ fileprivate extension TVRow {
 
 extension HomeVM: MovieDetilsProtocol {
     func setIndexPath(item: Result) {
-        //Log.debug(item)
         onCompletion?(item)
     }
-    
-//    func setIndexPath(item: IndexPath) {
-//        Log.debug(item)
-//        onCompletion?()
-//    }
 }
 

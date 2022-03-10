@@ -1,23 +1,23 @@
 //
-//  MovieCollectionView.swift
+//  MoviesCastTableCell.swift
 //  MovieDB-v2
 //
-//  Created by Imran on 9/3/22.
+//  Created by Imran on 10/3/22.
 //  Copyright © 2022 portonics. All rights reserved.
 //
 
 import UIKit
- 
-protocol MovieDetilsProtocol: AnyObject {
-    func setIndexPath(item: Result)
+
+protocol MovieCastProtocol: AnyObject {
+//    func setIndexPath(item: Result)
 }
 
-class MovieCollectionTableCell: UITableViewCell, Reusable {
+class MoviesCastTableCell: UITableViewCell, Reusable {
     
     
     weak var delegate: MovieDetilsProtocol?
     
-    var movie: [Result]?
+    var cast: [MovieCast]?
     
     private let collectionView : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -26,10 +26,10 @@ class MovieCollectionTableCell: UITableViewCell, Reusable {
         return collection
     }()
     
-    public init(movie: [Result], delegate: MovieDetilsProtocol?){
-        super.init(style: .default, reuseIdentifier: MovieCollectionTableCell.nibName)
-        self.movie = movie
-        self.delegate = delegate 
+    public init(cast: [MovieCast]?){ //movie: [Result], delegate: MovieCastProtocol?
+        super.init(style: .default, reuseIdentifier: MoviesCastTableCell.nibName)
+         self.cast = cast
+//        self.delegate = delegate
         setupUI()
     }
     
@@ -39,12 +39,12 @@ class MovieCollectionTableCell: UITableViewCell, Reusable {
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(collectionView)
         collectionView.fitToSuper(insets: .init(top: 0, left: 20, bottom: 0, right: 0))
-        collectionView.size( height: 260,  heightPriority: 250)
+        collectionView.size( height: 200,  heightPriority: 250)
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.isPagingEnabled = true
+        collectionView.isPagingEnabled = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.register(MovieCollectionCell.self, forCellWithReuseIdentifier: MovieCollectionCell.nibName)
+        collectionView.register(MoviesCastCollectionCell.self, forCellWithReuseIdentifier: MoviesCastCollectionCell.nibName)
         shadowForViewLight(shadow: collectionView)
         collectionView.reloadData()
         
@@ -54,32 +54,32 @@ class MovieCollectionTableCell: UITableViewCell, Reusable {
     
 }
 
-extension MovieCollectionTableCell {
+extension MoviesCastTableCell {
     func getMovieData(){
         
     }
 }
 
-extension MovieCollectionTableCell: UICollectionViewDelegate, UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
+extension MoviesCastTableCell: UICollectionViewDelegate, UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return movie?.count ?? 0
+        return cast?.count ?? 0//movie?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView .dequeueReusableCell(withReuseIdentifier: MovieCollectionCell.nibName, for: indexPath) as! MovieCollectionCell
-        let data = movie?[indexPath.item]
-        let img =  URL(string: "\(APIClient.EndPoints.BACKDROP_PATH + (data?.backdropPath)!)")
-        cell.configureCell(poster: img, rating: data?.voteAverage, title: data?.title)
+        let cell = collectionView .dequeueReusableCell(withReuseIdentifier: MoviesCastCollectionCell.nibName, for: indexPath) as! MoviesCastCollectionCell
+        let data = cast?[indexPath.item]
+        let img =  URL(string: "\(APIClient.EndPoints.PROFILE_URL + (data?.profilePath ?? ""))")
+        cell.configureCell(poster: img, title: data?.character)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 150, height: collectionView.frame.height-10)
+        return CGSize(width: 100, height: collectionView.frame.height-10)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let data = movie?[indexPath.item] else { return  }
-        delegate?.setIndexPath(item: data)
-        Log.debug(data)
+//        guard let data = movie?[indexPath.item] else { return  }
+        //delegate?.setIndexPath(item: data)
+//        Log.debug(data)
     }
 }
