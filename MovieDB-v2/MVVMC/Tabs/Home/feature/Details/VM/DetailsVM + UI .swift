@@ -37,7 +37,7 @@ extension DetailsVM {
       func setMovieCastCall() {
           rows.append(TVRow(type: DetailsVM.RowType.titleBar, cell: TitleBarTableCell.init(color: .orange, title: "Cast", seeAll: "See All")))
           rows.append(TVRow(type: DetailsVM.RowType.separator, cell: SeparatorCell.separator(10, .clear)))
-          rows.append(TVRow.init(type: DetailsVM.RowType.cast, cell: MoviesCastTableCell(cast: casts)))
+          rows.append(TVRow.init(type: DetailsVM.RowType.cast, cell: MoviesCastTableCell(cast: casts, delegate: self)))
     }
     
       func setSimilarMovieCall(){

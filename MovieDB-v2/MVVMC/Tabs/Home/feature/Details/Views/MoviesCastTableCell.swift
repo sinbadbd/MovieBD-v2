@@ -9,13 +9,12 @@
 import UIKit
 
 protocol MovieCastProtocol: AnyObject {
-//    func setIndexPath(item: Result)
+    func setIndexPath(item: MovieCast)
 }
 
 class MoviesCastTableCell: UITableViewCell, Reusable {
     
-    
-    weak var delegate: MovieDetilsProtocol?
+    weak var delegate: MovieCastProtocol?
     
     var cast: [MovieCast]?
     
@@ -26,10 +25,10 @@ class MoviesCastTableCell: UITableViewCell, Reusable {
         return collection
     }()
     
-    public init(cast: [MovieCast]?){ //movie: [Result], delegate: MovieCastProtocol?
+    public init(cast: [MovieCast]?, delegate: MovieCastProtocol?){
         super.init(style: .default, reuseIdentifier: MoviesCastTableCell.nibName)
-         self.cast = cast
-//        self.delegate = delegate
+        self.cast = cast
+        self.delegate = delegate
         setupUI()
     }
     
@@ -78,8 +77,7 @@ extension MoviesCastTableCell: UICollectionViewDelegate, UICollectionViewDataSou
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        guard let data = movie?[indexPath.item] else { return  }
-        //delegate?.setIndexPath(item: data)
-//        Log.debug(data)
+        guard let data = cast?[indexPath.item] else { return  }
+        delegate?.setIndexPath(item: data)
     }
 }

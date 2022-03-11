@@ -16,9 +16,14 @@ protocol DetailsVMVMDelegate: AnyObject {
 final class DetailsVM {
  
     typealias MovieDetails = (_ movie: Result?) -> Void
+    typealias MovieCastsActor = (_ movie: MovieCast?) -> Void
+    
     var onCompletion: MovieDetails?
+    var onCompletionMovieCast: MovieCastsActor?
+    
     weak var delegate: DetailsVMVMDelegate?
- 
+    weak var castDelegate: MovieCastProtocol?
+    
     public var movies: Result?
     public var casts: [MovieCast]?
     public var movieSimilar: [Result]?
@@ -89,5 +94,12 @@ fileprivate extension TVRow {
 extension DetailsVM: MovieDetilsProtocol {
     func setIndexPath(item: Result) {
         onCompletion?(item)
+    }
+}
+
+extension DetailsVM: MovieCastProtocol {
+    func setIndexPath(item: MovieCast) {
+        Log.debug(item)
+        onCompletionMovieCast?(item)
     }
 }

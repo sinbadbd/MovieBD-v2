@@ -1,25 +1,25 @@
 //
-//  MoviesDetailsCoordinator.swift
+//  ActorsCoordinator.swift
 //  MovieDB-v2
 //
-//  Created by Imran on 9/3/22.
+//  Created by Imran on 11/3/22.
 //  Copyright © 2022 portonics. All rights reserved.
 //
 
 import UIKit
 
-final class MoviesDetailsCoordinator: Coordinator {
+final class ActorsCoordinator: Coordinator {
     
     private var navController: UINavigationController?
-    private var viewController: MoviesDetailsVC
+    private var viewController: ActorsVC
     private var childCo: Coordinator?
-    private var viewModel: DetailsVM
+    private var viewModel: ActorsVM
     var onBack: Completion?
     
-    init(movie: Result?,navController: UINavigationController?) {
+    init(cast: MovieCast?,navController: UINavigationController?) {
         self.navController = navController
-        viewController = MoviesDetailsVC()
-        viewModel = DetailsVM(movie: movie)
+        viewController = ActorsVC()
+        viewModel = ActorsVM(cast: cast)
         viewModel.delegate = viewController
         viewController.viewModel = viewModel
         Log.info()
@@ -33,6 +33,6 @@ final class MoviesDetailsCoordinator: Coordinator {
     
     func stop() { viewController.pop() }
 }
-extension MoviesDetailsCoordinator: TabBarItemCoordinator {
+extension ActorsCoordinator: TabBarItemCoordinator {
     func getVC() -> UIViewController { return viewController }
 }
