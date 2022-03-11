@@ -21,25 +21,17 @@ final class HomeCoordinator: Coordinator {
         self.navController = navController
         viewController = HomeVC()
         viewModel = HomeVM()
-        //        viewModel.delegate = viewController
         viewController.viewModel = viewModel
         viewModel.delegate = viewController
         Log.info()
-        //if InboxManager.isEmpty { InboxManager.mockList() }
-        
-//        viewModel.onCompletion = { [weak self] in
-//            self?.setDetailsVC(movie: <#Result?#>)
-//        }
-        
+
         viewModel.onCompletion = { [weak self] movie in
             self?.setDetailsVC(movie: movie)
         }
     }
     
     func stop() {
-        guard let stack = oldStack else { return }
-        childCo = nil
-        navController?.setViewControllers(stack, animated: true)
+        viewController.pop()
     }
     
    deinit{ Log.info() }

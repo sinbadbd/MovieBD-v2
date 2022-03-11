@@ -458,7 +458,6 @@
 		1D21DDFD249C851F00B55D9A /* ApiClinet */ = {
 			isa = PBXGroup;
 			children = (
-				1D21DE2B249C87AF00B55D9A /* APIClient.swift */,
 			);
 			path = ApiClinet;
 			sourceTree = "<group>";
@@ -626,6 +625,7 @@
 		1D4CDF5527D794810074A4B1 /* MVVMC */ = {
 			isa = PBXGroup;
 			children = (
+				1D21DE2B249C87AF00B55D9A /* APIClient.swift */,
 				1D4CDFF427D8502E0074A4B1 /* Views */,
 				1D4CDF5A27D7B5FC0074A4B1 /* Tabs */,
 				1D4CDF5627D7949F0074A4B1 /* Helper */,

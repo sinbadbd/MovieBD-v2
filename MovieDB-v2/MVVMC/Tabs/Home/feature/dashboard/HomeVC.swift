@@ -12,8 +12,8 @@ import RxSwift
 
 final class HomeVC: UIViewController, Reusable {
     
+    public var onBack: Completion?
     let tableView = UITableView()
-    
     let relayRows: BehaviorRelay<[TVRow]> = BehaviorRelay(value: [])
     private let disposeBag = DisposeBag()
     

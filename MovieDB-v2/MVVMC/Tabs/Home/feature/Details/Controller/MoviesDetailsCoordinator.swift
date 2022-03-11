@@ -13,6 +13,7 @@ final class MoviesDetailsCoordinator: Coordinator {
     private var navController: UINavigationController?
     private var viewController: MoviesDetailsVC
     private var childCo: Coordinator?
+    private var oldStack: [UIViewController]?
     private var viewModel: DetailsVM
     var onBack: Completion?
     
@@ -39,16 +40,24 @@ final class MoviesDetailsCoordinator: Coordinator {
         navController?.push(vc: viewController)
     }
     
-    func stop() { viewController.pop() }
+    func stop() {
+        viewController.pop()
+    }
 }
 
 extension MoviesDetailsCoordinator {
     func loadActorLanding(cast: MovieCast?){
         let coord = ActorsCoordinator(cast: cast, navController: navController)
+        childCo = coord
+        coord.onBack = { [weak self] in self?.removeChaild() }
         coord.start()
     }
+    
+    func removeChaild(){
+        childCo?.stop?()
+        childCo = nil
+    }
 }
-
 
 extension MoviesDetailsCoordinator: TabBarItemCoordinator {
     func getVC() -> UIViewController { return viewController }

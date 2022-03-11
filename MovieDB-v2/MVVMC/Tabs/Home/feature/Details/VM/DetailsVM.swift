@@ -52,17 +52,20 @@ final class DetailsVM {
 
 extension DetailsVM {
     
+    /// Load
     func LoadData(){
         setupdata()
         apiCalls()
     }
     
+    /// setup ui
     public func setupdata(){
         defer { delegate?.listUpdated(rows)}
         rows = []
         allUICalls()
     }
     
+    /// api call
     private func apiCalls(){
         getPersionCall(for: movies?.id ?? 0)
         fetchSimilarCall(for: movies?.id ?? 0)
@@ -71,6 +74,7 @@ extension DetailsVM {
         getMovieImageCall(for: movies?.id ?? 0)
     }
     
+    /// all ui
     private func allUICalls(){
         setBannerImageCall()
         setCaptionTitleCall()
