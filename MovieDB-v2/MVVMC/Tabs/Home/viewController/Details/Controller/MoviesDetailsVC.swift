@@ -24,6 +24,7 @@ class MoviesDetailsVC: UIViewController {
         bindView()
         viewModel?.LoadData()
         setupUI()
+        view.backgroundColor = UIColor.init(red: 238/255, green: 245/255, blue: 254/255, alpha: 1)
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)

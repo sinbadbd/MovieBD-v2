@@ -9,10 +9,11 @@
 import UIKit
 import YouTubePlayer
 
-class MovieVedioListView: UIView {
+class MovieVedioListViewCell: UITableViewCell, Reusable {
     
     var videoPlayer = YouTubePlayerView()
     var vedioList = [VideoResult]()
+    
     
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -21,44 +22,26 @@ class MovieVedioListView: UIView {
         return collection
     }()
     
-    var videoList_Id = ""
     
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        getServerData()
+    init(vedioList: [VideoResult]){
+        super.init(style: .default, reuseIdentifier: MovieCollectionCell.nibName)
+        self.vedioList = vedioList
         setupUI()
     }
-    
-    func getServerData(){
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            // your code here
-            APIClient.getMovieVideoId(id:GLOBAL_MOVIE_ID) { (response, error) in
-                if let response = response {
-                    print("VEDIO LIST: \(response)")
-                    self.vedioList = response[0].results ?? []
-                    totalVedioCount = self.vedioList.count
-                    
-                    DispatchQueue.main.async {
-                        self.collectionView.reloadData()
-                    }
-                }
-            }
-        }
-    }
-    
+ 
+ 
     func  setupUI(){
-        
+        contentView.addSubview(collectionView)
+
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
         self.collectionView.isPagingEnabled = true
         collectionView.register(VedioListCollectionCell.self, forCellWithReuseIdentifier: "CELL_ID")
-        addSubview(collectionView)
         collectionView.backgroundColor = .white
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.position(top: topAnchor, left: leadingAnchor, bottom: bottomAnchor, right: leadingAnchor)
-        collectionView.size( dimensionWidth: widthAnchor, dimensionHeight: heightAnchor)
+        collectionView.fitToSuper(insets: .init(top: 0, left: 15, bottom: 0, right: 0))
+        collectionView.size( width:200, height: 220, heightPriority: 250)
+        collectionView.reloadData()
     }
     
     
@@ -68,15 +51,14 @@ class MovieVedioListView: UIView {
     }
 }
 
-extension MovieVedioListView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension MovieVedioListViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return vedioList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CELL_ID", for: indexPath) as! VedioListCollectionCell
-        //        cell.backgroundColor = .red
-        
+
         let index = vedioList[indexPath.item]
         
         cell.key = index.key ?? ""
@@ -86,9 +68,16 @@ extension MovieVedioListView: UICollectionViewDelegate, UICollectionViewDataSour
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 250, height: collectionView.frame.height)
+        return CGSize(width: 250, height: 200)
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let index = vedioList[indexPath.item]
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CELL_ID", for: indexPath) as! VedioListCollectionCell
+        
+        cell.videoPlayer?.loadVideoID(index.key ?? "")
+
+    }
 }
 
 class VedioListCollectionCell: UICollectionViewCell {
@@ -97,25 +86,16 @@ class VedioListCollectionCell: UICollectionViewCell {
     let title     = UILabel()
     
     var key = ""
-    
-    //
-    
-    //    let videoPlayer = YouTubePlayerView(frame: .init())
+
     var videoPlayer : YouTubePlayerView?
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setupUI()
     }
-    //     let videoPlayer = YouTubePlayerView(frame: CGRect(x: 0, y: 0, width: 250, height: 140))
-    
+ 
     func setupUI(){
-        
-        //       for view in self.subviews {
-        //            view.removeFromSuperview()
-        //        }
-        
-        
+    
         addSubview(videoView)
         
         videoView.position(top: topAnchor, left: leadingAnchor, bottom: nil, right: trailingAnchor)
@@ -123,14 +103,11 @@ class VedioListCollectionCell: UICollectionViewCell {
         videoPlayer = YouTubePlayerView()
         videoPlayer?.frame = CGRect(x: 0, y: 0, width: 250, height: 140)
         videoView.addSubview(videoPlayer!)
-        videoView.size( height: 140, dimensionWidth: contentView.widthAnchor)
-        videoView.backgroundColor = .blue
-        //        videoPlayer.loadVideoID(key)
-        
-        //        videoPlayer.loadVideoID(key)
-        
+        videoView.size( height: 140)
+        videoView.backgroundColor = .lightGray
+ 
         addSubview(title)
-        title.position(top: videoView.bottomAnchor, left: leadingAnchor, bottom: bottomAnchor, right: trailingAnchor, insets: .init(top: 10, left: 15, bottom: 10, right: 10))
+        title.position(top: videoView.bottomAnchor, left: leadingAnchor, bottom: bottomAnchor, right: trailingAnchor, insets: .init(top: 5, left: 15, bottom: 10, right: 10))
         title.text = ""
         title.font = UIFont(name: appFont, size: 16)
         title.numberOfLines = 0

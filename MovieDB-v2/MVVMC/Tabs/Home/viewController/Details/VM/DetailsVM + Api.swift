@@ -54,6 +54,30 @@ extension DetailsVM {
             }
         }
     }
+    
+    func getMovieVedioCall(for movieId: Int){
+        APIClient.getMovieVideoId(id: movieId) { [weak self] (response, error) in
+            if let response = response {
+                print("VEDIO LIST: \(response)")
+                self?.vedioList = response[0].results ?? []
+            }
+        }
+        DispatchQueue.main.async {[weak self] in
+            self?.setupdata()
+        }
+    }
+    
+    func getMovieImageCall(for movieId: Int){
+        APIClient.getMovieImageId(id:movieId) { [weak self] (response, error) in
+            if let response = response {
+                print("Image LIST: \(response)")
+                self?.backdrop = response[0].posters
+            }
+            DispatchQueue.main.async {[weak self] in
+                self?.setupdata()
+            }
+        }
+    }
 }
 
 //getMovieRecommandationId

@@ -13,18 +13,18 @@ protocol DetailsVMVMDelegate: AnyObject {
     func listUpdated(_ list:[TVRow])
 }
 
-final class DetailsVM: MovieDetilsProtocol {
-    func setIndexPath(item: Result) {
-        
-    }
+final class DetailsVM {
+ 
+    typealias MovieDetails = (_ movie: Result?) -> Void
+    var onCompletion: MovieDetails?
     
     weak var delegate: DetailsVMVMDelegate?
-    var onCompletion: Completion?
-    
+ 
     public var movies: Result?
     public var casts: [MovieCast]?
     public var movieSimilar: [Result]?
-    
+    public var vedioList: [VideoResult]?
+    public var backdrop : [Backdrop]?
     public var type: MovieUrlPath?
 
     private var rows: [TVRow] = []
@@ -50,6 +50,8 @@ extension DetailsVM {
         getPersionCall(for: movies?.id ?? 0)
         fetchSimilarCall(for: movies?.id ?? 0)
         fetchRecommandationCall(for: movies?.id ?? 0)
+        getMovieVedioCall(for: movies?.id ?? 0)
+        getMovieImageCall(for: movies?.id ?? 0)
     }
     
     public func setupdata(){
@@ -79,21 +81,29 @@ extension DetailsVM {
         rows.append(TVRow(.titleBar, cell: TitleBarTableCell.init(color: .orange, title: "More like this", seeAll: "See All")))
         rows.append(TVRow(.similar, cell: MovieCollectionTableCell(movie: movieSimilar ?? [], delegate: self)))
         
-        rows.append(TVRow(.separator, cell: SeparatorCell.separator(10, .clear)))
+        rows.append(TVRow(.separator, cell: SeparatorCell.separator(20, .clear)))
         rows.append(TVRow(.titleBar, cell: TitleBarTableCell.init(color: .orange, title: "Recommendation", seeAll: "See All")))
         rows.append(TVRow(.similar, cell: MovieCollectionTableCell(movie: movieSimilar ?? [], delegate: self)))
 
-        rows.append(TVRow(.separator, cell: SeparatorCell.separator(10, .clear)))
+        rows.append(TVRow(.separator, cell: SeparatorCell.separator(20, .clear)))
         rows.append(TVRow(.titleBar, cell: TitleBarTableCell.init(color: .orange, title: "Vedio", seeAll: "See All")))
-        
-        
+        rows.append(TVRow(.separator, cell: SeparatorCell.separator(15, .clear)))
+        rows.append(TVRow(.separator, cell: MovieVedioListViewCell(vedioList: vedioList ?? [])))
+
         rows.append(TVRow(.separator, cell: SeparatorCell.separator(10, .clear)))
         rows.append(TVRow(.titleBar, cell: TitleBarTableCell.init(color: .orange, title: "Images", seeAll: "See All")))
+        rows.append(TVRow(.separator, cell: MovieImageListCell(vedioImageList: backdrop ?? [])))
         rows.append(TVRow(.separator, cell: SeparatorCell.separator(10, .clear)))
     }
 }
 fileprivate extension TVRow {
     init(_ type: DetailsVM.RowType, cell: UITableViewCell) {
         self.init(type: type, cell: cell)
+    }
+}
+
+extension DetailsVM: MovieDetilsProtocol {
+    func setIndexPath(item: Result) {
+        onCompletion?(item)
     }
 }

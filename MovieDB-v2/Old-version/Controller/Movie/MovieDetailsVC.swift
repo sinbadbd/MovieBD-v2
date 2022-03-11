@@ -54,8 +54,8 @@ class MovieDetailsVC: BaseVC {
     var coinV:UIScrollView!
     
     var movieCastView  = MovieCastView()
-    var movieVedioList = MovieVedioListView()
-    var movieImageList = MovieImageListView()
+//    var movieVedioList = MovieVedioListView()
+//    var movieImageList = MovieImageListView()
     var similarMovieList = SimilarMovieView()
     
     var recommandMovieList = RecommandationMovieView()
@@ -374,19 +374,19 @@ class MovieDetailsVC: BaseVC {
         
         
         // MARK: MOVIE VEDIOS LIST
-        contentView.addSubview(movieVedioList)
-        movieVedioList.position(top: movieVedioTitle.bottomAnchor, left: movieVedioTitle.leadingAnchor, bottom: nil, right: contentView.trailingAnchor, insets: .init(top: 20, left: 0, bottom: 0, right: 0))
-        movieVedioList.size( height: 200, dimensionWidth: contentView.widthAnchor)
-        movieVedioList.backgroundColor = .blue
-        
+//        contentView.addSubview(movieVedioList)
+//        movieVedioList.position(top: movieVedioTitle.bottomAnchor, left: movieVedioTitle.leadingAnchor, bottom: nil, right: contentView.trailingAnchor, insets: .init(top: 20, left: 0, bottom: 0, right: 0))
+//        movieVedioList.size( height: 200, dimensionWidth: contentView.widthAnchor)
+//        movieVedioList.backgroundColor = .blue
+//
         // MARK: MOVIE IMAGES LIST
-        contentView.addSubview(movieImageList)
-        movieImageList.position(top: movieVedioList.bottomAnchor, left: movieVedioTitle.leadingAnchor, bottom:nil, right: contentView.trailingAnchor, insets: .init(top: 20, left: 0, bottom: 0, right: 0))
-        movieImageList.size( height: 200, dimensionWidth: contentView.widthAnchor)
+//        contentView.addSubview(movieImageList)
+//        movieImageList.position(top: movieVedioTitle.bottomAnchor, left: movieVedioTitle.leadingAnchor, bottom:nil, right: contentView.trailingAnchor, insets: .init(top: 20, left: 0, bottom: 0, right: 0))
+//        movieImageList.size( height: 200, dimensionWidth: contentView.widthAnchor)
         
         let reviewView = UIView()
         contentView.addSubview(reviewView)
-        reviewView.position(top: movieImageList.bottomAnchor,left: contentView.leadingAnchor, bottom: nil, right: contentView.trailingAnchor,insets: .init(top: 15, left: 10, bottom: 20, right: 10))
+        reviewView.position(top: movieVedioTitle.bottomAnchor,left: contentView.leadingAnchor, bottom: nil, right: contentView.trailingAnchor,insets: .init(top: 15, left: 10, bottom: 20, right: 10))
         reviewView.size(  height: 50 )
         //        reviewView.backgroundColor = .tertiaryLabel
         reviewView.layer.cornerRadius = 4
