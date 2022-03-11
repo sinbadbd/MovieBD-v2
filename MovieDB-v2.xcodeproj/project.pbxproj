@@ -49,6 +49,7 @@
 		1D21DE3E249C914900B55D9A /* DashboardVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D21DE3D249C914900B55D9A /* DashboardVC.swift */; };
 		1D21DE40249C915D00B55D9A /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D21DE3F249C915D00B55D9A /* ProfileVC.swift */; };
 		1D21DE42249C91BB00B55D9A /* UpcommingMovieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D21DE41249C91BB00B55D9A /* UpcommingMovieView.swift */; };
+		1D266CE827DB3FCB007F2EA8 /* DetailsVM + UI .swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D266CE727DB3FCB007F2EA8 /* DetailsVM + UI .swift */; };
 		1D43FD6F249D1D8C003CB9EC /* UpcommingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D43FD6E249D1D8C003CB9EC /* UpcommingCollectionViewCell.swift */; };
 		1D43FD71249D25EB003CB9EC /* MovieDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D43FD70249D25EB003CB9EC /* MovieDetailsVC.swift */; };
 		1D44B0692500C5D800878274 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D44B0682500C5D800878274 /* LoginVC.swift */; };
@@ -208,6 +209,7 @@
 		1D21DE3D249C914900B55D9A /* DashboardVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardVC.swift; sourceTree = "<group>"; };
 		1D21DE3F249C915D00B55D9A /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
 		1D21DE41249C91BB00B55D9A /* UpcommingMovieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcommingMovieView.swift; sourceTree = "<group>"; };
+		1D266CE727DB3FCB007F2EA8 /* DetailsVM + UI .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailsVM + UI .swift"; sourceTree = "<group>"; };
 		1D43FD6E249D1D8C003CB9EC /* UpcommingCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcommingCollectionViewCell.swift; sourceTree = "<group>"; };
 		1D43FD70249D25EB003CB9EC /* MovieDetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsVC.swift; sourceTree = "<group>"; };
 		1D44B0682500C5D800878274 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
@@ -963,6 +965,7 @@
 			isa = PBXGroup;
 			children = (
 				1DB748D927D9F34700534208 /* DetailsVM.swift */,
+				1D266CE727DB3FCB007F2EA8 /* DetailsVM + UI .swift */,
 				1DB748EE27DA676800534208 /* DetailsVM + Api.swift */,
 			);
 			path = VM;
@@ -1169,6 +1172,7 @@
 				1D8F41D924FA4C1C003D2787 /* Helper.swift in Sources */,
 				1D4CDFE127D7C5FF0074A4B1 /* DestinationProtocol.swift in Sources */,
 				1D44B06F250111DC00878274 /* RataingMovie.swift in Sources */,
+				1D266CE827DB3FCB007F2EA8 /* DetailsVM + UI .swift in Sources */,
 				1D68AE39249E76FE00EAFFFE /* ArtistMovieView.swift in Sources */,
 				1D4CDFE627D7C5FF0074A4B1 /* URL+XCGAdditions.swift in Sources */,
 				1D21DE22249C872800B55D9A /* Video.swift in Sources */,

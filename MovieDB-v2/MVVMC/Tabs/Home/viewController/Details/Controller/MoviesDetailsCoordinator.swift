@@ -30,6 +30,7 @@ final class MoviesDetailsCoordinator: Coordinator {
         viewController.onBack = onBack
         navController?.push(vc: viewController)
     }
+    
     func stop() { viewController.pop() }
 }
 extension MoviesDetailsCoordinator: TabBarItemCoordinator {

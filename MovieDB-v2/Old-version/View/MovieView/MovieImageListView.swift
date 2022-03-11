@@ -38,7 +38,7 @@ class MovieImageListCell: UITableViewCell, Reusable {
         collectionView.backgroundColor = .white
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.fitToSuper(insets: .init(top: 10, left: 15, bottom: 0, right: 0))
-        collectionView.size(width:120, height: 120, heightPriority: 250)
+        collectionView.size(width:120,height: 120, widthPriority: 250, heightPriority: 250)
         collectionView.reloadData()
     }
 

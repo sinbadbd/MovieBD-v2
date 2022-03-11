@@ -79,5 +79,3 @@ extension DetailsVM {
         }
     }
 }
-
-//getMovieRecommandationId
