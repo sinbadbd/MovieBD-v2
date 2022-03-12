@@ -31,8 +31,26 @@ final class ActorsCoordinator: Coordinator {
         navController?.push(vc: viewController)
     }
     
+    
+ 
     func stop() { viewController.pop() }
 }
+
+
+extension  ActorsCoordinator {
+//    func setDetailsVC(movie: Result?){
+//        let coord = MoviesDetailsCoordinator(movie: movie, navController: navController)
+//        childCo = coord
+//        coord.onBack = { [weak self] in self?.removeChaild() }
+//        coord.start()
+//    }
+//
+//    func removeChaild(){
+//        childCo?.stop?()
+//        childCo = nil
+//    }
+}
+
 extension ActorsCoordinator: TabBarItemCoordinator {
     func getVC() -> UIViewController { return viewController }
 }

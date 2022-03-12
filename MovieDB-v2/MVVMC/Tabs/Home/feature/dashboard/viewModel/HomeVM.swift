@@ -17,11 +17,11 @@ protocol HomeVMVMDelegate: AnyObject {
 final class HomeVM {
     
     typealias MovieDetails = (_ movie: Result?) -> Void
-    
+    var onCompletion: MovieDetails? //Completion?
+
     weak var delegate: HomeVMVMDelegate?
     weak var detailsDelegate: MovieDetilsProtocol?
     
-    var onCompletion: MovieDetails? //Completion?
     
     public var movies: [Result]?
     public var type: MovieUrlPath?

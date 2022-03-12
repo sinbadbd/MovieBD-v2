@@ -22,5 +22,12 @@ extension ActorsVM {
         rows.append(TVRow(type: DetailsVM.RowType.caption, cell: ActorImageTitleTableCell(artist: actorsData)))
     }
     
+ 
+    func setMovieCredit(){
+        rows.append(TVRow(type: DetailsVM.RowType.caption, cell: ActorMovieCreditsCell(actorMovieCredit: personCast, delegate: self)))
+    }
+
+//    MovieCollectionTableCell
+    
     
 }

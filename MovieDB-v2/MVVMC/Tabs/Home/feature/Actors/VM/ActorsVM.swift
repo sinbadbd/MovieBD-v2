@@ -14,15 +14,20 @@ protocol ActorsVMVMDelegate: AnyObject {
 
 final class ActorsVM {
     
-    //    typealias MovieDetails = (_ movie: Result?) -> Void
-    //    var onCompletion: MovieDetails?
+    typealias MovieDetails = (_ movie: Result?) -> Void
+    var onCompletion: MovieDetails? //Completion?
+    
     weak var delegate: ActorsVMVMDelegate?
+    weak var actorMovCredit: ActorMovieCastProtocol?
     
     //    public var movies: Result?
     public var casts: [MovieCast]?
     public var movieCast: MovieCast?
     public var actorsData: Artist?
     public var actorProfileImage: [ProfileElement]?
+    public var movies: [Result]?
+    public var personCast: [Cast]?
+
     //    public var movieSimilar: [Result]?
     //    public var vedioList: [VideoResult]?
     //    public var backdrop : [Backdrop]?
@@ -63,6 +68,7 @@ extension ActorsVM {
     private func apiCalls(){
         getActorDetails(for: movieCast?.id ?? 0)
         getActorImageCell(for: movieCast?.id ?? 0)
+        getActorMovieCredit(for: movieCast?.id ?? 0)
     }
     
     private func allUICalls(){
@@ -75,8 +81,19 @@ extension ActorsVM {
         }
         
         setActorDetailsUI()
+        setMovieCredit()
     }
 }
+
+extension ActorsVM: ActorMovieCastProtocol{
+    func setIndexPath(item: Cast) {
+        Log.info()
+//        onCompletion?(item)
+    }
+    
+ 
+}
+
 
 fileprivate extension TVRow {
     init(_ type: ActorsVM.RowType, cell: UITableViewCell) {
