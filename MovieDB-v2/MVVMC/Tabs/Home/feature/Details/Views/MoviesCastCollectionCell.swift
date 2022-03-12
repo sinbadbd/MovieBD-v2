@@ -6,8 +6,6 @@
 //  Copyright © 2022 portonics. All rights reserved.
 //
 
-import Foundation
-
 import UIKit
 import SDWebImage
 

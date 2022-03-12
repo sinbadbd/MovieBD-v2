@@ -84,7 +84,9 @@ extension DetailsVM {
         setMovieCastCall()
         setSimilarMovieCall()
         setRecommentMovieCall()
-        setVedioCall()
+        if vedioList?.count ?? 0 > 0 {
+            setVedioCall()
+        }
         setMovieImageCall()
     }
 }

@@ -13,19 +13,20 @@ protocol ActorsVMVMDelegate: AnyObject {
 }
 
 final class ActorsVM {
- 
-//    typealias MovieDetails = (_ movie: Result?) -> Void
-//    var onCompletion: MovieDetails?
-    weak var delegate: ActorsVMVMDelegate?
- 
-//    public var movies: Result?
-      public var casts: [MovieCast]?
-      public var movieCast: MovieCast?
     
-//    public var movieSimilar: [Result]?
-//    public var vedioList: [VideoResult]?
-//    public var backdrop : [Backdrop]?
-//    public var type: MovieUrlPath?
+    //    typealias MovieDetails = (_ movie: Result?) -> Void
+    //    var onCompletion: MovieDetails?
+    weak var delegate: ActorsVMVMDelegate?
+    
+    //    public var movies: Result?
+    public var casts: [MovieCast]?
+    public var movieCast: MovieCast?
+    public var actorsData: Artist?
+    public var actorProfileImage: [ProfileElement]?
+    //    public var movieSimilar: [Result]?
+    //    public var vedioList: [VideoResult]?
+    //    public var backdrop : [Backdrop]?
+    //    public var type: MovieUrlPath?
     
     var rows: [TVRow] = []
     
@@ -60,11 +61,18 @@ extension ActorsVM {
     }
     
     private func apiCalls(){
- 
+        getActorDetails(for: movieCast?.id ?? 0)
+        getActorImageCell(for: movieCast?.id ?? 0)
     }
     
     private func allUICalls(){
- 
+        setActorUICall()
+        if actorProfileImage?.count ?? 0  > 0 {
+            setActorSliderUICall()
+        }else {
+            rows.append(TVRow(type: DetailsVM.RowType.separator, cell: DummyImageCell.init(img: UIImage(named: "placeholder-image"))))
+
+        }
     }
 }
 

@@ -1,23 +1,25 @@
 //
-//  CaptionCell.swift
+//  CaptionTitleActorCell.swift
 //  MovieDB-v2
 //
-//  Created by Imran on 10/3/22.
+//  Created by Imran on 11/3/22.
 //  Copyright © 2022 portonics. All rights reserved.
 //
 
+import Foundation
 import UIKit
 
-class CaptionCell: UITableViewCell, Reusable {
+class CaptionTitleActorCell: UITableViewCell, Reusable {
     
     var stackView : UIStackView?
     let titleLbl = UILabel()
+    let workTitle = UILabel()
     
-    var movie: Result?
+    var actor: Artist?
     
-    public init(movie: Result?){ //movie: Result?
-        super.init(style: .default, reuseIdentifier: CaptionCell.nibName)
-        self.movie =  movie
+    public init(actor: Artist?){ //movie: Result?
+        super.init(style: .default, reuseIdentifier: CaptionTitleActorCell.nibName)
+        self.actor =  actor
         setupUI()
     }
     
@@ -35,12 +37,20 @@ class CaptionCell: UITableViewCell, Reusable {
         
         titleLbl.textColor = .black
         titleLbl.numberOfLines = 0
-        titleLbl.font = UIFont.systemFont(ofSize: 24)
+        titleLbl.font = UIFont.systemFont(ofSize: 30)
         stackView?.addArrangedSubview(titleLbl)
+        
+        
+        workTitle.textColor = .gray
+        workTitle.numberOfLines = 0
+        workTitle.font = UIFont.systemFont(ofSize: 18)
+        stackView?.addArrangedSubview(workTitle)
     }
     
     func configureCell(){
-        titleLbl.text = movie?.title
+        titleLbl.text = actor?.name
+        workTitle.text = actor?.knownForDepartment
+        
     }
     
     required init?(coder: NSCoder) {  fatalError("init(coder:) has not been implemented")  }
