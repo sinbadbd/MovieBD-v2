@@ -73,6 +73,8 @@ extension ActorsVM {
             rows.append(TVRow(type: DetailsVM.RowType.separator, cell: DummyImageCell.init(img: UIImage(named: "placeholder-image"))))
 
         }
+        
+        setActorDetailsUI()
     }
 }
 

@@ -17,6 +17,10 @@ extension ActorsVM {
     
     func setActorSliderUICall(){
         rows.append(TVRow(type: DetailsVM.RowType.caption, cell: ActorImageSliderTableCell(profileImg: actorProfileImage ?? [])))
-
     }
+    func setActorDetailsUI(){
+        rows.append(TVRow(type: DetailsVM.RowType.caption, cell: ActorImageTitleTableCell(artist: actorsData)))
+    }
+    
+    
 }

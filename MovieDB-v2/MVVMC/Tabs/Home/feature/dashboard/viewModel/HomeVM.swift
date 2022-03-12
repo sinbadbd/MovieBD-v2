@@ -53,7 +53,7 @@ extension HomeVM {
         }.then { _ in
             self.fetchUpcomingCall(for: .popular)
         }.then { _ in
-            self.fetchUpcomingCall(for: .topRated)
+            self.fetchUpcomingCall(for: .popular)
         }.done { _ in
             
         }.catch { error in

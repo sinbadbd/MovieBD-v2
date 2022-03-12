@@ -11,9 +11,14 @@ import SDWebImage
 
 class ActorImageSliderTableCell: UITableViewCell, Reusable {
     
-   // weak var delegate: MovieCastProtocol?
+    // weak var delegate: MovieCastProtocol?
     
     var profileImg: [ProfileElement]?
+    var timer = Timer()
+    var counter = 0
+    
+    var pageControl = UIPageControl()
+    
     
     private let collectionView : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -24,7 +29,7 @@ class ActorImageSliderTableCell: UITableViewCell, Reusable {
     
     public init(profileImg: [ProfileElement]){//cast: [MovieCast]?, delegate: MovieCastProtocol?
         super.init(style: .default, reuseIdentifier: ActorImageSliderTableCell.nibName)
-//        self.cast = cast
+        //        self.cast = cast
         self.profileImg = profileImg
         setupUI()
     }
@@ -41,11 +46,39 @@ class ActorImageSliderTableCell: UITableViewCell, Reusable {
         collectionView.isPagingEnabled = true
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.register(ActorImageCollectionCell.self, forCellWithReuseIdentifier: ActorImageCollectionCell.nibName)
-//        shadowForViewLight(shadow: collectionView)
+        //        shadowForViewLight(shadow: collectionView)
         collectionView.reloadData()
         
+        
+        contentView.addSubview(pageControl)
+        pageControl.position( bottom: contentView.bottomAnchor, insets: .init(top: 0, left: 0, bottom: 10, right: 0))
+        pageControl.centerXInSuperview()
+        pageControl.backgroundColor = .clear
+        pageControl.numberOfPages = profileImg?.count ?? 0
+        pageControl.currentPage = 0
+        pageControl.pageIndicatorTintColor = UIColor.red
+        
+        startTimer() //MARK:
+    }
+    func startTimer() {
+        
+        Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(startScrolling), userInfo: nil, repeats: true);
+        
+        
+    }
+    @objc func startScrolling() {
+        
+        if pageControl.currentPage == pageControl.numberOfPages - 1 {
+            pageControl.currentPage = 0
+        } else {
+            pageControl.currentPage += 1
+        }
+        collectionView.scrollToItem(at: IndexPath(row: pageControl.currentPage, section: 0), at: .right, animated: true)
     }
     
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        pageControl.currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
+    }
     required init?(coder: NSCoder) {   fatalError("init(coder:) has not been implemented")   }
     
 }
@@ -64,21 +97,21 @@ extension ActorImageSliderTableCell: UICollectionViewDelegate, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView .dequeueReusableCell(withReuseIdentifier: ActorImageCollectionCell.nibName, for: indexPath) as! ActorImageCollectionCell
         
-//        if indexPath.item % 2 == 0 {
-//            cell.imageSlider.backgroundColor = .red
-//        }else{
-//            cell.imageSlider.backgroundColor = .yellow
-//
-//        }
+        //        if indexPath.item % 2 == 0 {
+        //            cell.imageSlider.backgroundColor = .red
+        //        }else{
+        //            cell.imageSlider.backgroundColor = .yellow
+        //
+        //        }
         
         let data = profileImg?[indexPath.item]
         let img =  URL(string: "\(APIClient.EndPoints.BACKDROP_PATH + (data?.filePath ?? ""))")
         
         cell.configureCell(poster: img)
-
-            
+        
+        
         //resizeImage(image: cell.imageSlider.image ?? "", newWidth: CGSize(width: data?.width ?? 0, height: data?.height ?? 0))
-//        cell.configureCell(poster: img, title: data?.character)
+        //        cell.configureCell(poster: img, title: data?.character)
         return cell
     }
     
@@ -87,8 +120,8 @@ extension ActorImageSliderTableCell: UICollectionViewDelegate, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-      //  guard let data = cast?[indexPath.item] else { return  }
-       // delegate?.setIndexPath(item: data)
+        //  guard let data = cast?[indexPath.item] else { return  }
+        // delegate?.setIndexPath(item: data)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -106,22 +139,22 @@ class ActorImageCollectionCell: UICollectionViewCell, Reusable {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-//        backgroundColor = .red
+        //        backgroundColor = .red
         setupUI()
     }
     
     func setupUI(){
         setupStact()
         addToStack()
-//        configureCell(poster: proImg?.filePath)
+        //        configureCell(poster: proImg?.filePath)
     }
     func setupStact(){
         stackView = contentView.HStack(spacing: 0)
         stackView?.fitToSuper(insets: .init(top: 0, left: 0, bottom:0, right:  0))
     }
     func addToStack(){
-//        imageSlider.backgroundColor = .bluez
-//        imageSlider.size(height: 200, heightPriority: 250)
+        //        imageSlider.backgroundColor = .bluez
+        //        imageSlider.size(height: 200, heightPriority: 250)
         imageSlider.contentMode = .scaleAspectFill
         imageSlider.clipsToBounds = true
         stackView?.addArrangedSubview(imageSlider)
@@ -134,20 +167,9 @@ class ActorImageCollectionCell: UICollectionViewCell, Reusable {
     }
     
     func configureCell(poster: URL?) {
-//     imageSlider.sd_setImage(with: poster, completed: nil)
-//        imageSlider.sd_setImage(with: poster, placeholderImage: UIImage(named: "placeholder-image"), options: .avoidAutoSetImage, completed: nil)
-       // movieTitle.text = title
-        imageSlider.sd_setImage(with: poster, placeholderImage: nil, completed: { (image, error, cacheType, url) -> Void in
-            if ((error) != nil) {
-                        // set the placeholder image here
-                self.imageSlider.image = image//UIImage(named: "placeholder-image")
-                    } else {
-                        // success ... use the image
-                        self.imageSlider.image = image
-                    }
-                })
+        imageSlider.sd_setImage(with: poster, completed: nil)
     }
- 
+    
     
     required init?(coder: NSCoder) {  fatalError("init(coder:) has not been implemented")  }
 }
@@ -156,23 +178,23 @@ class ActorImageCollectionCell: UICollectionViewCell, Reusable {
 
 
 class ScaledHeightImageView: UIImageView {
-
+    
     override var intrinsicContentSize: CGSize {
-
+        
         if let myImage = self.image {
             let myImageWidth = myImage.size.width
             let myImageHeight = myImage.size.height
             let myViewWidth = self.frame.size.width
- 
+            
             let ratio = myViewWidth/myImageWidth
             let scaledHeight = myImageHeight * ratio
-
+            
             return CGSize(width: myViewWidth, height: scaledHeight)
         }
-
+        
         return CGSize(width: -1.0, height: -1.0)
     }
-
+    
 }
 
 func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage? {
