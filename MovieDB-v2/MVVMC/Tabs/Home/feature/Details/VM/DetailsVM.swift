@@ -33,6 +33,8 @@ final class DetailsVM {
     
     var rows: [TVRow] = []
     
+    var movieID: Int?
+    
     enum RowType: ItemType {
         case topBanner
         case caption
@@ -43,8 +45,9 @@ final class DetailsVM {
         case similar
     }
     
-    init(movie: Result?){
-        self.movies = movie
+    init( id: Int, movie: Result? ){
+        movieID = id
+        movies = movie
     }
     
     deinit { Log.info() }
@@ -67,11 +70,11 @@ extension DetailsVM {
     
     /// api call
     private func apiCalls(){
-        getPersionCall(for: movies?.id ?? 0)
-        fetchSimilarCall(for: movies?.id ?? 0)
-        fetchRecommandationCall(for: movies?.id ?? 0)
-        getMovieVedioCall(for: movies?.id ?? 0)
-        getMovieImageCall(for: movies?.id ?? 0)
+        getPersionCall(for: movieID ?? 0)
+        fetchSimilarCall(for: movieID ?? 0)
+        fetchRecommandationCall(for: movieID ?? 0)
+        getMovieVedioCall(for: movieID ?? 0)
+        getMovieImageCall(for:movieID ?? 0)
     }
     
     /// all ui

@@ -38,7 +38,7 @@ class BannerImageCell: UITableViewCell, Reusable {
     }
     
     func configureCell(){
-        let img =  URL(string: "\(APIClient.EndPoints.BACKDROP_PATH + (movie?.backdropPath)!)")
+        let img =  URL(string: "\(APIClient.EndPoints.BACKDROP_PATH + (movie?.backdropPath ?? ""))")
         bannerImg.sd_setImage(with: img, completed: nil)
 
      }

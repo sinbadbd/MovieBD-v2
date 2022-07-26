@@ -39,7 +39,14 @@ final class HomeCoordinator: Coordinator {
 
 extension  HomeCoordinator {
     func setDetailsVC(movie: Result?){
-        let coord = MoviesDetailsCoordinator(movie: movie, navController: navController)
+        let coord = MoviesDetailsCoordinator(navController: navController, id: movie?.id ?? 0, movie: movie)
+//        coord.getMovieDetails(for: movie?.id ?? 0)
+//        coord.getMovieDetails(for: movie?.id ?? 0) {[weak self] in
+//
+//        }
+//        coord.getMovieDetails(for: movie?.id) {[weak self] movieid in
+//            
+//        }
         childCo = coord
         coord.onBack = { [weak self] in self?.removeChaild() }
         coord.start()

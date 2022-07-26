@@ -68,7 +68,7 @@ extension MovieCollectionTableCell: UICollectionViewDelegate, UICollectionViewDa
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView .dequeueReusableCell(withReuseIdentifier: MovieCollectionCell.nibName, for: indexPath) as! MovieCollectionCell
         let data = movie?[indexPath.item]
-        let img =  URL(string: "\(APIClient.EndPoints.BACKDROP_PATH + (data?.backdropPath)!)")
+        let img =  URL(string: "\(APIClient.EndPoints.BACKDROP_PATH + (data?.backdropPath ?? ""))")
         cell.configureCell(poster: img, rating: data?.voteAverage, title: data?.title)
         return cell
     }

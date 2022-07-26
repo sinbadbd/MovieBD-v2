@@ -49,7 +49,7 @@ class ImageWithContentCell: UITableViewCell, Reusable {
     }
     
     func configureCell(){
-        let img =  URL(string: "\(APIClient.EndPoints.POSTER_URL + (movie?.posterPath)!)")
+        let img =  URL(string: "\(APIClient.EndPoints.POSTER_URL + (movie?.posterPath ?? ""))")
         posterImage.sd_setImage(with: img, completed: nil)
         detailsLbl.text = movie?.overview
     }

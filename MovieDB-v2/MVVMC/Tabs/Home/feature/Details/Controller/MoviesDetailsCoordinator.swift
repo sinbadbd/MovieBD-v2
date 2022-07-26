@@ -17,15 +17,20 @@ final class MoviesDetailsCoordinator: Coordinator {
     private var viewModel: DetailsVM
     var onBack: Completion?
     
-    init(movie: Result?,navController: UINavigationController?) {
+    //    init(movie: Result?,navController: UINavigationController?) {
+    init(navController: UINavigationController?, id: Int, movie: Result?) {
         self.navController = navController
         viewController = MoviesDetailsVC()
-        viewModel = DetailsVM(movie: movie)
+        viewModel = DetailsVM(id: id, movie: movie)
         viewModel.delegate = viewController
         viewController.viewModel = viewModel
         Log.info()
         
         setActorLanding()
+    }
+    
+    func getMovieDetails(for id: Result?){
+//        viewModel.getMovieDetailsId(for: id?.id)
     }
     
     func setActorLanding(){

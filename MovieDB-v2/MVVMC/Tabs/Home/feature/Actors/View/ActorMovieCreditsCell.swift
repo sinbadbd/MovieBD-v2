@@ -79,6 +79,7 @@ extension ActorMovieCreditsCell: UICollectionViewDelegate, UICollectionViewDataS
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let data = actorMovieCredit?[indexPath.item] else { return  }
+        Log.debug("data: \(data)")
         delegate?.setIndexPath(item: data)
     }
 }

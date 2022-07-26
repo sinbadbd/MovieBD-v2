@@ -481,14 +481,14 @@ class APIClient {
         }
     }
     
-    class func getMovieImageId(id: Int, completion: @escaping([MovieImageList]?, Error?)->Void) {
+    class func getMovieImageId(id: Int, completion: @escaping(MovieImageList?, Error?)->Void) {
         print(EndPoints.getMovieImageId(id))
         taskForGETRequest(url: EndPoints.getMovieImageId(id).url, response: MovieImageList.self) { (response, error) in
             if let response = response {
                 print(response)
-                completion([response], nil)
+                completion(response, nil)
             } else {
-                completion([], error)
+                completion(nil, error)
                 print(error.debugDescription)
                 print(error?.localizedDescription ?? "")
             }

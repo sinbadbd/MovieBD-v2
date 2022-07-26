@@ -71,7 +71,7 @@ extension DetailsVM {
         APIClient.getMovieImageId(id:movieId) { [weak self] (response, error) in
             if let response = response {
                 print("Image LIST: \(response)")
-                self?.backdrop = response[0].posters
+                self?.backdrop = response.posters
             }
             DispatchQueue.main.async {[weak self] in
                 self?.setupdata()

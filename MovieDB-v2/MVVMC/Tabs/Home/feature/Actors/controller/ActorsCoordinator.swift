@@ -38,17 +38,18 @@ final class ActorsCoordinator: Coordinator {
 
 
 extension  ActorsCoordinator {
-//    func setDetailsVC(movie: Result?){
-//        let coord = MoviesDetailsCoordinator(movie: movie, navController: navController)
-//        childCo = coord
-//        coord.onBack = { [weak self] in self?.removeChaild() }
-//        coord.start()
-//    }
-//
-//    func removeChaild(){
-//        childCo?.stop?()
-//        childCo = nil
-//    }
+    func setDetailsVC(movie: Result?){
+        let coord = MoviesDetailsCoordinator(navController: navController, id: movie?.id ?? 0, movie: movie)
+//        coord.getMovieDetails(for: movie?.id ?? 0)
+        childCo = coord
+        coord.onBack = { [weak self] in self?.removeChaild() }
+        coord.start()
+    }
+
+    func removeChaild(){
+        childCo?.stop?()
+        childCo = nil
+    }
 }
 
 extension ActorsCoordinator: TabBarItemCoordinator {

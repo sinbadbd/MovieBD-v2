@@ -24,6 +24,13 @@ final class HomeVM {
     
     
     public var movies: [Result]?
+    
+    /*
+    public var moviesToprated: [Result]?
+    public var moviesPopular: [Result]?
+    public var moviesPlaying: [Result]?
+    public var moviesUpcoming: [Result]?
+    */
     public var type: MovieUrlPath?
     //    public var moviesNowPlaying: [Result]?
     //    public var moviespopular: [Result]?
@@ -42,10 +49,22 @@ final class HomeVM {
     deinit { Log.info() }
 }
 extension HomeVM {
+    fileprivate func apiCalls() {
+        //        self.fetchUpcomingCall(for: .upcoming)
+        //        self.fetchUpcomingCall(for: .nowPlaying)
+        //        self.fetchUpcomingCall(for: .popular)
+        //        self.fetchUpcomingCall(for: .popular)
+        fetchNowPlayingCall()
+        fetchPopularCall()
+        fetchtopRatedCall()
+//        fetchUpcomingCall(for: .upcoming)
+    }
+    
     func LoadData(){
         
         setupdata()
-
+        apiCalls()
+        /*
         firstly {
             self.fetchUpcomingCall(for: .upcoming)
         }.then { _ in
@@ -58,7 +77,7 @@ extension HomeVM {
             
         }.catch { error in
             print(error)
-        }
+        }*/
     }
     
     public func setupdata(){
@@ -66,7 +85,12 @@ extension HomeVM {
         rows = []
  
         topSearchBar()
-        upcommingMovie()
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+//            self?.upcommingMovie()
+//        }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+//            self?.popularMovie()
+//        }
         nowPlayingMovie()
         popularMovie()
         topRatedMovie()

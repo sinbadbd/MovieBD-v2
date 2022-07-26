@@ -37,6 +37,7 @@ extension HomeVM {
             }
             if let response = response {
                 self?.movies = response[0].results ?? []
+                Log.debug("fetchNowPlayingCall: \(self?.movies)")
             }
             DispatchQueue.main.async {
                 self?.setupdata()
@@ -51,6 +52,7 @@ extension HomeVM {
             }
             if let response = response {
                 self?.movies = response[0].results ?? []
+                Log.debug("fetchPopularCall: \(self?.movies)")
             }
             DispatchQueue.main.async {
                 self?.setupdata()
@@ -66,6 +68,7 @@ extension HomeVM {
             }
             if let response = response {
                 self?.movies = response[0].results ?? []
+                Log.debug("fetchPopularCall: \(self?.movies)")
             }
             DispatchQueue.main.async {
                 self?.setupdata()

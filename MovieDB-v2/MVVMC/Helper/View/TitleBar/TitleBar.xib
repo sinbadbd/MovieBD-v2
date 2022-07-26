@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TitleBar" customModule="MovieDB_v2" customModuleProvider="target">
+            <connections>
+                <outlet property="backButton" destination="1MJ-DF-nl2" id="Saf-ZN-q9f"/>
+                <outlet property="containerView" destination="iN0-l3-epB" id="1hF-ZA-GHK"/>
+                <outlet property="titleLabel" destination="sly-tF-zls" id="SGe-5j-Gpw"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="69"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1MJ-DF-nl2">
+                    <rect key="frame" x="0.0" y="0.0" width="48" height="69"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="48" id="y9y-kj-hEr"/>
+                    </constraints>
+                    <state key="normal" image="ic_arrow_left_blue"/>
+                    <connections>
+                        <action selector="backTapped:" destination="-1" eventType="touchUpInside" id="cc5-TZ-jZA"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sly-tF-zls">
+                    <rect key="frame" x="207" y="34.5" width="0.0" height="0.0"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                    <color key="textColor" name="Text"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="0.93333333333333335" green="0.96078431372549022" blue="0.99607843137254903" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <constraints>
+                <constraint firstItem="sly-tF-zls" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="4NH-G0-4hH"/>
+                <constraint firstItem="1MJ-DF-nl2" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" id="5tR-O5-4bN"/>
+                <constraint firstItem="1MJ-DF-nl2" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="PY7-hP-W60"/>
+                <constraint firstItem="1MJ-DF-nl2" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="fjo-wC-j9e"/>
+                <constraint firstItem="sly-tF-zls" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="gFS-CC-ot7"/>
+                <constraint firstItem="sly-tF-zls" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="1MJ-DF-nl2" secondAttribute="trailing" id="x9e-52-loK"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="size" keyPath="shadowOffset">
+                    <size key="value" width="0.0" height="2"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
+                    <real key="value" value="2"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="number" keyPath="zPosition">
+                    <real key="value" value="1"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
+                    <real key="value" value="0.10000000000000001"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
+            <point key="canvasLocation" x="31.884057971014496" y="-173.10267857142856"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="ic_arrow_left_blue" width="8" height="16"/>
+        <namedColor name="Text">
+            <color red="0.10199999809265137" green="0.10199999809265137" blue="0.10199999809265137" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
