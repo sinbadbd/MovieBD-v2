@@ -45,6 +45,7 @@ final class DetailsVM {
         case similar
     }
     
+   
     init( id: Int, movie: Result? ){
         movieID = id
         movies = movie

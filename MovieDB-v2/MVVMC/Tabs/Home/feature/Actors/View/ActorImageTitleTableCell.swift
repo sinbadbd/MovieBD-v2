@@ -38,7 +38,7 @@ class ActorImageTitleTableCell: UITableViewCell, Reusable {
         posterImage.size(width:120,height: 180)
         posterImage.contentMode = .scaleAspectFit
         posterImage.layer.masksToBounds = true
-        //        posterImage.clipsToBounds = true
+        posterImage.clipsToBounds = true
         posterImage.layer.cornerRadius = 6
         stackView?.addArrangedSubview(posterImage)
         

@@ -16,7 +16,7 @@ final class ActorsVM {
     
     typealias MovieDetails = (_ movie: Result?) -> Void
     var onCompletion: MovieDetails? //Completion?
-    
+    var onCastCompletion: ((Cast) -> Void)?
     weak var delegate: ActorsVMVMDelegate?
     weak var actorMovCredit: ActorMovieCastProtocol?
     
@@ -28,6 +28,7 @@ final class ActorsVM {
     public var movies: [Result]?
     public var personCast: [Cast]?
 
+    public var movieDic : Result?
     //    public var movieSimilar: [Result]?
     //    public var vedioList: [VideoResult]?
     //    public var backdrop : [Backdrop]?
@@ -87,7 +88,7 @@ extension ActorsVM {
 extension ActorsVM: ActorMovieCastProtocol{
     func setIndexPath(item: Cast) {
         Log.info()
-//        onCompletion?(item)
+        onCastCompletion?(item)
     }
     
  

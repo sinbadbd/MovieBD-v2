@@ -28,14 +28,10 @@ final class MoviesDetailsCoordinator: Coordinator {
         
         setActorLanding()
     }
-    
-    func getMovieDetails(for id: Result?){
-//        viewModel.getMovieDetailsId(for: id?.id)
-    }
-    
+
     func setActorLanding(){
         viewModel.onCompletionMovieCast = {[weak self] casts in
-            self?.loadActorLanding(cast: casts)
+            self?.loadActorLanding(cast: casts, movie: self?.viewModel.movies)
         }
     }
     
@@ -51,8 +47,8 @@ final class MoviesDetailsCoordinator: Coordinator {
 }
 
 extension MoviesDetailsCoordinator {
-    func loadActorLanding(cast: MovieCast?){
-        let coord = ActorsCoordinator(cast: cast, navController: navController)
+    func loadActorLanding(cast: MovieCast?, movie: Result?){
+        let coord = ActorsCoordinator(cast: cast, movie: movie, navController: navController)
         childCo = coord
         coord.onBack = { [weak self] in self?.removeChaild() }
         coord.start()

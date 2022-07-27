@@ -15,13 +15,15 @@ final class ActorsCoordinator: Coordinator {
     private var childCo: Coordinator?
     private var viewModel: ActorsVM
     var onBack: Completion?
+    public var movies: Result?
     
-    init(cast: MovieCast?,navController: UINavigationController?) {
+    init(cast: MovieCast?, movie: Result?, navController: UINavigationController?) {
         self.navController = navController
         viewController = ActorsVC()
         viewModel = ActorsVM(cast: cast)
         viewModel.delegate = viewController
         viewController.viewModel = viewModel
+        self.movies = movie
         Log.info()
     }
     
@@ -29,18 +31,19 @@ final class ActorsCoordinator: Coordinator {
         Log.info()
         viewController.onBack = onBack
         navController?.push(vc: viewController)
+        
+        viewModel.onCastCompletion = { [weak self] casts in
+            self?.setDetailsVC( movie: self?.movies, id: casts.id ?? 0)
+        }
     }
-    
-    
- 
+
     func stop() { viewController.pop() }
 }
 
 
 extension  ActorsCoordinator {
-    func setDetailsVC(movie: Result?){
-        let coord = MoviesDetailsCoordinator(navController: navController, id: movie?.id ?? 0, movie: movie)
-//        coord.getMovieDetails(for: movie?.id ?? 0)
+    func setDetailsVC(movie: Result? , id: Int){
+        let coord = MoviesDetailsCoordinator(navController: navController, id: id, movie: movie)
         childCo = coord
         coord.onBack = { [weak self] in self?.removeChaild() }
         coord.start()
